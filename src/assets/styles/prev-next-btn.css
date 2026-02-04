@@ -1,0 +1,59 @@
+section#navigators {
+    border-top: 1px solid #2f1d43;
+    padding-top: 2rem;
+}
+
+.navigators {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigator {
+    background: #a18aba;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    transition: all 400ms ease;
+}
+
+.navigator:hover {
+    background: #806999;
+}
+
+.next-btn {
+    display: none;
+}
+
+.next-btn-disabled {
+    background: #d0d0d0;
+    color: #808080;
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    border: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transition: all 400ms ease;
+}
+
+.next-btn-disabled:hover {
+    background: #d0d0d0;
+    opacity: 0.6;
+}
+
+.next-btn-disabled i {
+    display: flex;
+}
+
+.navigator i {
+    display: flex;
+}
+
+
+
+

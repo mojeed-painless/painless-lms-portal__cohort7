@@ -1,0 +1,66 @@
+.transition-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.badge {
+    background-color: greenyellow;
+    color: #2f1d43;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.transit-container {
+    width: 30rem;
+}
+
+.logo-container {
+    width: 6rem;
+    position: absolute;
+    right: -2rem;
+    top: -3rem;
+    animation: pulsy 2.2s ease-in-out infinite;
+}
+
+.transition-text{
+    max-width: 35rem;
+}
+
+.transition-text h1 {
+    margin-bottom: 1.3rem;
+    color: greenyellow;
+}
+
+
+
+
+
+@media screen and (max-width: 600px) {
+    .transit-container {
+        width: 18rem;
+    }
+
+    .image-container {
+        margin-top: 2rem;
+    }
+
+    .logo-container {
+        width: 4rem;
+        right: -1rem;
+        top: -2rem;
+    }
+}

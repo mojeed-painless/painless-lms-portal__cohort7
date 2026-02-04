@@ -1,0 +1,19 @@
+.under-development {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: rgba(32, 4, 61, 0.2);
+}
+
+.under-development span {
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.15);
+    display: flex;
+}
+
+.under-development p {
+    font-weight: 600;
+    color: gray;
+}

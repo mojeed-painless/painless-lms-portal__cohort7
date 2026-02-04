@@ -1,0 +1,276 @@
+nav {
+    background: #2f1d43;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4.5rem;
+    padding: 0 3rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.nav__left, .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.collapse-btn {
+    display: flex;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 400ms ease;
+}
+.collapse-btn:hover {
+    color: greenyellow;
+}
+
+.small-collapse-btn {
+    display: none;
+}
+
+.nav-logo {
+    width: 9rem;
+    overflow: hidden;
+}
+
+.nav__right {
+    gap: 1rem;
+}
+
+.nav__username {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.nav__user-image {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+main {
+    margin-top: 4.5rem;
+    height: calc(100dvh - 4.5rem);
+    display: flex;
+}
+
+aside {
+    width: 16rem;
+    height: 100%;
+    background: radial-gradient(#280a48, #20043d);
+    border-right: 1px solid #2f1d43;
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+    transition: all 400ms ease;
+}
+
+aside > :last-child {
+    margin-top: auto;
+}
+
+.collapsed-sidebar {
+    width: 4rem;
+    padding-inline: 1rem;
+    align-items: center;
+    transition: all 400ms ease;
+}
+
+.sidebar__links, .dashboard__logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 400ms ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sidebar__links:hover, 
+.dashboard__logout-btn:hover {
+    color: greenyellow;
+    transform: translateX(10px);
+}
+
+.collapsed-sidebar .sidebar__links:hover, 
+.collapsed-sidebar .dashboard__logout-btn:hover {
+    transform: translateX(7px);
+}
+
+.sidebar__links span:first-child, 
+.dashboard__logout-btn span:first-child {
+    font-size: 1.3rem;
+    display: flex;
+}
+
+.active-sidebar__links {
+    color: greenyellow;
+}
+
+.dashboard__logout-btn {
+    background: transparent;
+    outline: none;
+    border: none;
+    width: fit-content;
+    padding: 0;
+}
+
+.small-screen__sidebar {
+    display: none;
+}
+
+
+
+
+
+
+footer {
+    text-align: center;
+    background: #2f1d43;
+    color: white;
+    width: 100%;
+    height: 3.5rem;
+    line-height: 3.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------ TABLET MEDIA QUERY ------------------------------------------ */
+
+
+@media screen and (max-width: 1024px) {
+    aside {
+        width: 14rem;
+        padding-inline: 1.5rem;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------ MOBILE MEDIA QUERY ------------------------------------------ */
+
+@media screen and (max-width: 600px) {
+    nav {
+        padding: 0 1rem;
+    }
+
+    .nav__left, .nav__right {
+        gap: 1rem;
+    }
+
+    .large-collapse-btn {
+        display: none;
+    }
+
+    .small-collapse-btn {
+        display: flex;
+    }
+
+    .nav-logo {
+        width: 7rem;
+    }
+
+    .nav__username {
+        display: none;
+    }
+
+    aside {
+        width: 13rem;
+        padding: 0 1rem 2rem;
+        gap: 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100dvh;
+        z-index: 1000;
+        transition: transform 400ms ease;
+    }
+
+    aside > :last-child {
+        margin-top: unset;
+    }
+
+    .collapsed-sidebar {
+        display: none;
+    }
+
+    .small-screen__sidebar {
+        display: flex;
+        transform: translateX(-100%);
+    }
+
+    .show-sidebar {
+        transform: translateX(0);
+    }
+
+    .small-screen__sidebar .sidebar-header {
+        height: 4.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .small-screen__sidebar .sidebar-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1.7rem;
+        flex: 1;
+    }
+
+    .small-screen__sidebar .sidebar-body > :last-child {
+        margin-top: auto;
+    }
+
+
+
+
+    footer p {
+        font-size: 0.75rem;
+    }
+}
