@@ -224,7 +224,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                 <>
                   { !showAttempted &&
                   <>
-                    <p style={{ marginBottom: '12px' }}>You have already completed the quiz for <strong>{topic}</strong>.</p>
+                    <p style={{ marginBottom: '10px', padding: '0 0.6rem', textAlign: 'center' }}>You have already completed the quiz for <strong>{topic}</strong>.</p>
                     <button className="take-quiz-btn" onClick={() => {
                       setShowAttempted(prev => {
                         const next = !prev;
