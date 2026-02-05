@@ -322,7 +322,6 @@ export default function QuizScreen() {
             <button>View Leaderboard</button>
 
             <div className="quiz__leader-list">
-                  {/* const rankIcon = rank === 1 ? <TbHexagonNumber1Filled/> : rank === 2 ? <TbHexagonNumber2Filled/> : <TbHexagonNumber3Filled/>; */}
                   
                  
                     <div className="quiz__leader-item">

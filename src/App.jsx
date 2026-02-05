@@ -18,7 +18,7 @@ import NoAccess from './pages/NoAccess';
 import CourseContentScreen from './pages/CourseContentScreen';
 import AssignmentScreen from './pages/AssignmentScreen';
 import QuizScreen from './pages/QuizScreen';
-import GradeScreen from './pages/GradeScreen';
+import LeaderboardScreen from './pages/LeaderboardScreen';
 import TranscriptScreen from './pages/TranscriptScreen';
 import SettingsScreen from './pages/SettingsScreen';
 
@@ -120,7 +120,7 @@ function App() {
               <Route path="/content" element={<CourseContentScreen />} />
               <Route path="/assignments" element={<AssignmentScreen />} />
               <Route path="/quizzes" element={<QuizScreen />} />
-              <Route path="/grades" element={<GradeScreen />} />
+              <Route path="/leaderboard" element={<LeaderboardScreen />} />
               <Route path="/transcript" element={<TranscriptScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
 
