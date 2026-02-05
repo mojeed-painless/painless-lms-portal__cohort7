@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import CodeBox from '../../components/common/CodeBox';
 import '../../assets/styles/course-content.css';
@@ -8,8 +9,12 @@ import listOutput2 from '../../assets/list2.png'
 import listOutput3 from '../../assets/list3.png'
 import listOutput4 from '../../assets/list4.png'
 import listOutput5 from '../../assets/list5.png'
+import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function ListTags() {
+
+    const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -208,6 +213,17 @@ export default function ListTags() {
 </div>
                 </div>
             </section>
+
+
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="Lists" 
+              />
+            </article>                                  
 
             <PrevNextBtn 
                 prevPath="/html-structure" 

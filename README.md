@@ -2,7 +2,7 @@
 
 A modern, comprehensive Learning Management System (LMS) built with React and Vite, designed to provide an intuitive and seamless learning experience for students, instructors, and administrators.
 
-![Lintelz Engineering Logo](./src/assets/pcalogo.png)
+![Painless Logo](./src/assets/pcalogo.png)
 
 ![React](https://img.shields.io/badge/React-19.2.0-blue.svg)
 ![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF.svg)

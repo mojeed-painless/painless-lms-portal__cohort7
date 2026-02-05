@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import '../assets/styles/admin.css'; 
 import { adminStats } from '../data.js';
-import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
+import { API_BASE_URL } from '../config/api';
 import {
     History,
     UserRoundCheck,
@@ -22,10 +22,7 @@ const AdminDashboardScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [courseAccess, setCourseAccess] = useState({});
-    const [quizReleaseTime, setQuizReleaseTime] = useState('16:15'); // Default: 4:15 PM
-    const [quizReleaseDuration, setQuizReleaseDuration] = useState(15); // Default: 15 minutes
-    const [saveTimeMessage, setSaveTimeMessage] = useState('');
-    const [loadingSettings, setLoadingSettings] = useState(true);
+
 
     const config = {
         headers: {
@@ -95,7 +92,6 @@ const AdminDashboardScreen = () => {
    useEffect(() => {
     if (user && user.role === 'admin') {
       fetchUsers();
-      fetchQuizSettings();
     }
   }, [user]);
 
@@ -120,70 +116,10 @@ const handleDeleteUser = async (userId) => {
         setLoading(false);
     }
   };
+    
 
-  const handleSaveQuizReleaseTime = async () => {
-    setLoadingSettings(true);
-    
-    // Always save to localStorage first (for immediate UI updates)
-    localStorage.setItem('quizReleaseTime', quizReleaseTime);
-    localStorage.setItem('quizReleaseDuration', quizReleaseDuration.toString());
-    
-    // Dispatch storage event to notify other tabs/QuizScreen
-    window.dispatchEvent(new Event('storage'));
-    
-    try {
-      const response = await axios.put(
-        API_ENDPOINTS.QUIZ.UPDATE_SETTINGS,
-        {
-          releaseTime: quizReleaseTime,
-          duration: quizReleaseDuration
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      
-      setSaveTimeMessage('Quiz settings updated successfully!');
-      console.log('Quiz settings saved to backend:', response.data);
-    } catch (err) {
-      console.warn('Backend save failed, but localStorage has been updated:', err.message);
-      // Not showing error to user since localStorage fallback works
-    } finally {
-      setLoadingSettings(false);
-      setSaveTimeMessage('Quiz settings updated successfully!');
-      setTimeout(() => setSaveTimeMessage(''), 3000);
-    }
-  };
 
-  // Fetch quiz settings from backend
-  const fetchQuizSettings = async () => {
-    try {
-      const response = await axios.get(
-        API_ENDPOINTS.QUIZ.GET_SETTINGS,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      
-      if (response.data) {
-        setQuizReleaseTime(response.data.releaseTime || '16:15');
-        setQuizReleaseDuration(response.data.duration || 15);
-        console.log('Quiz settings loaded from backend:', response.data);
-      }
-    } catch (err) {
-      console.warn('Could not fetch quiz settings from backend, using defaults:', err.message);
-      // Fall back to defaults if backend endpoint doesn't exist yet
-      setQuizReleaseTime('16:15');
-      setQuizReleaseDuration(15);
-    } finally {
-      setLoadingSettings(false);
-    }
-  };
+
 
   const handleCourseAccessChange = async (userId, courseName, isChecked) => {
     const key = `${userId}-${courseName}`;
@@ -281,62 +217,6 @@ const handleDeleteUser = async (userId) => {
         ))} 
       </div>
 
-      {/* Quiz Settings Section */}
-      <section className="section-container">
-        <h3 className="section-title">
-            <span><Clock size={20}/></span>
-            <span>Quiz Settings</span>
-        </h3>
-
-        {saveTimeMessage && <div className="success-message" style={{padding: '12px', marginBottom: '16px', backgroundColor: '#d4edda', color: '#155724', borderRadius: '4px'}}>{saveTimeMessage}</div>}
-
-        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', maxWidth: '600px'}}>
-          <div>
-            <label style={{display: 'block', marginBottom: '8px', fontWeight: '600', color: '#333'}}>
-              Quiz Release Time (24-hour format)
-            </label>
-            <input 
-              type="time" 
-              value={quizReleaseTime}
-              onChange={(e) => setQuizReleaseTime(e.target.value)}
-              style={{width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '14px'}}
-            />
-            <small style={{display: 'block', marginTop: '4px', color: '#666'}}>e.g., 16:15 = 4:15 PM</small>
-          </div>
-
-          <div>
-            <label style={{display: 'block', marginBottom: '8px', fontWeight: '600', color: '#333'}}>
-              Quiz Duration (minutes)
-            </label>
-            <input 
-              type="number" 
-              value={quizReleaseDuration}
-              onChange={(e) => setQuizReleaseDuration(Math.max(1, parseInt(e.target.value) || 1))}
-              min="1"
-              max="120"
-              style={{width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '14px'}}
-            />
-            <small style={{display: 'block', marginTop: '4px', color: '#666'}}>How long quiz stays active</small>
-          </div>
-        </div>
-
-        <button 
-          onClick={handleSaveQuizReleaseTime}
-          style={{
-            marginTop: '16px',
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '600'
-          }}
-        >
-          Save Quiz Settings
-        </button>
-      </section>
 
       {/* 2. Pending Approvals Section */}
       <section className="section-container">

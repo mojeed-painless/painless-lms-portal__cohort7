@@ -1,8 +1,9 @@
-import TopicQuiz from '../components/common/TopicQuiz';
+
 import { useState, useEffect, useRef } from 'react';
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
-import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
+import { AttemptedTopicQuiz } from '../components/common/TopicQuiz'
+import { API_BASE_URL } from '../config/api';
 import { TbPointFilled } from "react-icons/tb";
 import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
 import {
@@ -152,8 +153,15 @@ export default function QuizScreen() {
     <div className="quiz__container">
       <div className="transcript__header">
         <div className="transcript__header-title">
-          <h1><span><Sparkles size={25}/></span> Quiz Center</h1>
-          <p className="transcript__header-subtitle">Challenge others to climb up the leaderboard</p>
+          <h1>
+            <span><Sparkles size={25}/></span> 
+            {isActive === 'daily quiz' ? 'Daily' : 'Topic'} Quiz Center
+          </h1>
+          <p className="transcript__header-subtitle">
+            {
+              isActive === 'daily quiz' ? 'Challenge others to climb up the leaderboard' : 
+              'Check out list of topic base quizzes you already attempted'}
+          </p>
         </div>
         
         <div className="quiz__nav-btn">
@@ -169,14 +177,14 @@ export default function QuizScreen() {
           >
             <Sparkle size={18} /> Topic Quiz
           </button>
-          {user?.role === 'admin' && (
+          {/* {user?.role === 'admin' && (
             <button 
               className={isActive === 'admin' ? 'active-quiz' : ''} 
               onClick={() => setIsActive('admin')}
             >
               <Plus size={18} /> Add Question
             </button>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -393,9 +401,9 @@ export default function QuizScreen() {
                               What is HTML
                             </div>
 
-                              <div style={{ margin: '12px 0' }}>
+                              {/* <div style={{ margin: '12px 0' }}>
                                 <img src='' alt="question" style={{ maxWidth: '100%', borderRadius: '4px' }} />
-                              </div>
+                              </div> */}
 
                             <div className="answer-section">
                                   <div>
@@ -410,8 +418,17 @@ export default function QuizScreen() {
         </div>
       </div>}
 
-      {/* {isActive === 'topic quiz' && 
-        <TopicQuiz/>} */}
+      {isActive === 'topic quiz' && 
+        <AttemptedTopicQuiz/>}
+
+
+
+
+
+
+
+
+
 
       {/* {isActive === 'admin' && user?.role === 'admin' && (
         <div className="admin-form__container">

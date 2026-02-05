@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
-
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function HTMLPageStructure() {
+
+  const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -131,7 +134,22 @@ export default function HTMLPageStructure() {
   </h3>
                 </div>
             </section>
-            <TakeQuizButton topicId="html-structure" />
+
+
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="HTML Page Structure" 
+              />
+            </article>
+
+
+
+
+
             <PrevNextBtn 
                 prevPath="/html-transition" 
                 nextPath="/html-list"
