@@ -221,7 +221,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
             {/* If quiz not started show a start button that triggers confirmation */}
             {!quizStarted ? (
               attempted ? (
-                <div style={{ padding: '18px', textAlign: 'center' }}>
+                <>
                   { !showAttempted &&
                   <>
                     <p style={{ marginBottom: '12px' }}>You have already completed the quiz for <strong>{topic}</strong>.</p>
@@ -284,7 +284,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                       </div>
                     </>
                   )}
-                </div>
+                </>
               ) : (
                 <div style={{ padding: '28px', textAlign: 'center' }}>
                   <p style={{ marginBottom: '12px' }}>Ready to start the quiz for <strong>{topic}</strong>?</p>
@@ -422,27 +422,29 @@ export function AttemptedTopicQuiz() {
   const percentage = totalPossible ? Math.round((totalScore / totalPossible) * 100) : 0;
 
   return (
-    <div className="attempted-topic-quiz__container">
-      <ol>
-        <li>
-          <p>Topic</p>
-          <span className="attempted-topic-quiz__date">Date attempted</span>
-          <span className="attempted-topic-quiz__score">Score</span>
-        </li>
-
-        {attempts.map((a, idx) => (
-          <li key={idx}>
-            <p>{a.topic}</p>
-            <span className="attempted-topic-quiz__date">{new Date(a.attemptedAt || a.date || a.createdAt).toLocaleString()}</span>
-            <span className="attempted-topic-quiz__score">{a.score} / {a.total}</span>
+    <div className="attempted-topic-quiz__body">
+      <div className="attempted-topic-quiz__container">
+        <ol>
+          <li>
+            <p>Topic</p>
+            <span className="attempted-topic-quiz__date">Date attempted</span>
+            <span className="attempted-topic-quiz__score">Score</span>
           </li>
-        ))}
-      </ol>
 
-      <div className="attempted-topic-quiz__total">
-        <p>Total</p>
-        <span className="attempted-topic-quiz__percentage">{percentage}%</span>
-        <span className="attempted-topic-quiz__total-score">{totalScore} / {totalPossible}</span>
+          {attempts.map((a, idx) => (
+            <li key={idx}>
+              <p>{a.topic}</p>
+              <span className="attempted-topic-quiz__date">{new Date(a.attemptedAt || a.date || a.createdAt).toLocaleString()}</span>
+              <span className="attempted-topic-quiz__score">{a.score} / {a.total}</span>
+            </li>
+          ))}
+        </ol>
+
+        <div className="attempted-topic-quiz__total">
+          <p>Total</p>
+          <span className="attempted-topic-quiz__percentage">{percentage}%</span>
+          <span className="attempted-topic-quiz__total-score">{totalScore} / {totalPossible}</span>
+        </div>
       </div>
     </div>
   );
