@@ -12,6 +12,7 @@ import {
   Save,
   Trash2,
   Plus,
+  NotebookTabs,
 } from 'lucide-react';
 import '../assets/styles/assignment.css';
 
@@ -41,6 +42,17 @@ const AssignmentScreen = () => {
     updateAssignment,
     deleteAssignment,
   } = useAssignments(token);
+
+  // compute average score from graded assignments
+  const averageScore = (graded && graded.length)
+    ? Math.round(
+        graded.reduce((acc, a) => {
+          const raw = typeof a.score === 'string' ? a.score.replace('%', '') : a.score;
+          const num = parseFloat(raw);
+          return acc + (isNaN(num) ? 0 : num);
+        }, 0) / graded.length
+      )
+    : 0;
 
   // Local state for form inputs
   const [assignmentLinks, setAssignmentLinks] = useState({});
@@ -214,6 +226,20 @@ const AssignmentScreen = () => {
   return (
     // <UnderDevelopment section="Assignment" />
     <div className="assignments-container">
+      <div className="transcript__header">
+        <div className="transcript__header-title">
+          <h1> <span><NotebookTabs size={25}/></span> Assignments </h1>
+          <p className="transcript__header-subtitle">
+            Submit all pending assignments before due date
+          </p>
+        </div>
+
+        <div className="assignment__average">
+          <p>Average Score:</p>
+          <span>{averageScore}%</span>
+        </div>
+      </div>
+
       {loading && <p className="loading-message">Loading assignments...</p>}
 
       {!isAdmin && (

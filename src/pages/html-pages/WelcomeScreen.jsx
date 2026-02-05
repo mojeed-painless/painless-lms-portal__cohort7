@@ -71,6 +71,7 @@ export default function WelcomeScreen() {
 
                 
             </section>
+
         </section>
     );
 }

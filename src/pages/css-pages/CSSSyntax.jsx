@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function CSSSyntax() {
 
+    const [isQuizActive, setIsQuizActive] = useState(false);
+    
     return (
         <section className="course-content">
             <div className="course-content__header">
@@ -86,6 +91,20 @@ export default function CSSSyntax() {
                     
                 </div>
             </section>
+
+
+
+
+
+                        <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+            
+                        <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+                          <TopicQuiz 
+                            onSelect={() => setIsQuizActive(prev => !prev)} 
+                            currentCategory="css" 
+                            currentTopic="CSS Syntax" 
+                          />
+                        </article>
 
             <PrevNextBtn 
                 prevPath="/css_insert" 

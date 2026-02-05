@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import CodeBox from '../../components/common/CodeBox';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 import tableOutput1 from '../../assets/table1.png';
 import tableOutput2 from '../../assets/table2.png'
 
 export default function TableTags() {
+
+  const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -124,6 +129,16 @@ export default function TableTags() {
   </div>
                 </div>
             </section>
+
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="HTML Tables" 
+              />
+            </article>
 
             <PrevNextBtn 
                 prevPath="/html-list" 

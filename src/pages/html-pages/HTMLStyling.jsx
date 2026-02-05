@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function HTMLStyling() {
+
+  const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -94,7 +98,15 @@ export default function HTMLStyling() {
                 </div>
             </section>
 
-            <TakeQuizButton topicId="html-style" />
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="Styling" 
+              />
+            </article>
 
             <PrevNextBtn 
                 prevPath="/html-form" 

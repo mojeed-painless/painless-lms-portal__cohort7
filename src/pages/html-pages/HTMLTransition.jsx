@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import '../../assets/styles/course-content.css';
 import '../../assets/styles/transition.css';
 import htmlLogo from '../../assets/html_logo.png';
 import transitImg from '../../assets/transit1.png';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function HTMLTransition() {
+
+    const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content transition-content">
@@ -40,10 +45,20 @@ export default function HTMLTransition() {
                 </div>
             </div>
 
-            <PrevNextBtn 
-                prevPath="/editor" 
-                nextPath="/html-structure"
-            />
+                        <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+                        <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+                            <TopicQuiz 
+                                onSelect={() => setIsQuizActive(prev => !prev)} 
+                                currentCategory="html" 
+                                currentTopic="Welcome to HTML" 
+                            />
+                        </article>
+
+                        <PrevNextBtn 
+                                prevPath="/editor" 
+                                nextPath="/html-structure"
+                        />
         </section>
     );
 }

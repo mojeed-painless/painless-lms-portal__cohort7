@@ -419,7 +419,11 @@ export default function QuizScreen() {
       </div>}
 
       {isActive === 'topic quiz' && 
-        <AttemptedTopicQuiz/>}
+      <>
+        
+
+      <AttemptedTopicQuiz/>
+      </>}
 
 
 

@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function Images() {
 
-    return (
+  const [isQuizActive, setIsQuizActive] = useState(false);
+
+  return (
         <section className="course-content">
             <div className="course-content__header">
                 <h1>HTML Images</h1>
@@ -101,7 +105,15 @@ export default function Images() {
                 </div>
             </section>
 
-            <TakeQuizButton topicId="html-image" />
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="HTML Images" 
+              />
+            </article>
 
             <PrevNextBtn 
                 prevPath="/html-table" 

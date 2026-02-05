@@ -29,6 +29,7 @@ const DashboardScreen = () => {
     fetchSubmittedAssignments,
     fetchGradedAssignments
   } = useAssignments(token);
+  const [quizAttempts, setQuizAttempts] = useState([]);
   const [courseAccess, setCourseAccess] = useState({
     htmlAccess: user?.htmlAccess || false,
     jsAccess: user?.jsAccess || false,
@@ -43,6 +44,33 @@ const DashboardScreen = () => {
       fetchGradedAssignments();
     }
   }, [token, fetchPendingAssignments, fetchSubmittedAssignments, fetchGradedAssignments]);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/quiz-attempts`, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(user && user._id ? { 'x-user-id': user._id } : {}),
+          },
+        });
+        if (!res.ok) throw new Error('Failed to fetch quiz attempts');
+        const data = await res.json();
+        if (mounted) setQuizAttempts(data);
+      } catch (err) {
+        try {
+          const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
+          if (mounted) setQuizAttempts(stored);
+        } catch (e) {
+          console.error('Failed to load quiz attempts', e);
+        }
+        console.error('Failed to load quiz attempts from backend', err);
+      }
+    };
+    if (token) load();
+    return () => { mounted = false; };
+  }, [API_BASE, user]);
 
   useEffect(() => {
     // Initial setup from user object
@@ -111,11 +139,8 @@ const DashboardScreen = () => {
     return accessMap[stage] || false;
   };
 
-  const totalLessons = 
-    topics[0].subjects.length + 
-    topics[1].subjects.length + 
-    topics[2].subjects.length + 
-    topics[3].subjects.length + 3
+
+  const totalLessons = topics.reduce((acc, topic) => acc + topic.subjects.length, 0) + 3; // +3 for the 3 core modules
 
   return (
 
@@ -142,8 +167,10 @@ const DashboardScreen = () => {
               
               if (title === 'Lessons Completed') {
                 const completed = getCompletedCount();
-                const percentage = getCompletionPercentage(totalLessons);
-                displayFigure = `${completed}/${totalLessons}`;
+                const percentage = getCompletionPercentage(65);
+                // const percentage = getCompletionPercentage(totalLessons);
+                // displayFigure = `${completed}/${totalLessons}`;
+                displayFigure = `${completed}/65`;
                 displayDescription = `${percentage}% completed`;
               }
 
@@ -152,6 +179,17 @@ const DashboardScreen = () => {
                 const pendingCount = pending.length;
                 displayFigure = `${done}`;
                 displayDescription = `${pendingCount} pending assignment${pendingCount !== 1 ? 's' : ''}`;
+              }
+              if (title === 'Overall Grade') {
+                const assignmentAverage = graded && graded.length
+                  ? Math.round(graded.reduce((acc, a) => acc + (parseFloat(a.score || 0) || 0), 0) / graded.length)
+                  : 0;
+                const totalScore = quizAttempts.reduce((acc, a) => acc + (a.score || 0), 0);
+                const totalPossible = quizAttempts.reduce((acc, a) => acc + (a.total || 0), 0);
+                const quizAverage = totalPossible ? Math.round((totalScore / totalPossible) * 100) : 0;
+                const overall = Math.round((assignmentAverage + quizAverage) / ((assignmentAverage>0) + (quizAverage>0) || 1));
+                displayFigure = `${overall}%`;
+                displayDescription = 'Overall average';
               }
               
               return (

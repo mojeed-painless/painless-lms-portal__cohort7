@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function Forms() {
+
+  const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -113,7 +117,15 @@ export default function Forms() {
                 </div>
             </section>
 
-            <TakeQuizButton topicId="html-form" />
+            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+              <TopicQuiz 
+                onSelect={() => setIsQuizActive(prev => !prev)} 
+                currentCategory="html" 
+                currentTopic="Forms, Types & Fields" 
+              />
+            </article>
 
             <PrevNextBtn 
                 prevPath="/html-block-element" 

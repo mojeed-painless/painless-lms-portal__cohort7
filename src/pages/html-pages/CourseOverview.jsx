@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import '../../assets/styles/course-content.css';
 import htmlCar from '../../assets/html_car.jpg'
 import htmlCode1 from '../../assets/html1_code.png'
@@ -9,8 +10,12 @@ import cssOutput1 from '../../assets/css1_output.png'
 import jsCar from '../../assets/js_car.jpg'
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import CodeBox from '../../components/common/CodeBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
+import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function CourseOverview() {
+
+    const [isQuizActive, setIsQuizActive] = useState(false);
 
     return (
         <section className="course-content">
@@ -105,10 +110,20 @@ export default function CourseOverview() {
                 </div>
             </section>
 
-            <PrevNextBtn 
-                prevPath="/why" 
-                nextPath="/editor"
-            />
+                        <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
+
+                        <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+                            <TopicQuiz 
+                                onSelect={() => setIsQuizActive(prev => !prev)} 
+                                currentCategory="html" 
+                                currentTopic="Course Overview" 
+                            />
+                        </article>
+
+                        <PrevNextBtn 
+                                prevPath="/why" 
+                                nextPath="/editor"
+                        />
         </section>
     );
 }
