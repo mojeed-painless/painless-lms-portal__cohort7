@@ -20,7 +20,7 @@ export default function AssignmentGuide() {
 
                         <VideoBox 
                             title='How to Submit Assignments on the Painless LMS Portal'
-                            code='p_z25a0R2eE?si=W_oAkXut_sMR6FwB'
+                            code=''
                         />
 
 
