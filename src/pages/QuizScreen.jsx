@@ -109,7 +109,7 @@ export default function QuizScreen() {
     if (!targetDateRef.current) {
       const nowInit = new Date();
       const t = new Date(nowInit);
-      t.setHours(18, 06, 0, 0); // target hour: 16:32 local
+      t.setHours(18, 8, 0, 0); // target hour: 16:32 local
       if (t <= nowInit) t.setDate(t.getDate() + 1);
       targetDateRef.current = t;
     }
