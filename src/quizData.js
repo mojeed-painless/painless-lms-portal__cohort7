@@ -1,3 +1,40 @@
+export const DailyQuizData = [
+    {
+        day: 1,
+        date: '02/06/2026',
+        questions: [
+            {
+                id: 1,
+                question: "What is HTML?",
+                options: [
+                    { id: 'A', text: "A markup language for creating web pages" },
+                    { id: 'B', text: "A programming language for web development" },
+                    { id: 'C', text: "A database management system" },
+                    { id: 'D', text: "A web server software" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 2,
+                question: "What does HTML stand for?",
+                options: [
+                    { id: 'A', text: "Hyperlinking Text Marking Language" },
+                    { id: 'B', text: "Home Tool Markup Language" },
+                    { id: 'C', text: "Hyperlinks and Text Markup Language" },
+                    { id: 'D', text: "Hyper Text Markup Language" }
+                ],
+                correctAnswer: 'D',
+            },
+        ],
+    }
+]
+
+
+
+
+
+
+
 
 export const TopicQuizData = [
     {

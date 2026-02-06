@@ -17,7 +17,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
     const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
     const [activeQuestion, setActiveQuestion] = useState(1);
-    const [quizStarted, setQuizStarted] = useState(false);
+    const [quizIsLive, setQuizIsLive] = useState(false);
     const [showStartConfirm, setShowStartConfirm] = useState(false);
     const [showFinishConfirm, setShowFinishConfirm] = useState(false);
     const [answers, setAnswers] = useState({}); // { questionId: selectedOption }
@@ -97,7 +97,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
       setShowStartConfirm(false);
       // prevent starting if already attempted
       if (attempted) return setShowAttempted(true);
-      setQuizStarted(true);
+      setQuizIsLive(true);
       setRemainingSeconds(180);
 
       // start countdown
@@ -175,7 +175,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
       }
 
       // stop quiz UI
-      setQuizStarted(false);
+      setQuizIsLive(false);
 
       // compute score from TopicQuizData for currentTopic
       const topicObj = TopicQuizData.find(t => t.topic === currentTopic);
@@ -213,13 +213,13 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
           topic === currentTopic && 
           <div className="topic-quiz__box" key={topic}>
             <div className="topic-quiz__header">
-              <span>Question {quizStarted ? activeQuestion : 0} of {questions.length}</span>
+              <span>Question {quizIsLive ? activeQuestion : 0} of {questions.length}</span>
               <span className='topic-quiz__timer'><TimerReset size={18}/> {formatTime(remainingSeconds)}</span>
-              {!quizStarted && <div onClick={onSelect} style={{cursor: 'pointer'}}><X size={20}/></div>}
+              {!quizIsLive && <div onClick={onSelect} style={{cursor: 'pointer'}}><X size={20}/></div>}
             </div>
 
             {/* If quiz not started show a start button that triggers confirmation */}
-            {!quizStarted ? (
+            {!quizIsLive ? (
               attempted ? (
                 <>
                   { !showAttempted &&
@@ -317,7 +317,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
               </div>
             )}
 
-            {quizStarted && <div className="topic-quiz__nav">
+            {quizIsLive && <div className="topic-quiz__nav">
               {activeQuestion > 1 ? 
                 <button onClick={() => setActiveQuestion(prev => prev - 1)}><span><MoveLeft size={16} /></span> Previous</button> :
                 <button className='topic-quiz__nav-disabled' disabled><span><MoveLeft size={16} /></span> Previous</button>

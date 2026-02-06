@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom'
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
 import { AttemptedTopicQuiz } from '../components/common/TopicQuiz'
@@ -16,11 +17,14 @@ import {
   BadgeInfo,
   CalendarDays,
   MoveRight,
+  MoveLeft,
   Plus,
   X,
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
+import { DailyQuizData } from '../quizData.js';
+
 
 
 export default function QuizScreen() {
@@ -28,15 +32,76 @@ export default function QuizScreen() {
   const { user } = useAuth();
   const [isActive, setIsActive] = useState('daily quiz');
   
+  const [quizIsLive, setQuizIsLive] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isCorrect] = useState(true);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [submissionInProgress, setSubmissionInProgress] = useState(false);
+  const [submissionDone, setSubmissionDone] = useState(false);
+  const [submissionError, setSubmissionError] = useState(null);
   const [timeLeft, setTimeLeft] = useState({ 
     beforeQuiz: { hours: 0, minutes: 0, seconds: 0 },
     duringQuiz: { minutes: 0, seconds: 0 }
   });
+  const [dailyTop, setDailyTop] = useState([]);
+  const [leaderLoading, setLeaderLoading] = useState(false);
   const timerCompletedRef = useRef(false);
   const restTimerRef = useRef(null); // Track when rest period started
   const targetDateRef = useRef(null); // Persistent next-target date
+
+  function handleSubmitQuiz() {
+    // compute timeTaken in seconds (120 - remaining)
+    const totalSeconds = 120;
+    const remaining = (timeLeft.duringQuiz.minutes || 0) * 60 + (timeLeft.duringQuiz.seconds || 0);
+    const timeTaken = Math.max(0, totalSeconds - remaining);
+
+    // assemble answers from today's question set
+    const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
+    const questions = entry.questions || [];
+    const answers = questions.map(q => ({
+      questionId: q.id,
+      questionText: q.question,
+      selectedOption: selectedOptions[q.id] || null,
+      correctAnswer: q.correctAnswer || null,
+    }));
+
+    // send to backend batch submit endpoint
+    (async () => {
+      setSubmissionInProgress(true);
+      setSubmissionError(null);
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+
+        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/submit`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ topic: 'daily', answers, timeTaken }),
+        });
+
+        if (!res.ok) {
+          const text = await res.text().catch(() => res.statusText || 'Unknown error');
+          setSubmissionError(`Server responded: ${res.status} ${text}`);
+          setSubmissionInProgress(false);
+          return;
+        }
+
+        const data = await res.json();
+        console.log('Quiz submitted', data);
+        setSubmissionDone(true);
+        setSubmissionInProgress(false);
+        // stop the quiz UI
+        setQuizStarted(false);
+        // auto-hide success after short delay
+        setTimeout(() => setSubmissionDone(false), 3500);
+      } catch (err) {
+        console.error('Error submitting quiz', err);
+        setSubmissionError(err.message || 'Network error');
+        setSubmissionInProgress(false);
+      }
+    })();
+  }
 
   // ===== COUNTDOWN TIMER TO 8:30 PM =====
   useEffect(() => {
@@ -44,7 +109,7 @@ export default function QuizScreen() {
     if (!targetDateRef.current) {
       const nowInit = new Date();
       const t = new Date(nowInit);
-      t.setHours(17, 31, 0, 0); // target hour: 16:32 local
+      t.setHours(17, 52, 0, 0); // target hour: 16:32 local
       if (t <= nowInit) t.setDate(t.getDate() + 1);
       targetDateRef.current = t;
     }
@@ -69,9 +134,9 @@ export default function QuizScreen() {
 
       // If we've reached the target, start live quiz (if eligible)
       if (diffMs <= 0) {
-        if (!quizStarted && !timerCompletedRef.current && !restTimerRef.current) {
+        if (!quizIsLive && !timerCompletedRef.current && !restTimerRef.current) {
           setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 2, seconds: 0 } });
-          setQuizStarted(true);
+          setQuizIsLive(true);
         } else {
           // show zeros until rest or next actions
           setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 0, seconds: 0 } });
@@ -95,13 +160,41 @@ export default function QuizScreen() {
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
-  }, [quizStarted]);
+  }, [quizIsLive]);
+
+  // Fetch today's top 3 leaderboard for daily quiz
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      setLeaderLoading(true);
+      try {
+        const iso = new Date().toISOString().slice(0, 10);
+        const headers = {};
+        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+
+        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${iso}`, { headers });
+        if (!res.ok) {
+          setDailyTop([]);
+          setLeaderLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setDailyTop(data.top || []);
+      } catch (err) {
+        console.error('Error fetching leaderboard', err);
+        setDailyTop([]);
+      } finally {
+        setLeaderLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, [user, submissionDone]);
 
 
   // When the quiz starts, run a 2-minute during-quiz timer and then trigger rest
   useEffect(() => {
     let interval = null;
-    if (quizStarted && !timerCompletedRef.current) {
+    if (quizIsLive && !timerCompletedRef.current) {
       let remaining = 120; // seconds
 
       // initial UI update
@@ -120,7 +213,7 @@ export default function QuizScreen() {
         if (remaining <= 0) {
           clearInterval(interval);
           timerCompletedRef.current = true; // mark that this cycle's live window completed
-          setQuizStarted(false); // close live window
+          setQuizIsLive(false); // close live window
           // start rest period now
           restTimerRef.current = Date.now();
           // schedule next day's target immediately so countdown resumes after rest
@@ -136,17 +229,16 @@ export default function QuizScreen() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [quizStarted]);
+  }, [quizIsLive]);
 
+                const now = new Date();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const yyyy = now.getFullYear();
+                const todayStr = `${mm}/${dd}/${yyyy}`;
+                const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
+                const questions = entry.questions || [];
 
-
-
-
-
-
-// const now = new Date();
-// const target = new Date(now);
-// console.log(target.setHours(17, 21, 0, 0))
 
 
   return (
@@ -163,6 +255,25 @@ export default function QuizScreen() {
               'Check out list of topic base quizzes you already attempted'}
           </p>
         </div>
+        {/* Submission toast / modal */}
+        {submissionInProgress && (
+          <div style={{ position: 'fixed', right: 20, top: 80, background: '#fff3cd', color: '#664d03', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+            Submitting your answers…
+          </div>
+        )}
+
+        {submissionDone && (
+          <div style={{ position: 'fixed', right: 20, top: 80, background: '#d1e7dd', color: '#0f5132', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+            Quiz submitted successfully.
+          </div>
+        )}
+
+        {submissionError && (
+          <div style={{ position: 'fixed', right: 20, top: 80, background: '#f8d7da', color: '#842029', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+            <div style={{ marginBottom: 6 }}>Error submitting quiz: {submissionError}</div>
+            <button onClick={() => setSubmissionError(null)} style={{ background: 'transparent', border: 'none', color: '#842029', textDecoration: 'underline', cursor: 'pointer' }}>Close</button>
+          </div>
+        )}
         
         <div className="quiz__nav-btn">
           <button 
@@ -177,75 +288,15 @@ export default function QuizScreen() {
           >
             <Sparkle size={18} /> Topic Quiz
           </button>
-          {/* {user?.role === 'admin' && (
-            <button 
-              className={isActive === 'admin' ? 'active-quiz' : ''} 
-              onClick={() => setIsActive('admin')}
-            >
-              <Plus size={18} /> Add Question
-            </button>
-          )} */}
         </div>
       </div>
 
 
       {isActive === 'daily quiz' && 
       <div className="daily-quiz__container">
-        
-        {/* QUIZ READY (ACTIVE QUIZ SESSION) */}
-        {/* {quizStarted && (
-          <div className="quiz__ready">
-            <div className="quiz-session__container">
-              <div className="quiz-session__header">
-                <div className="quiz-session__question-number">
-                  <span>Question 1 of 5</span>
-                </div>
-
-                <div className="quiz-session__timer">
-                  <span><TimerReset /></span>
-                  <span className="quiz-session__time">
-                    <span>{String(timeLeft.duringQuiz.minutes).padStart(2, '0')}</span>:<span>{String(timeLeft.duringQuiz.seconds).padStart(2, '0')}</span>
-                  </span>
-                </div>
-              </div>
-
-                <>
-                    <div className="quiz-session__image">
-                      <img src='' alt="question" />
-                    </div>
-
-                  <div className="quiz-session__question">
-                    <h3>What is HTML</h3>
-                  </div>
-
-                  <div className="quiz-session__options">
-                    <button className={`quiz-option`}>
-                      <span className="option-circle">A</span>
-                      <span className="option-content">Skelenton</span>
-                    </button>
-                  </div>
-
-                  <div className="quiz-session__navigation" style={{
-                    display: 'flex',
-                    gap: '12px',
-                    marginTop: '24px'
-                  }}>
-                    <button className="quiz-session__btn">
-                      ← Previous
-                    </button>
-
-                      <button className="quiz-session__submit-btn" >
-                        Next Question <span><MoveRight size={16} /></span>
-                      </button>
-                  </div>
-                </>
-              
-            </div>
-          </div>
-        )} */}
 
         {/* QUIZ COUNTDOWN AND CONTROLS */}
-        {!quizStarted && (
+        {!quizIsLive && (
           <div className="quiz__countdown">
             <div className="quiz__back">
               <div></div>
@@ -285,12 +336,12 @@ export default function QuizScreen() {
           </div>
         )}
 
-        {quizStarted && (
+        {(quizIsLive && !quizStarted)  && (
           <div className="quiz__countdown">
               <div className="during__quiz">
                 <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
                 <p style={{ fontSize: '14px', color: '#666', marginTop: '8px' }}>
-                  3 questions available • Quiz window closes in:
+                  {Math.max(questions.length, 1)} questions available • Quiz window closes in:
                 </p>
 
                 <div className="quiz__timer">
@@ -304,12 +355,91 @@ export default function QuizScreen() {
                   </div>
                 </div>
 
-                  <button className="quiz__start-btn">
+                  <button className="quiz__start-btn" onClick={() => setQuizStarted(true)}>
                     Start Quiz
                   </button>
               </div>
           </div>
         )}
+
+
+        {/* QUIZ QUESTIONS */}
+        {(quizIsLive && quizStarted) && 
+          <article className='daily-quiz__live'>
+            <div className="daily-quiz__box">
+              {(() => {
+                const now = new Date();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const yyyy = now.getFullYear();
+                const todayStr = `${mm}/${dd}/${yyyy}`;
+                const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
+                const questions = entry.questions || [];
+                const q = questions[currentQuestionIndex] || null;
+
+                return (
+                  <>
+                    <div className="daily-quiz__header">
+                      <span>Question {Math.min(currentQuestionIndex + 1, Math.max(questions.length, 1))} of {Math.max(questions.length, 1)}</span>
+                      <span className='daily-quiz__timer'><TimerReset size={18}/> 
+                        {String(timeLeft.duringQuiz.minutes).padStart(2, '0')} : {String(timeLeft.duringQuiz.seconds).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    <div className="daily-quiz__questions">
+                      {q ? (
+                        <div className='daily-quiz__question'>
+                          <h4>{q.question}</h4>
+
+                          <div className="daily-quiz__options">
+                            {q.options.map(opt => (
+                              <button
+                                key={opt.id}
+                                className={`daily-quiz__option ${selectedOptions[q.id] === opt.id ? 'selected' : ''}`}
+                                onClick={() => !submissionInProgress && !submissionDone && setSelectedOptions(prev => ({ ...prev, [q.id]: opt.id }))}
+                                disabled={submissionInProgress || submissionDone}
+                              >
+                                <span>{opt.id}</span>
+                                {opt.text}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className='daily-quiz__question'>
+                          <h4>No questions available for today.</h4>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="daily-quiz__nav">
+                      <button className={currentQuestionIndex === 0 ? 'daily-quiz__nav-disabled' : ''} disabled={currentQuestionIndex === 0 || submissionInProgress || submissionDone} onClick={() => setCurrentQuestionIndex(i => Math.max(0, i - 1))}>
+                        <span><MoveLeft size={16} /></span> 
+                        Previous
+                      </button>
+                      
+                      { (currentQuestionIndex < questions.length - 1) ? (
+                        <button disabled={submissionInProgress || submissionDone} onClick={() => setCurrentQuestionIndex(i => Math.min(i + 1, Math.max(0, questions.length - 1)))}>
+                          Next 
+                          <span><MoveRight size={16} /></span>
+                        </button> ) : (
+                        <button disabled={submissionInProgress || submissionDone} onClick={handleSubmitQuiz}>{submissionInProgress ? 'Submitting...' : 'Finish'}</button>)}     
+                    </div>  
+                  </>
+                );
+              })()}
+            </div>
+          </article>
+        }
+
+
+
+
+
+
+
+
+
 
         <div className="quiz__article">
           {/* LEADERBOARD */}
@@ -319,37 +449,26 @@ export default function QuizScreen() {
                 <small className="quiz__date">{new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}</small>
             </div>
 
-            <button>View Leaderboard</button>
+            <button><Link to="/leaderboard">View Leaderboard</Link></button>
 
             <div className="quiz__leader-list">
-                  
-                 
-                    <div className="quiz__leader-item">
-                      <span className="quiz__leader-rank"><TbHexagonNumber1Filled/></span>
-                      <div className="quiz__leader-info">
-                        <h5>Student 3</h5>
-                        <small>Score: 3/3</small>
-                      </div>
-                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
-                    </div>
+              {leaderLoading && <div style={{ padding: 12 }}>Loading leaderboard…</div>}
+              {!leaderLoading && dailyTop.length === 0 && (
+                <div style={{ padding: 12, color: '#666' }}>No attempts yet for today.</div>
+              )}
 
-                    <div className="quiz__leader-item">
-                      <span className="quiz__leader-rank"><TbHexagonNumber2Filled/></span>
-                      <div className="quiz__leader-info">
-                        <h5>Student 2</h5>
-                        <small>Score: 3/3</small>
-                      </div>
-                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
-                    </div>
-
-                    <div className="quiz__leader-item">
-                      <span className="quiz__leader-rank"><TbHexagonNumber3Filled/></span>
-                      <div className="quiz__leader-info">
-                        <h5>Student 1</h5>
-                        <small>Score: 3/3</small>
-                      </div>
-                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
-                    </div>
+              {!leaderLoading && dailyTop.map(item => (
+                <div key={item.studentId || item.rank} className="quiz__leader-item">
+                  <span className="quiz__leader-rank">
+                    {item.rank === 1 ? <TbHexagonNumber1Filled/> : item.rank === 2 ? <TbHexagonNumber2Filled/> : <TbHexagonNumber3Filled/>}
+                  </span>
+                  <div className="quiz__leader-info">
+                    <h5>{item.name || item.username || 'Unknown'}</h5>
+                    <small>Score: {item.score}/{item.total}</small>
+                  </div>
+                  <small className="quiz__time"><span><TimerReset size={15}/></span> {Math.floor((item.timeTaken||0)/60)}:{String((item.timeTaken||0)%60).padStart(2,'0')}</small>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -417,188 +536,15 @@ export default function QuizScreen() {
         </div>
       </div>}
 
+      
+      
+      
       {isActive === 'topic quiz' && 
-      <>
-        
+        <>
+          <AttemptedTopicQuiz/>
+        </>
+      }
 
-      <AttemptedTopicQuiz/>
-      </>}
-
-
-
-
-
-
-
-
-
-
-      {/* {isActive === 'admin' && user?.role === 'admin' && (
-        <div className="admin-form__container">
-          <div className="admin-form__header">
-            <h2><Plus size={28} /> Add New Daily Quiz Question</h2>
-            <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>
-              Questions added here will be available for today's quiz window ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmitQuestion} className="admin-form">
-            <div className="form-group">
-              <label htmlFor="question">Question *</label>
-              <textarea
-                id="question"
-                name="question"
-                value={formData.question}
-                onChange={handleFormChange}
-                placeholder="Enter the quiz question..."
-                required
-                rows="4"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="image">Question Image (Optional)</label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                onChange={handleImageChange}
-                accept="image/*"
-                className="file-input"
-              />
-              <p className="file-info">Supported formats: JPG, PNG, GIF, WebP</p>
-              {formData.imagePreview && (
-                <div className="image-preview">
-                  <img src={formData.imagePreview} alt="Preview" />
-                </div>
-              )}
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="optionA">Option A *</label>
-                <input
-                  type="text"
-                  id="optionA"
-                  name="optionA"
-                  value={formData.optionA}
-                  onChange={handleFormChange}
-                  placeholder="Enter option A..."
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="optionB">Option B *</label>
-                <input
-                  type="text"
-                  id="optionB"
-                  name="optionB"
-                  value={formData.optionB}
-                  onChange={handleFormChange}
-                  placeholder="Enter option B..."
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="optionC">Option C *</label>
-                <input
-                  type="text"
-                  id="optionC"
-                  name="optionC"
-                  value={formData.optionC}
-                  onChange={handleFormChange}
-                  placeholder="Enter option C..."
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="optionD">Option D *</label>
-                <input
-                  type="text"
-                  id="optionD"
-                  name="optionD"
-                  value={formData.optionD}
-                  onChange={handleFormChange}
-                  placeholder="Enter option D..."
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="correctAnswer">Correct Answer *</label>
-              <select
-                id="correctAnswer"
-                name="correctAnswer"
-                value={formData.correctAnswer}
-                onChange={handleFormChange}
-                required
-              >
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-              </select>
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="form-btn submit-btn">Add Question</button>
-              <button type="button" className="form-btn cancel-btn" onClick={() => setIsActive('daily quiz')}>Back to Quiz</button>
-            </div>
-          </form>
-
-          {todaysQuestions.length > 0 && (
-            <div style={{
-              marginTop: '32px',
-              padding: '20px',
-              borderRadius: '8px'
-            }}>
-              <h3 style={{ marginBottom: '16px' }}>📋 Today's Questions Preview</h3>
-              {todaysQuestions.map((q, index) => (
-                <div key={q.id} style={{
-                  padding: '12px',
-                  marginBottom: '8px',
-                  backgroundColor: '#20043d',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start'
-                }}>
-                  <div style={{ flex: 1 }}>
-                    <p><strong>Q{index + 1}:</strong> {q.question}</p>
-                    <small style={{ color: '#666' }}>Correct Answer: {q.correctAnswer}</small>
-                  </div>
-                  <button 
-                    type="button"
-                    onClick={() => handleDeleteQuestion(q.id)}
-                    style={{
-                      padding: '6px 12px',
-                      marginLeft: '12px',
-                      backgroundColor: '#ff4444',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      whiteSpace: 'nowrap',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    <X size={14} /> Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )} */}
     </div>
   );
 }
