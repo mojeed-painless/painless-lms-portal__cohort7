@@ -18,14 +18,14 @@ export default function WhyLearn() {
             <section>
                 <div className="course-content__container">
                     <p>
-                        You might be asking, <strong>“Why do I need to learn coding just to build a website? Aren’t there platforms where I can drag and drop components and have a website ready in minutes?”</strong>
+                        You might be asking, <strong>“Why do I need to learn coding just to build a website? Aren’t there platforms where I can drag and drop components  or even prompt AI and have a website ready in minutes?”</strong>
                       </p>
 
                       <p>
                         Absolutely—those platforms exist, and they’re incredibly useful. But this course isn’t just about building simple websites.
                       </p>
 
-                      <h3 className="bold">This is about unlocking a skill that goes far beyond templates and visual editors.</h3>
+                      <h3 className="bold">This is about unlocking a skill that goes far beyond visual editors and AI prompts.</h3>
 
                       <p>
                         It’s about understanding how technology works from the inside out. It’s a stepping stone into the vast world of tech—software development, automation, artificial intelligence, app creation, and digital problem-solving.
@@ -86,7 +86,7 @@ export default function WhyLearn() {
               <TopicQuiz 
                 onSelect={() => setIsQuizActive(prev => !prev)} 
                 currentCategory="html" 
-                currentTopic="Why should I Learn Coding?" 
+                currentTopic="Why should I learn Coding" 
               />
             </article>
 

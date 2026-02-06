@@ -103,10 +103,11 @@ export const topics = [
         section: "INTRODUCTION",
         description: "Learn the basics of web structure",
         subjects: [
-            // {name: 'General Overview', path: '/general-overview'},
-            // {name: 'Why should I learn Coding', path: '/why'},
-            // {name: 'Course Overview', path: '/course-overview'},
-            // {name: 'Code Editors', path: '/editor'}
+            {name: 'General Overview', path: '/general-overview'},
+            {name: 'Why should I learn Coding', path: '/why'},
+            {name: 'Course Overview', path: '/course-overview'},
+            {name: 'Code Editors', path: '/editor'},
+            {name: 'Assignment Guide', path: '/assignment-guide'},
         ]
     },
     {

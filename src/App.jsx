@@ -28,6 +28,7 @@ import GeneralOverview from './pages/html-pages/GeneralOverview';
 import WhyLearn from './pages/html-pages/WhyLearn';
 import CourseOverview from './pages/html-pages/CourseOverview';
 import CodeEditors from './pages/html-pages/CodeEditors';
+import AssignmentGuide from './pages/html-pages/AssignmentGuide';
 
 {/* HTML pages */}
 import HTMLTransition from './pages/html-pages/HTMLTransition';
@@ -131,6 +132,7 @@ function App() {
               <Route path="/why" element={<WhyLearn />} />
               <Route path="/course-overview" element={<CourseOverview />} />
               <Route path="/editor" element={<CodeEditors />} />
+              <Route path="/assignment-guide" element={<AssignmentGuide />} />
 
               
               {/* HTML, CSS, and JavaScript Content - Requires 'htmlAccess' */}

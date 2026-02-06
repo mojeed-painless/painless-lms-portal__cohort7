@@ -25,6 +25,27 @@ img {
 button {
     font-family: "Quicksand", sans-serif;
 }
+
+.assignment-btn {
+    color: greenyellow;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    transition: all 400ms ease;
+}
+
+.assignment-btn span {
+    display: flex;
+}
+
+.assignment-btn:hover {
+    transform: translateX(10px);
+}
+
+
+
+
 /* --- Key frames --- */
 @keyframes pulsy {
   0% {
