@@ -46,6 +46,8 @@ export default function QuizScreen() {
   });
   const [dailyTop, setDailyTop] = useState([]);
   const [leaderLoading, setLeaderLoading] = useState(false);
+  const [myDailyAttempt, setMyDailyAttempt] = useState(null);
+  const [myDailyLoading, setMyDailyLoading] = useState(true);
   const timerCompletedRef = useRef(false);
   const restTimerRef = useRef(null); // Track when rest period started
   const targetDateRef = useRef(null); // Persistent next-target date
@@ -80,6 +82,16 @@ export default function QuizScreen() {
           body: JSON.stringify({ topic: 'daily', answers, timeTaken }),
         });
 
+        if (res.status === 409) {
+          // Already exists: parse attempt and set local state so UI updates
+          const body = await res.json().catch(() => null);
+          if (body && body.attempt) setMyDailyAttempt(body.attempt);
+          setSubmissionDone(true);
+          setSubmissionInProgress(false);
+          setQuizStarted(false);
+          return;
+        }
+
         if (!res.ok) {
           const text = await res.text().catch(() => res.statusText || 'Unknown error');
           setSubmissionError(`Server responded: ${res.status} ${text}`);
@@ -89,6 +101,8 @@ export default function QuizScreen() {
 
         const data = await res.json();
         console.log('Quiz submitted', data);
+        // Optimistically set myDailyAttempt so the Start button switches immediately
+        if (data && data.attempt) setMyDailyAttempt(data.attempt);
         setSubmissionDone(true);
         setSubmissionInProgress(false);
         // stop the quiz UI
@@ -109,7 +123,7 @@ export default function QuizScreen() {
     if (!targetDateRef.current) {
       const nowInit = new Date();
       const t = new Date(nowInit);
-      t.setHours(18, 10, 0, 0); // target hour: 16:32 local
+      t.setHours(20, 30, 0, 0); // target hour: 16:32 local
       if (t <= nowInit) t.setDate(t.getDate() + 1);
       targetDateRef.current = t;
     }
@@ -188,6 +202,36 @@ export default function QuizScreen() {
     };
 
     fetchLeaderboard();
+
+    // Also fetch whether the current user already attempted today's quiz
+    const fetchMyAttempt = async () => {
+      setMyDailyLoading(true);
+      try {
+        if (!user || !user.token) {
+          setMyDailyAttempt(null);
+          return;
+        }
+        const iso = new Date().toISOString().slice(0, 10);
+        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/daily?date=${iso}`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+        if (res.status === 404) {
+          setMyDailyAttempt(null);
+        } else if (res.ok) {
+          const data = await res.json();
+          setMyDailyAttempt(data);
+        } else {
+          setMyDailyAttempt(null);
+        }
+      } catch (err) {
+        console.error('Error fetching my daily attempt', err);
+        setMyDailyAttempt(null);
+      } finally {
+        setMyDailyLoading(false);
+      }
+    };
+
+    fetchMyAttempt();
   }, [user, submissionDone]);
 
 
@@ -355,9 +399,17 @@ export default function QuizScreen() {
                   </div>
                 </div>
 
-                  <button className="quiz__start-btn" onClick={() => setQuizStarted(true)}>
-                    Start Quiz
-                  </button>
+                  {myDailyLoading ? (
+                    <div style={{ padding: 12, color: '#666' }}>Checking attempt…</div>
+                  ) : myDailyAttempt ? (
+                    <div style={{ padding: 12, color: '#0b5' }}>
+                      You already attempted today's quiz — Score: {myDailyAttempt.score}/{myDailyAttempt.total}
+                    </div>
+                  ) : (
+                    <button className="quiz__start-btn" onClick={() => setQuizStarted(true)}>
+                      Start Quiz
+                    </button>
+                  )}
               </div>
           </div>
         )}

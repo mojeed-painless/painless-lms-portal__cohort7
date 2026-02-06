@@ -1006,26 +1006,28 @@ h2 span.live-text {
 
 
 
-
-
-  .topic-quiz__box {
-        width: 100%;
-
+    .daily-quiz__live {
+        padding: 0.6rem;
+        
     }
 
-    .topic-quiz__header {
+    .daily-quiz__box {
+        width: 100%;
+    }
+
+    .daily-quiz__header {
         padding: 0 0.8rem 1rem
     }
 
-    .topic-quiz__questions {
+    .daily-quiz__questions {
         padding: 0 0.8rem;
     }
 
-    .topic-quiz__options {
+    .daily-quiz__options {
         grid-template-columns: 1fr;
     }
 
-    .topic-quiz__nav {
+    .daily-quiz__nav {
         padding: 0 0.6rem
     }
 
