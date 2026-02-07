@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useProgress } from '../../context/ProgressContext';

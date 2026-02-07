@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import ExampleCode from '../../components/common/ExampleCode';
 import CodeBox from '../../components/common/CodeBox';
 import '../../assets/styles/course-content.css';
@@ -108,25 +109,23 @@ export default function TableTags() {
     />
 
     
-  <hr />
+
+
+                      <AssignmentBox title="HTML Table Tags">
+                          <ol>
+                            <li>Create a new html file and name it <i>"my_table_work"</i></li>
+                            <li>Inside it, create a table that displays the following information:</li>
+                            <ul>
+                              <li>3 students' names</li>
+                              <li>Their respective scores in Math, English, and Science</li>
+                              <li>Add a border around the table</li>
+                            </ul>
+                          </ol>
+                      </AssignmentBox>
 
 
 
 
-  <div className="exercise">
-    
-    <h3>Practice Exercise</h3>
-
-    <p>Create a table that displays the following information:</p>
-
-    <ul>
-      <li>3 students' names</li>
-      <li>Their respective scores in Math, English, and Science</li>
-      <li>Add a border around the table</li>
-    </ul>
-
-
-  </div>
                 </div>
             </section>
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
@@ -88,19 +89,16 @@ export default function Images() {
 </div> */}
 
 
-  <hr />
-<div className="exercise">
-    
-    <h3>Practice Exercise</h3>
+                    <AssignmentBox title="HTML Image Tag">
+                        <ol>
+                            <li>Create a new html file and name it <i>"my_image_work"</i></li>
+                            <li>Inside the single file, do the following;</li>
+                            <li>Add 3 different images to your website</li>
+                            <li>Use the <code>style</code> attribute to set the width(200px) and height of each image</li>
+                            <li>Ensure the images are displayed correctly on your webpage</li>
+                        </ol>
+                    </AssignmentBox>
 
-    <p>Instructions:</p>
-
-    <ol>
-        <li>Add 3 different images to your website</li>
-        <li>Use the <code>style</code> attribute to set the width(200px) and height of each image</li>
-        <li>Ensure the images are displayed correctly on your webpage</li>
-    </ol>
-</div>
 
                 </div>
             </section>

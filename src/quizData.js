@@ -25,6 +25,28 @@ export const DailyQuizData = [
                 ],
                 correctAnswer: 'D',
             },
+            {
+                id: 3,
+                question: "What is the full meaning of CSS?",
+                options: [
+                    { id: 'A', text: "Color Style Sheets" },
+                    { id: 'B', text: "Cascading Style Sheets" },
+                    { id: 'C', text: "Creative Style System" },
+                    { id: 'D', text: "Computer Style Syntax" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "What is the primary function of JavaScript in a website?",
+                options: [
+                    { id: 'A', text: "To create the skeleton and structure of the page" },
+                    { id: 'B', text: "To store the website's data in a database" },
+                    { id: 'C', text: "To make the website interactive and responsive to user actions" },
+                    { id: 'D', text: "To paint the car and add visual polish" }
+                ],
+                correctAnswer: 'C',
+            },
         ],
     }
 ]
@@ -283,33 +305,65 @@ export const TopicQuizData = [
             }
         ],
     },
-    
     {
         topic: 'HTML Page Structure',
         category: 'html',
         questions: [
             {
-                id: 1,
-                question: "What is HTML?",
-                options: [
-                    { id: 'A', text: "A markup language for creating web pages" },
-                    { id: 'B', text: "A programming language for web development" },
-                    { id: 'C', text: "A database management system" },
-                    { id: 'D', text: "A web server software" }
-                ],
-                correctAnswer: 'A',
-            },
-            {
-                id: 2,
-                question: "What does HTML stand for?",
-                options: [
-                    { id: 'A', text: "Hyperlinking Text Marking Language" },
-                    { id: 'B', text: "Home Tool Markup Language" },
-                    { id: 'C', text: "Hyperlinks and Text Markup Language" },
-                    { id: 'D', text: "Hyper Text Markup Language" }
-                ],
-                correctAnswer: 'D',
-            },
+                    id: 1,
+                    question: "What is the primary purpose of the <!DOCTYPE html> declaration?",
+                    options: [
+                        { id: 'A', text: "To link an external CSS stylesheet" },
+                        { id: 'B', text: "To tell the browser the document is using HTML5" },
+                        { id: 'C', text: "To set the language of the webpage to English" },
+                        { id: 'D', text: "To create a comment for the developers" }
+                    ],
+                    correctAnswer: 'B',
+                },
+                {
+                    id: 2,
+                    question: "Which HTML tag is used to contain metadata that is NOT visible to the user?",
+                    options: [
+                        { id: 'A', text: "<body>" },
+                        { id: 'B', text: "<html>" },
+                        { id: 'C', text: "<head>" },
+                        { id: 'D', text: "<script>" }
+                    ],
+                    correctAnswer: 'C',
+                },
+                {
+                    id: 3,
+                    question: "Why is the 'viewport' meta tag included in the boilerplate?",
+                    options: [
+                        { id: 'A', text: "To enable responsive design and content resizing for mobile devices" },
+                        { id: 'B', text: "To change the background color of the webpage" },
+                        { id: 'C', text: "To hide the code from the browser's engine" },
+                        { id: 'D', text: "To translate the page into different languages automatically" }
+                    ],
+                    correctAnswer: 'A',
+                },
+                {
+                    id: 4,
+                    question: "Where is the best place to link JavaScript to allow the HTML to load first?",
+                    options: [
+                        { id: 'A', text: "At the very top of the <head> section" },
+                        { id: 'B', text: "Inside the <!DOCTYPE> declaration" },
+                        { id: 'C', text: "At the bottom of the <body> section" },
+                        { id: 'D', text: "Inside an HTML comment" }
+                    ],
+                    correctAnswer: 'C',
+                },
+                {
+                    id: 5,
+                    question: "How does a web browser treat content placed inside HTML comments?",
+                    options: [
+                        { id: 'A', text: "It displays it as a bold heading" },
+                        { id: 'B', text: "It ignores the content and does not render it" },
+                        { id: 'C', text: "It uses it to set the page title" },
+                        { id: 'D', text: "It executes it as a JavaScript function" }
+                    ],
+                    correctAnswer: 'B',
+                }
         ],
     },
     {
@@ -318,26 +372,199 @@ export const TopicQuizData = [
         questions: [
             {
                 id: 1,
-                question: "What is an HTML list?",
+                question: "What is the main difference between an ordered list (<ol>) and an unordered list (<ul>)?",
                 options: [
-                    { id: 'A', text: "A program of its own" },
-                    { id: 'B', text: "A collection of items in a web page" },
-                    { id: 'C', text: "A database management system" },
-                    { id: 'D', text: "A web server software" }
+                    { id: 'A', text: "Ordered lists use bullet points while unordered lists use numbers" },
+                    { id: 'B', text: "Ordered lists are for items where sequence matters; unordered lists are for items where order doesn't matter" },
+                    { id: 'C', text: "Ordered lists only work in VS Code, while unordered lists work in Trebedit" },
+                    { id: 'D', text: "Unordered lists are the only type that can be nested" }
                 ],
                 correctAnswer: 'B',
             },
             {
                 id: 2,
-                question: "Which of the following is not a list tag in HTML?",
+                question: "Which attribute is used to change the numbering style (e.g., to Roman numerals or letters) in an ordered list?",
                 options: [
-                    { id: 'A', text: "<ol>" },
-                    { id: 'B', text: "<ul>" },
-                    { id: 'C', text: "<li>" },
-                    { id: 'D', text: "<a>" }
+                    { id: 'A', text: "style" },
+                    { id: 'B', text: "list-style" },
+                    { id: 'C', text: "type" },
+                    { id: 'D', text: "format" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 3,
+                question: "What is the default marker for an unordered list (<ul>) in the browser?",
+                options: [
+                    { id: 'A', text: "Numbers (1, 2, 3)" },
+                    { id: 'B', text: "Hollow circles" },
+                    { id: 'C', text: "Solid bullet points (disc)" },
+                    { id: 'D', text: "Squares" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 4,
+                question: "Which CSS property-value pair is used to change unordered list bullets to a solid square?",
+                options: [
+                    { id: 'A', text: "list-style-type: square;" },
+                    { id: 'B', text: "marker: square;" },
+                    { id: 'C', text: "type='square'" },
+                    { id: 'D', text: "list-style: none;" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 5,
+                question: "What does 'Nesting Lists' refer to in HTML?",
+                options: [
+                    { id: 'A', text: "Deleting a list from the code" },
+                    { id: 'B', text: "Placing one list inside another list item to create subcategories" },
+                    { id: 'C', text: "Changing the color of a list using CSS" },
+                    { id: 'D', text: "Linking a list to an external JavaScript file" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 6,
+                question: "To display an ordered list with Uppercase Roman numerals (I, II, III), what should the 'type' attribute be set to?",
+                options: [
+                    { id: 'A', text: "type='1'" },
+                    { id: 'B', text: "type='a'" },
+                    { id: 'C', text: "type='I'" },
+                    { id: 'D', text: "type='roman'" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
+        topic: 'HTML Tables',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "Which HTML tag is used to wrap the entire content of a table?",
+                options: [
+                    { id: 'A', text: "<tr>" },
+                    { id: 'B', text: "<thead>" },
+                    { id: 'C', text: "<table>" },
+                    { id: 'D', text: "<tab>" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 2,
+                question: "What does the <tr> tag represent in an HTML table?",
+                options: [
+                    { id: 'A', text: "Table Row" },
+                    { id: 'B', text: "Table Rank" },
+                    { id: 'C', text: "Table Rule" },
+                    { id: 'D', text: "Table Real" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 3,
+                question: "By default, how does the browser style text inside a <th> (Table Header) tag?",
+                options: [
+                    { id: 'A', text: "Italicized and left-aligned" },
+                    { id: 'B', text: "Bold and centered" },
+                    { id: 'C', text: "Underlined and right-aligned" },
+                    { id: 'D', text: "Normal font weight and blue color" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "Which tag is used to define a standard data cell within a table row?",
+                options: [
+                    { id: 'A', text: "<th>" },
+                    { id: 'B', text: "<data>" },
+                    { id: 'C', text: "<td>" },
+                    { id: 'D', text: "<cell>" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 5,
+                question: "If your table code is correct but lacks visible grid lines, which attribute can you add to the <table> tag for a quick border?",
+                options: [
+                    { id: 'A', text: "line='solid'" },
+                    { id: 'B', text: "grid='true'" },
+                    { id: 'C', text: "outline='1'" },
+                    { id: 'D', text: "border='1'" }
                 ],
                 correctAnswer: 'D',
+            }
+        ],
+    },
+    {
+        topic: 'HTML Images',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "Which of the following is true about the <img> tag?",
+                options: [
+                    { id: 'A', text: "It requires a closing </img> tag" },
+                    { id: 'B', text: "It is a self-closing tag" },
+                    { id: 'C', text: "It is used to create clickable links" },
+                    { id: 'D', text: "It must be placed inside the <head> section" }
+                ],
+                correctAnswer: 'B',
             },
+            {
+                id: 2,
+                question: "What does the 'src' attribute stand for in an <img> tag?",
+                options: [
+                    { id: 'A', text: "Screen" },
+                    { id: 'B', text: "Search" },
+                    { id: 'C', text: "Source" },
+                    { id: 'D', text: "Script" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 3,
+                question: "How do you correctly point to an image named 'logo.png' located inside a folder called 'assets'?",
+                options: [
+                    { id: 'A', text: "src='logo.png'" },
+                    { id: 'B', text: "src='./assets/logo.png'" },
+                    { id: 'C', text: "href='./assets/logo.png'" },
+                    { id: 'D', text: "link='./assets/logo.png'" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "When using the 'width' and 'height' attributes directly (not inside a style attribute), how should the values be written?",
+                options: [
+                    { id: 'A', text: "width='120px'" },
+                    { id: 'B', text: "width='120'" },
+                    { id: 'C', text: "width: 120;" },
+                    { id: 'D', text: "size='120'" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 5,
+                question: "Which attribute allows you to use a full URL to display an image from another website?",
+                options: [
+                    { id: 'A', text: "url" },
+                    { id: 'B', text: "link" },
+                    { id: 'C', text: "src" },
+                    { id: 'D', text: "href" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
+        topic: '',
+        category: 'html',
+        questions: [
+            
         ],
     },
 

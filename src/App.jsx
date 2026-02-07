@@ -143,13 +143,13 @@ function App() {
                 <Route path="/html-list" element={<ListTags />} />
                 <Route path="/html-table" element={<TableTags />} />
                 <Route path="/html-image" element={<Images />} />
-                <Route path="/html-hyperlinks" element={<Hyperlinks />} />
+                {/* <Route path="/html-hyperlinks" element={<Hyperlinks />} />
                 <Route path="/html-block-element" element={<InlineBlockElement />} />
                 <Route path="/html-form" element={<Forms />} />
-                <Route path="/html-style" element={<HTMLStyling />} />
+                <Route path="/html-style" element={<HTMLStyling />} /> */}
 
                 {/* CSS Content */}
-                <Route path="/css-transition" element={<CSSTransition />} />
+                {/* <Route path="/css-transition" element={<CSSTransition />} />
                 <Route path="/css_animation" element={<Animation />} />
                 <Route path="/css_attribute" element={<AttributesSelector />} />
                 <Route path="/css_background" element={<Background />} />
@@ -181,10 +181,10 @@ function App() {
                 <Route path="/css_table" element={<Tables />} />
                 <Route path="/css_formatting" element={<TextFormatting />} />
                 <Route path="/css_transform" element={<Transform />} />
-                <Route path="/css_transition" element={<Transition />} />
+                <Route path="/css_transition" element={<Transition />} /> */}
 
                 {/* JavaScript Content */}
-                <Route path="/js-transition" element={<JSTransition />} />
+                {/* <Route path="/js-transition" element={<JSTransition />} />
                 <Route path="/js-intro" element={<JavascriptIntro />} />
                 <Route path="/js-linking" element={<LinkingJavascript />} />
                 <Route path="/js-alert" element={<Alert />} />
@@ -202,7 +202,7 @@ function App() {
                 <Route path="/js-browser-user-interaction" element={<BrowserUserInteraction />} />
                 <Route path="/js-string-conversion" element={<StringConversion />} />
                 <Route path="/js-number-conversion" element={<NumberConversion />} />
-                <Route path="/js-boolean-conversion" element={<BooleanConversion />} />
+                <Route path="/js-boolean-conversion" element={<BooleanConversion />} /> */}
               </Route>
             </Route>
 

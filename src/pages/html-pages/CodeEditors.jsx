@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';

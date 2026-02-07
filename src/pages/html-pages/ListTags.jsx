@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import ExampleCode from '../../components/common/ExampleCode';
 import CodeBox from '../../components/common/CodeBox';
 import '../../assets/styles/course-content.css';
@@ -194,23 +195,20 @@ export default function ListTags() {
 
 
 
-  <hr />
 
 
 
 
-<div className="exercise">
-    
-    <h3>Practice Exercise</h3>
+                    <AssignmentBox title="HTML List Tag">
+                        <ol>
+                            <li>Create a new html file and name it <i>"my_list_project"</i></li>
+                            <li>Inside the single file, do the following;</li>
+                            <li>Create an unordered list of your 4 favorite fruits.</li>
+                            <li>Create an ordered list of 3 places you want to visit, using lowercase Roman numerals.</li>
+                            <li>Create a nested list of programming languages and their related frameworks.</li>
+                        </ol>
+                    </AssignmentBox>
 
-    <p>Instructions:</p>
-
-    <ol>
-        <li>Create an unordered list of your 4 favorite fruits.</li>
-        <li>Create an ordered list of 3 places you want to visit, using lowercase Roman numerals.</li>
-        <li>Create a nested list of programming languages and their related frameworks.</li>
-    </ol>
-</div>
                 </div>
             </section>
 

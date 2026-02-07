@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import '../../assets/styles/course-content.css';
 import htmlCar from '../../assets/html_car.jpg'
 import htmlCode1 from '../../assets/html1_code.png'

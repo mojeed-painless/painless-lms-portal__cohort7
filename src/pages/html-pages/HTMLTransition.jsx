@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AssignmentBox from '../../components/common/AssignmentBox';
 import '../../assets/styles/course-content.css';
 import '../../assets/styles/transition.css';
 import htmlLogo from '../../assets/html_logo.png';
@@ -45,15 +46,7 @@ export default function HTMLTransition() {
                 </div>
             </div>
 
-                        <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
 
-                        <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
-                            <TopicQuiz 
-                                onSelect={() => setIsQuizActive(prev => !prev)} 
-                                currentCategory="html" 
-                                currentTopic="Welcome to HTML" 
-                            />
-                        </article>
 
                         <PrevNextBtn 
                                 prevPath="/editor" 

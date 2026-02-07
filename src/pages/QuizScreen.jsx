@@ -51,15 +51,24 @@ export default function QuizScreen() {
   const timerCompletedRef = useRef(false);
   const restTimerRef = useRef(null); // Track when rest period started
   const targetDateRef = useRef(null); // Persistent next-target date
-
-  function handleSubmitQuiz() {
+  const sessionStartRef = useRef(null);
+  const sessionEndRef = useRef(null);
+  const [dailySession, setDailySession] = useState(null);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const handleSubmitQuiz = async () => {
     // compute timeTaken in seconds (120 - remaining)
     const totalSeconds = 120;
     const remaining = (timeLeft.duringQuiz.minutes || 0) * 60 + (timeLeft.duringQuiz.seconds || 0);
     const timeTaken = Math.max(0, totalSeconds - remaining);
 
-    // assemble answers from today's question set
-    const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
+    // determine today's quiz entry (MM/DD/YYYY format used by DailyQuizData)
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const yyyy = now.getFullYear();
+    const todayStrLocal = `${mm}/${dd}/${yyyy}`;
+
+    const entry = DailyQuizData.find(d => d.date === todayStrLocal) || DailyQuizData[0] || { questions: [] };
     const questions = entry.questions || [];
     const answers = questions.map(q => ({
       questionId: q.id,
@@ -68,113 +77,94 @@ export default function QuizScreen() {
       correctAnswer: q.correctAnswer || null,
     }));
 
-    // send to backend batch submit endpoint
-    (async () => {
-      setSubmissionInProgress(true);
-      setSubmissionError(null);
-      try {
-        const headers = { 'Content-Type': 'application/json' };
-        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+    setSubmissionInProgress(true);
+    setSubmissionError(null);
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
 
-        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/submit`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({ topic: 'daily', answers, timeTaken }),
-        });
+      const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/submit`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ topic: 'daily', answers, timeTaken }),
+      });
 
-        if (res.status === 409) {
-          // Already exists: parse attempt and set local state so UI updates
-          const body = await res.json().catch(() => null);
-          if (body && body.attempt) setMyDailyAttempt(body.attempt);
-          setSubmissionDone(true);
-          setSubmissionInProgress(false);
-          setQuizStarted(false);
-          return;
-        }
-
-        if (!res.ok) {
-          const text = await res.text().catch(() => res.statusText || 'Unknown error');
-          setSubmissionError(`Server responded: ${res.status} ${text}`);
-          setSubmissionInProgress(false);
-          return;
-        }
-
-        const data = await res.json();
-        console.log('Quiz submitted', data);
-        // Optimistically set myDailyAttempt so the Start button switches immediately
-        if (data && data.attempt) setMyDailyAttempt(data.attempt);
+      if (res.status === 409) {
+        const body = await res.json().catch(() => null);
+        if (body && body.attempt) setMyDailyAttempt(body.attempt);
         setSubmissionDone(true);
         setSubmissionInProgress(false);
-        // stop the quiz UI
         setQuizStarted(false);
-        // auto-hide success after short delay
-        setTimeout(() => setSubmissionDone(false), 3500);
-      } catch (err) {
-        console.error('Error submitting quiz', err);
-        setSubmissionError(err.message || 'Network error');
-        setSubmissionInProgress(false);
-      }
-    })();
-  }
-
-  // ===== COUNTDOWN TIMER TO 8:30 PM =====
-  useEffect(() => {
-    // initialize persistent target date to next occurrence of target hour
-    if (!targetDateRef.current) {
-      const nowInit = new Date();
-      const t = new Date(nowInit);
-      t.setHours(20, 30, 0, 0); // target hour: 16:32 local
-      if (t <= nowInit) t.setDate(t.getDate() + 1);
-      targetDateRef.current = t;
-    }
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const target = new Date(targetDateRef.current);
-
-      // If we're currently in the rest period, show zeros until rest ends
-      if (restTimerRef.current) {
-        const restElapsed = now - restTimerRef.current;
-        const restRemaining = 120000 - restElapsed; // 2 minutes
-        if (restRemaining > 0) {
-          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 0, seconds: 0 } });
-          return;
-        }
-        // rest over: clear it and proceed (targetDateRef already points to next day)
-        restTimerRef.current = null;
-      }
-
-      const diffMs = target - now;
-
-      // If we've reached the target, start live quiz (if eligible)
-      if (diffMs <= 0) {
-        if (!quizIsLive && !timerCompletedRef.current && !restTimerRef.current) {
-          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 2, seconds: 0 } });
-          setQuizIsLive(true);
-        } else {
-          // show zeros until rest or next actions
-          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 0, seconds: 0 } });
-        }
         return;
       }
 
-      // If a new countdown cycle begins, reset the one-time timer flag
-      if (diffMs > 0 && timerCompletedRef.current) {
-        timerCompletedRef.current = false;
+      if (!res.ok) {
+        const text = await res.text().catch(() => res.statusText || 'Unknown error');
+        setSubmissionError(`Server responded: ${res.status} ${text}`);
+        setSubmissionInProgress(false);
+        return;
       }
 
-      const secondsRemaining = Math.max(0, Math.round(diffMs / 1000));
-      const hours = Math.floor(secondsRemaining / 3600);
-      const minutes = Math.floor((secondsRemaining % 3600) / 60);
-      const seconds = secondsRemaining % 60;
+      const data = await res.json();
+      if (data && data.attempt) setMyDailyAttempt(data.attempt);
+      setSubmissionDone(true);
+      setSubmissionInProgress(false);
+      setQuizStarted(false);
+      setTimeout(() => setSubmissionDone(false), 3500);
+    } catch (err) {
+      console.error('Error submitting quiz', err);
+      setSubmissionError(err.message || 'Network error');
+      setSubmissionInProgress(false);
+    }
+  };
 
-      setTimeLeft({ beforeQuiz: { hours, minutes, seconds }, duringQuiz: { minutes: 0, seconds: 0 } });
+  useEffect(() => {
+    let poll = null;
+    const fetchSession = async () => {
+      setSessionLoading(true);
+      try {
+        const iso = new Date().toISOString().slice(0, 10);
+        const headers = {};
+        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+
+        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/session?date=${iso}`, { headers });
+        if (!res.ok) {
+          setDailySession(null);
+          setSessionLoading(false);
+          return;
+        }
+        const data = await res.json();
+        setDailySession(data.session || null);
+        sessionStartRef.current = data.session && data.session.startAt ? new Date(data.session.startAt) : null;
+        sessionEndRef.current = data.session && data.session.endAt ? new Date(data.session.endAt) : null;
+
+        const now = new Date();
+        if (sessionStartRef.current && now < sessionStartRef.current) {
+          const secs = Math.max(0, Math.round((sessionStartRef.current - now) / 1000));
+          const hours = Math.floor(secs / 3600);
+          const minutes = Math.floor((secs % 3600) / 60);
+          const seconds = secs % 60;
+          setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
+          setQuizIsLive(false);
+        } else if (sessionStartRef.current && sessionEndRef.current && now >= sessionStartRef.current && now < sessionEndRef.current) {
+          const remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
+          setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: Math.floor(remaining / 60), seconds: remaining % 60 } }));
+          setQuizIsLive(true);
+        } else {
+          setQuizIsLive(false);
+        }
+      } catch (err) {
+        console.error('Error fetching session', err);
+        setDailySession(null);
+      } finally {
+        setSessionLoading(false);
+      }
     };
 
-    updateCountdown();
-    const timer = setInterval(updateCountdown, 1000);
-    return () => clearInterval(timer);
-  }, [quizIsLive]);
+    fetchSession();
+    poll = setInterval(fetchSession, 3000);
+    return () => clearInterval(poll);
+  }, [user]);
 
   // Fetch today's top 3 leaderboard for daily quiz
   useEffect(() => {
@@ -238,8 +228,13 @@ export default function QuizScreen() {
   // When the quiz starts, run a 2-minute during-quiz timer and then trigger rest
   useEffect(() => {
     let interval = null;
-    if (quizIsLive && !timerCompletedRef.current) {
-      let remaining = 120; // seconds
+    if (quizIsLive && !timerCompletedRef.current && quizStarted) {
+      // Use server session end time if available so late joiners get correct remaining
+      const now = new Date();
+      let remaining = 120; // default seconds
+      if (sessionEndRef.current) {
+        remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
+      }
 
       // initial UI update
       setTimeout(() => {
@@ -260,12 +255,7 @@ export default function QuizScreen() {
           setQuizIsLive(false); // close live window
           // start rest period now
           restTimerRef.current = Date.now();
-          // schedule next day's target immediately so countdown resumes after rest
-          if (targetDateRef.current) {
-            const next = new Date(targetDateRef.current);
-            next.setDate(next.getDate() + 1);
-            targetDateRef.current = next;
-          }
+          // After the live window ends, we rely on the session poll to update next day's session
         }
       }, 1000);
     }
