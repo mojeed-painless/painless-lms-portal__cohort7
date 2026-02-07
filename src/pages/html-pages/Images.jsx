@@ -115,7 +115,8 @@ export default function Images() {
 
             <PrevNextBtn 
                 prevPath="/html-table" 
-                nextPath="/html-hyperlinks"
+                // nextPath="/html-hyperlinks"
+                nextPath=""
             />
         </section>
     );
