@@ -79,14 +79,7 @@ export default function Images() {
         title='Adding images to a webpage'
         code=''
     />
-{/* <div className="watch">
-    <p>🎥 Watch: Adding images to a webpage</p>
-    <div className="video-responsive">
-    <video controls>
-      <source src="../../video/Phone_Images.mp4" type="video/mp4">
-    </video>
-    </div>
-</div> */}
+
 
 
                     <AssignmentBox title="HTML Image Tag">
