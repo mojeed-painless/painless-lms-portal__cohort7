@@ -201,7 +201,7 @@ export default function ListTags() {
 
                     <AssignmentBox title="HTML List Tag">
                         <ol>
-                            <li>Create a new html file and name it <i>"my_list_project"</i></li>
+                            <li>Create a new html file and name it <i>"my_list_work"</i></li>
                             <li>Inside the single file, do the following;</li>
                             <li>Create an unordered list of your 4 favorite fruits.</li>
                             <li>Create an ordered list of 3 places you want to visit, using lowercase Roman numerals.</li>
