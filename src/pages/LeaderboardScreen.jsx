@@ -14,6 +14,8 @@ export default function LeaderboardScreen() {
 
   const [isActive, setIsActive] = useState('daily quiz');
   const [leaders, setLeaders] = useState([]);
+  const [dailyQuizLeaders, setDailyQuizLeaders] = useState([]);
+  const [dailyQuizLoading, setDailyQuizLoading] = useState(false);
   const [authRequired, setAuthRequired] = useState(false);
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const { user } = useAuth();
@@ -69,6 +71,38 @@ export default function LeaderboardScreen() {
         if (mounted) setLeaders(mapped);
       } catch (err) {
         console.error('Failed to load leaderboard', err);
+      }
+    };
+
+    load();
+    return () => { mounted = false; };
+  }, [user]);
+
+  // Fetch daily quiz leaderboard (aggregated points from all daily quizzes)
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      setDailyQuizLoading(true);
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+
+        const res = await fetch(`${API_BASE}/api/quiz-attempts/leaderboard/daily/aggregate`, { headers });
+
+        if (!res.ok) {
+          console.warn('Failed to fetch daily quiz leaderboard:', res.status);
+          setDailyQuizLeaders([]);
+          return;
+        }
+
+        const data = await res.json();
+        const leaders = Array.isArray(data) ? data : (data.leaders || []);
+        if (mounted) setDailyQuizLeaders(leaders);
+      } catch (err) {
+        console.error('Failed to load daily quiz leaderboard', err);
+        setDailyQuizLeaders([]);
+      } finally {
+        setDailyQuizLoading(false);
       }
     };
 
@@ -137,7 +171,7 @@ export default function LeaderboardScreen() {
                   <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>Points</th>
+                    <th>Grade</th>
                   </tr>
                 </thead>
 
@@ -164,29 +198,21 @@ export default function LeaderboardScreen() {
                 </div>
 
                 <div className="top__leaders-list">
-                        <div className="top__leaders-item">
-                          <span className="top__leaders-rank"><TbHexagonNumber1Filled/></span>
-                          <div className="top__leaders-info">
-                            <h5>Student 3</h5>
-                            <small><span>0</span></small>
-                          </div>
-                        </div>
-
-                        <div className="top__leaders-item">
-                          <span className="top__leaders-rank"><TbHexagonNumber2Filled/></span>
-                          <div className="top__leaders-info">
-                            <h5>Student 2</h5>
-                            <small><span>0</span></small>
-                          </div>
-                        </div>
-
-                        <div className="top__leaders-item">
-                          <span className="top__leaders-rank"><TbHexagonNumber3Filled/></span>
-                          <div className="top__leaders-info">
-                            <h5>Student 1</h5>
-                            <small><span>0</span></small>
-                          </div>
-                        </div>
+                  {dailyQuizLoading && <div style={{ padding: 12, color: '#666' }}>Loading leaderboard…</div>}
+                  {!dailyQuizLoading && dailyQuizLeaders.length === 0 && (
+                    <div style={{ padding: 12, color: '#666' }}>No quiz attempts yet.</div>
+                  )}
+                  {!dailyQuizLoading && dailyQuizLeaders.slice(0, 3).map((leader, idx) => (
+                    <div key={leader.studentId || leader._id || idx} className="top__leaders-item">
+                      <span className="top__leaders-rank">
+                        {idx === 0 ? <TbHexagonNumber1Filled /> : (idx === 1 ? <TbHexagonNumber2Filled /> : <TbHexagonNumber3Filled />)}
+                      </span>
+                      <div className="top__leaders-info">
+                        <h5>{leader.name || leader.username || `Student ${idx + 1}`}</h5>
+                        <small><span>{leader.totalPoints || 0}</span></small>
+                      </div>
+                    </div>
+                  ))}
                 </div>
             </div>
 
@@ -196,21 +222,28 @@ export default function LeaderboardScreen() {
                   <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>Grades</th>
+                    <th>Points</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr>
-                    <td><span>4</span></td>
-                    <td>Student 4</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <td><span>5</span></td>
-                    <td>Student 5</td>
-                    <td>0</td>
-                  </tr>
+                  {dailyQuizLoading && (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: 'center', color: '#666', padding: 12 }}>Loading…</td>
+                    </tr>
+                  )}
+                  {!dailyQuizLoading && dailyQuizLeaders.length === 0 && (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: 'center', color: '#666', padding: 12 }}>No quiz attempts yet.</td>
+                    </tr>
+                  )}
+                  {!dailyQuizLoading && dailyQuizLeaders.slice(3).map((leader, idx) => (
+                    <tr key={leader.studentId || leader._id || idx}>
+                      <td><span>{idx + 4}</span></td>
+                      <td>{leader.name || leader.username || 'Student'}</td>
+                      <td>{leader.totalPoints || 0}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

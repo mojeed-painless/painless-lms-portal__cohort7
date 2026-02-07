@@ -571,7 +571,7 @@ h2 span.live-text {
 
 .quiz__date-item {
   background: radial-gradient(#280a48, #20043d);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   transition: all 0.4s ease;
 }
@@ -591,12 +591,12 @@ h2 span.live-text {
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.4s ease;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
 .quiz__date-btn:hover {
-  background: rgba(121, 37, 211, 0.1);
+  background: rgba(121, 37, 211, 0.2);
 }
 
 .quiz__date-btn span:first-child {

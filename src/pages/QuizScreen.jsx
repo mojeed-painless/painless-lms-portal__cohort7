@@ -48,6 +48,7 @@ export default function QuizScreen() {
   const [leaderLoading, setLeaderLoading] = useState(false);
   const [myDailyAttempt, setMyDailyAttempt] = useState(null);
   const [myDailyLoading, setMyDailyLoading] = useState(true);
+  // previousAttempts UI and fetching removed per request
   const timerCompletedRef = useRef(false);
   const restTimerRef = useRef(null); // Track when rest period started
   const targetDateRef = useRef(null); // Persistent next-target date
@@ -128,15 +129,32 @@ export default function QuizScreen() {
         if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
 
         const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/session?date=${iso}`, { headers });
-        if (!res.ok) {
-          setDailySession(null);
-          setSessionLoading(false);
-          return;
+        const data = await res.json().catch(() => null);
+        // If server returned a session use it, otherwise fall back to a client-default session at 20:30 local time
+        let session = data && data.session ? data.session : null;
+        if (!session) {
+          // build local default: today at 20:30 local time, 2-minute window
+          const nowLocal = new Date();
+          const startLocal = new Date(nowLocal);
+          startLocal.setHours(21, 0, 0, 0);
+          const endLocal = new Date(startLocal.getTime() + 2 * 60 * 1000);
+          // if the window already passed for today, move to tomorrow
+          if (nowLocal > endLocal) {
+            startLocal.setDate(startLocal.getDate() + 1);
+          }
+          const finalStart = startLocal;
+          const finalEnd = new Date(finalStart.getTime() + 2 * 60 * 1000);
+          session = {
+            date: finalStart.toISOString().slice(0, 10),
+            startAt: finalStart.toISOString(),
+            endAt: finalEnd.toISOString(),
+            _clientFallback: true,
+          };
         }
-        const data = await res.json();
-        setDailySession(data.session || null);
-        sessionStartRef.current = data.session && data.session.startAt ? new Date(data.session.startAt) : null;
-        sessionEndRef.current = data.session && data.session.endAt ? new Date(data.session.endAt) : null;
+
+        setDailySession(session);
+        sessionStartRef.current = session && session.startAt ? new Date(session.startAt) : null;
+        sessionEndRef.current = session && session.endAt ? new Date(session.endAt) : null;
 
         const now = new Date();
         if (sessionStartRef.current && now < sessionStartRef.current) {
@@ -166,26 +184,65 @@ export default function QuizScreen() {
     return () => clearInterval(poll);
   }, [user]);
 
+  // Update the "before quiz" countdown every second so it ticks smoothly
+  useEffect(() => {
+    let t = null;
+    const tick = () => {
+      const now = new Date();
+      if (sessionStartRef.current && now < sessionStartRef.current) {
+        const secs = Math.max(0, Math.round((sessionStartRef.current - now) / 1000));
+        const hours = Math.floor(secs / 3600);
+        const minutes = Math.floor((secs % 3600) / 60);
+        const seconds = secs % 60;
+        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
+      } else if (sessionStartRef.current && sessionEndRef.current && now >= sessionStartRef.current && now < sessionEndRef.current) {
+        // if live, ensure beforeQuiz is zeroed
+        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
+      } else {
+        // no session yet or passed — keep zeros
+        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
+      }
+    };
+
+    // start ticking only while not live
+    tick();
+    t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  }, [dailySession, quizIsLive]);
+
   // Fetch today's top 3 leaderboard for daily quiz
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setLeaderLoading(true);
       try {
-        const iso = new Date().toISOString().slice(0, 10);
+        const today = new Date();
+        const iso = today.toISOString().slice(0, 10);
         const headers = {};
         if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
 
+        // Try fetching today's leaderboard
         const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${iso}`, { headers });
-        if (!res.ok) {
-          setDailyTop([]);
-          setLeaderLoading(false);
-          return;
-        }
         const data = await res.json();
-        setDailyTop(data.top || []);
+        
+        // If today has data, use it
+        if (data.top && data.top.length > 0) {
+          setDailyTop(data.top);
+        } else {
+          // If today has no submissions, fetch yesterday's top 3
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          const yesterdayIso = yesterday.toISOString().slice(0, 10);
+          
+          const yesterdayRes = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${yesterdayIso}`, { headers });
+          const yesterdayData = await yesterdayRes.json();
+          
+          if (yesterdayData.top && yesterdayData.top.length > 0) {
+            setDailyTop(yesterdayData.top);
+          }
+        }
       } catch (err) {
         console.error('Error fetching leaderboard', err);
-        setDailyTop([]);
+        // Keep previous data on error
       } finally {
         setLeaderLoading(false);
       }
@@ -223,6 +280,8 @@ export default function QuizScreen() {
 
     fetchMyAttempt();
   }, [user, submissionDone]);
+
+  // previousAttempts fetching removed
 
 
   // When the quiz starts, run a 2-minute during-quiz timer and then trigger rest
@@ -263,17 +322,7 @@ export default function QuizScreen() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [quizIsLive]);
-
-                const now = new Date();
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const yyyy = now.getFullYear();
-                const todayStr = `${mm}/${dd}/${yyyy}`;
-                const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
-                const questions = entry.questions || [];
-
-
+  }, [quizIsLive, quizStarted]);
 
   return (
     <div className="quiz__container">
@@ -370,7 +419,16 @@ export default function QuizScreen() {
           </div>
         )}
 
-        {(quizIsLive && !quizStarted)  && (
+        {(quizIsLive && !quizStarted)  && (() => {
+          const now = new Date();
+          const mm = String(now.getMonth() + 1).padStart(2, '0');
+          const dd = String(now.getDate()).padStart(2, '0');
+          const yyyy = now.getFullYear();
+          const todayStr = `${mm}/${dd}/${yyyy}`;
+          const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
+          const questions = entry.questions || [];
+
+          return (
           <div className="quiz__countdown">
               <div className="during__quiz">
                 <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
@@ -402,8 +460,8 @@ export default function QuizScreen() {
                   )}
               </div>
           </div>
-        )}
-
+        );
+        })()}
 
         {/* QUIZ QUESTIONS */}
         {(quizIsLive && quizStarted) && 
@@ -528,54 +586,7 @@ export default function QuizScreen() {
           </div>
         </div>
 
-        {/* PREVIOUS QUIZZES */}
-        <div className="quiz__previous">
-          <h3><span><WandSparkles/></span>Previous Quizzes</h3>
-          
-          <div className="quiz__previous-dates">
-                <div className={`quiz__date-item`}>
-                  <button className="quiz__date-btn">
-                    <span><CalendarDays/></span>
-                    <span className="date-label">
-                      {new Date().toLocaleDateString('en-US', { 
-                        month: 'long', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                      })}
-                    </span>
-                    <span className="quiz__score-badge">
-                      3/3
-                    </span>
-                  </button>
-
-                    <div className="quiz__date-content">
-                          <div className="quiz__question-item">
-                            <div className="question-header">
-                              <h4><small>Question 1:</small></h4>
-                              <span className={`status-badge ${isCorrect ? 'correct' : 'incorrect'}`}>
-                                {isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                              </span>
-                            </div>
-
-                            <div className="quiz-question">
-                              What is HTML
-                            </div>
-
-                              {/* <div style={{ margin: '12px 0' }}>
-                                <img src='' alt="question" style={{ maxWidth: '100%', borderRadius: '4px' }} />
-                              </div> */}
-
-                            <div className="answer-section">
-                                  <div>
-                                    <span className="option-letter">A</span>
-                                    <span className="option-text">Skelenton</span>
-                                  </div>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-          </div>
-        </div>
+        {/* Previous quizzes UI removed */}
       </div>}
 
       

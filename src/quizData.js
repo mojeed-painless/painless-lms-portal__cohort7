@@ -48,7 +48,53 @@ export const DailyQuizData = [
                 correctAnswer: 'C',
             },
         ],
-    }
+    },
+    {
+        day: 2,
+        date: '02/07/2026',
+        questions: [
+            {
+                id: 1,
+                question: "Which of the following is not a core element of a boilerplate?",
+                options: [
+                    { id: 'A', text: "<img>" },
+                    { id: 'B', text: "<body>" },
+                    { id: 'C', text: "<!DOCTYPE>" },
+                    { id: 'D', text: "<meta>" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 2,
+                question: "What attribute is used to change the list type of an ordered list?",
+                options: [
+                    { id: 'A', text: "style = \" \"" },
+                    { id: 'B', text: "list-style-type: square" },
+                    { id: 'C', text: "<li>list type</li>" },
+                    { id: 'D', text: "type = \" \"" }
+                ],
+                correctAnswer: 'D',
+            },
+            {
+                id: 3,
+                question: "Which of the following tags is used to add rows in a table?",
+                options: [
+                    { id: 'A', text: "<row>" },
+                    { id: 'B', text: "<tr>" },
+                    { id: 'C', text: "<th>" },
+                    { id: 'D', text: "<td>" }
+                ],
+                correctAnswer: 'B',
+            }
+        ],
+    },
+    {
+        day: 3,
+        date: '02/08/2026',
+        questions: [
+            
+        ],
+    },
 ]
 
 
