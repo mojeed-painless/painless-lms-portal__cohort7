@@ -34,13 +34,13 @@ export default function PseudoClasses() {
 
             <h4>Anchor Pseudo-classes</h4>
             <p>These are used to define styles for different states of links 
-                (<code>&lt;a&gt;</code> tags):
+                (<code className="code">&lt;a&gt;</code> tags):
             </p>
             <ul>
-                <li><code>:link</code> – a link that has not been visited.</li>
-                <li><code>:visited</code> – a link that has been visited.</li>
-                <li><code>:hover</code> – when the mouse is over the link.</li>
-                <li><code>:active</code> – the moment a link is clicked.</li>
+                <li><code className="code">:link</code> – a link that has not been visited.</li>
+                <li><code className="code">:visited</code> – a link that has been visited.</li>
+                <li><code className="code">:hover</code> – when the mouse is over the link.</li>
+                <li><code className="code">:active</code> – the moment a link is clicked.</li>
             </ul>
 <ExampleCode> 
 {`a:link {
@@ -61,7 +61,7 @@ export default function PseudoClasses() {
 </ExampleCode>
 
             <h4>Interaction States</h4>
-            <p>like <code>:hover</code>, <code>:focus</code>, <code>:active</code> 
+            <p>like <code className="code">:hover</code>, <code className="code">:focus</code>, <code className="code">:active</code> 
                 apply to various elements beyond links:
             </p>
 <ExampleCode> 
@@ -77,10 +77,10 @@ export default function PseudoClasses() {
             <h4>Structural Pseudo-classes</h4>
             <p>These target elements based on their position in the DOM:</p>
             <ul>
-                <li><code>:first-child</code> – Selects the first child.</li>
-                <li><code>:last-child</code> – Selects the last child.</li>
-                <li><code>:nth-child(n)</code> – Selects the nth child.</li>
-                <li><code>:nth-of-type(n)</code> – Selects the nth occurrence of an element of that type.</li>
+                <li><code className="code">:first-child</code> – Selects the first child.</li>
+                <li><code className="code">:last-child</code> – Selects the last child.</li>
+                <li><code className="code">:nth-child(n)</code> – Selects the nth child.</li>
+                <li><code className="code">:nth-of-type(n)</code> – Selects the nth occurrence of an element of that type.</li>
             </ul>
 <ExampleCode> 
 {`p:first-child {
@@ -99,11 +99,11 @@ export default function PseudoClasses() {
             <h4>State-based Pseudo-classes</h4>
             <p>Useful for form elements:</p>
             <ul>
-                <li><code>:checked</code> – radio or checkbox inputs that are checked.</li>
-                <li><code>:disabled</code> – disabled form elements.</li>
-                <li><code>:enabled</code> – enabled elements.</li>
-                <li><code>:required</code> – required inputs.</li>
-                <li><code>:optional</code> – optional inputs.</li>
+                <li><code className="code">:checked</code> – radio or checkbox inputs that are checked.</li>
+                <li><code className="code">:disabled</code> – disabled form elements.</li>
+                <li><code className="code">:enabled</code> – enabled elements.</li>
+                <li><code className="code">:required</code> – required inputs.</li>
+                <li><code className="code">:optional</code> – optional inputs.</li>
             </ul>
 <ExampleCode> 
 {`input:checked {
@@ -116,7 +116,7 @@ export default function PseudoClasses() {
 </ExampleCode>
 
             <h4>Negation Pseudo-class</h4>
-            <p><code>:not(selector)</code> – selects every element except the one specified.</p>
+            <p><code className="code">:not(selector)</code> – selects every element except the one specified.</p>
 <ExampleCode> 
 {`p:not(.highlight) {
     color: gray;
@@ -124,7 +124,7 @@ export default function PseudoClasses() {
 </ExampleCode>
 
             <h4>Target Pseudo-class</h4>
-            <p><code>:target</code> – selects an element that's being targeted by a URL fragment (like <code>#section1</code>).</p>
+            <p><code className="code">:target</code> – selects an element that's being targeted by a URL fragment (like <code className="code">#section1</code>).</p>
 <ExampleCode> 
 {`#section1:target {
     background: lightyellow;

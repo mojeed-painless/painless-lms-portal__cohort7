@@ -14,7 +14,7 @@ export default function Links() {
 
             <section>
                 <div className="course-content__container">
-                    <p>In HTML, links are created using the <code>&lt;a&gt;</code> tag. CSS gives 
+                    <p>In HTML, links are created using the <code className="code">&lt;a&gt;</code> tag. CSS gives 
                             you the ability to style these links to improve appearance and user 
                             interaction. You can change the color, add background, modify fonts, 
                             and more.
@@ -34,14 +34,14 @@ export default function Links() {
                         <p>There are 4 key states of a link that you can target in CSS:</p>
 
                         <ul>
-                            <li><code>:link</code> – Targets links that have not been visited.</li>
-                            <li><code>:visited</code> – Targets links the user has previously clicked.</li>
-                            <li><code>:hover</code> – Targets links when the mouse is placed over them.</li>
-                            <li><code>:active</code> – Targets the link while it is being clicked.</li>
+                            <li><code className="code">:link</code> – Targets links that have not been visited.</li>
+                            <li><code className="code">:visited</code> – Targets links the user has previously clicked.</li>
+                            <li><code className="code">:hover</code> – Targets links when the mouse is placed over them.</li>
+                            <li><code className="code">:active</code> – Targets the link while it is being clicked.</li>
                         </ul>
 
                         <p>The order in which you define these states matters. The correct order is:<br />
-                        <code>a:link → a:visited → a:hover → a:active</code>
+                        <code className="code">a:link → a:visited → a:hover → a:active</code>
                         </p>
 
                         <h3>Examples</h3>

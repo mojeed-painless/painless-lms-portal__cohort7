@@ -20,9 +20,9 @@ export default function InsertingCSS() {
 
                         <h3>1. External Styling</h3>
                         <p>
-                            External CSS is the most common and scalable method. The styles are written in a separate file with a <code>.css</code> extension. This makes it easy to apply consistent styles across multiple HTML pages and maintain your code more efficiently.
+                            External CSS is the most common and scalable method. The styles are written in a separate file with a <code className="code">.css</code> extension. This makes it easy to apply consistent styles across multiple HTML pages and maintain your code more efficiently.
                         </p>
-                        <p>To use external CSS, link the stylesheet in the <code>&lt;head&gt;</code> section of your HTML page:</p>
+                        <p>To use external CSS, link the stylesheet in the <code className="code">&lt;head&gt;</code> section of your HTML page:</p>
 
 <ExampleCode> 
 {`<head>
@@ -34,7 +34,7 @@ export default function InsertingCSS() {
 
                         <h3>2. Internal Styling</h3>
                         <p>
-                            Internal CSS is used when a single HTML document needs its own unique styling. This CSS is placed within a <code>&lt;style&gt;</code> tag in the <code>&lt;head&gt;</code> section of the HTML file.
+                            Internal CSS is used when a single HTML document needs its own unique styling. This CSS is placed within a <code className="code">&lt;style&gt;</code> tag in the <code className="code">&lt;head&gt;</code> section of the HTML file.
                         </p>
 
 <ExampleCode> 
@@ -55,7 +55,7 @@ export default function InsertingCSS() {
 
                         <h3>3. Inline Styling</h3>
                         <p>
-                            Inline CSS is applied directly inside an HTML tag using the <code>style</code> attribute. This is best for quick testing or applying a one-time unique style to a single element.
+                            Inline CSS is applied directly inside an HTML tag using the <code className="code">style</code> attribute. This is best for quick testing or applying a one-time unique style to a single element.
                         </p>
 
 <ExampleCode> 

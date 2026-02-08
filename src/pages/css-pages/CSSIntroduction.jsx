@@ -23,7 +23,7 @@ export default function CSSIntroduction() {
 
                         <p>
                             Originally, HTML was designed solely to structure and describe the content of a webpage. It wasn’t created for visual design.
-                            However, as web development evolved, there was a need to control fonts, colors, spacing, and layout — which led to temporary solutions like the <code>&lt;font&gt;</code> tag and <code>color</code> attributes in HTML 3.2.
+                            However, as web development evolved, there was a need to control fonts, colors, spacing, and layout — which led to temporary solutions like the <code className="code">&lt;font&gt;</code> tag and <code className="code">color</code> attributes in HTML 3.2.
                         </p>
 
                         <p>

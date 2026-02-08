@@ -15,7 +15,7 @@ export default function Opacity() {
             <section>
                 <div className="course-content__container">
                      <p>The <strong>opacity</strong> property in CSS is used to set the transparency level of an element.</p>
-            <p>It takes a value from <code>0</code> (completely transparent) to <code>1</code> (fully opaque).</p>
+            <p>It takes a value from <code className="code">0</code> (completely transparent) to <code className="code">1</code> (fully opaque).</p>
 
             <h4>Syntax:</h4>
 <ExampleCode> 
@@ -25,10 +25,10 @@ export default function Opacity() {
 </ExampleCode>
 
             <ul>
-                <li><strong>value</strong>: A number between <code>0</code> and <code>1</code></li>
-                <li><code>1</code> means fully visible (default)</li>
-                <li><code>0</code> means fully invisible</li>
-                <li><code>0.5</code> means 50% transparency</li>
+                <li><strong>value</strong>: A number between <code className="code">0</code> and <code className="code">1</code></li>
+                <li><code className="code">1</code> means fully visible (default)</li>
+                <li><code className="code">0</code> means fully invisible</li>
+                <li><code className="code">0.5</code> means 50% transparency</li>
             </ul>
 
             <h4>Examples:</h4>
@@ -88,8 +88,8 @@ export default function Opacity() {
 
             <h3>Notes:</h3>
             <ul>
-                <li>The <code>opacity</code> property affects the entire element including its content (text, child elements).</li>
-                <li>To make only the background transparent, use <code>rgba()</code> colors instead of opacity.</li>
+                <li>The <code className="code">opacity</code> property affects the entire element including its content (text, child elements).</li>
+                <li>To make only the background transparent, use <code className="code">rgba()</code> colors instead of opacity.</li>
             </ul>
 
     <VideoBox 

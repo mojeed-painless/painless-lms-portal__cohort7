@@ -20,11 +20,11 @@ export default function Images() {
 
             <section>
                 <div className="course-content__container">
-                    <p>The <code>&lt;img&gt;</code> tag is used when you want to display images in an HTML page. It is a <strong>self-closing tag</strong>, meaning it does not need a closing tag like <code>&lt;/img&gt;</code>.</p>
+                    <p>The <code className="code">&lt;img&gt;</code> tag is used when you want to display images in an HTML page. It is a <strong>self-closing tag</strong>, meaning it does not need a closing tag like <code className="code">&lt;/img&gt;</code>.</p>
 
   <h3>Basic Syntax</h3>
   <p>
-    The most important attribute is <code>src</code>, which stands for "source". It tells the browser where to find the image.
+    The most important attribute is <code className="code">src</code>, which stands for "source". It tells the browser where to find the image.
   </p>
 
 <ExampleCode>
@@ -32,7 +32,7 @@ export default function Images() {
 </ExampleCode>
 
   <p>
-    This will display an image located in the <code>img</code> folder of your project directory.
+    This will display an image located in the <code className="code">img</code> folder of your project directory.
   </p>
 
 
@@ -40,7 +40,7 @@ export default function Images() {
 
   <h3>Setting Image Size with style</h3>
   <p>
-    You can style the image using the <code>style</code> attribute to control the <code>width</code> and <code>height</code>.
+    You can style the image using the <code className="code">style</code> attribute to control the <code className="code">width</code> and <code className="code">height</code>.
   </p>
 
 <ExampleCode>
@@ -52,7 +52,7 @@ export default function Images() {
 
   <h3>Alternatively: Use Width and Height Attributes</h3>
   <p>
-    Instead of using <code>style</code>, you can directly use the <code>width</code> and <code>height</code> attributes:
+    Instead of using <code className="code">style</code>, you can directly use the <code className="code">width</code> and <code className="code">height</code> attributes:
   </p>
 
 <ExampleCode>
@@ -87,7 +87,7 @@ export default function Images() {
                             <li>Create a new html file and name it <i>"my_image_work"</i></li>
                             <li>Inside the single file, do the following;</li>
                             <li>Add 3 different images to your website</li>
-                            <li>Use the <code>style</code> attribute to set the width(200px) and height of each image</li>
+                            <li>Use the <code className="code">style</code> attribute to set the width(200px) and height of each image</li>
                             <li>Ensure the images are displayed correctly on your webpage</li>
                         </ol>
                     </AssignmentBox>
@@ -109,7 +109,6 @@ export default function Images() {
             <PrevNextBtn 
                 prevPath="/html-table" 
                 nextPath="/html-hyperlinks"
-                nextPath=""
             />
         </section>
     );

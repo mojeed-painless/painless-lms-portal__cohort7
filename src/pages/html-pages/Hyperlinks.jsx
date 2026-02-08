@@ -32,8 +32,8 @@ export default function Hyperlinks() {
 </ExampleCode>
 
   <p>
-    The <code>&lt;a&gt;</code> tag is the anchor tag that defines a hyperlink.
-    The <code>href</code> attribute specifies the destination (URL) the link points to.
+    The <code className="code">&lt;a&gt;</code> tag is the anchor tag that defines a hyperlink.
+    The <code className="code">href</code> attribute specifies the destination (URL) the link points to.
     The text between the opening and closing anchor tags is what the user sees and clicks.
   </p>
 
@@ -50,12 +50,12 @@ export default function Hyperlinks() {
   <h3>The target Attribute</h3>
 
   <p>
-    By default, links open in the same browser tab. But you can control this using the <code>target</code> attribute:
+    By default, links open in the same browser tab. But you can control this using the <code className="code">target</code> attribute:
   </p>
 
   <ul>
-    <li><code>_self</code> – Opens the link in the same tab (default behavior)</li>
-    <li><code>_blank</code> – Opens the link in a new tab</li>
+    <li><code className="code">_self</code> – Opens the link in the same tab (default behavior)</li>
+    <li><code className="code">_blank</code> – Opens the link in a new tab</li>
   </ul>
 
   <p>
@@ -67,7 +67,7 @@ export default function Hyperlinks() {
 </ExampleCode>
 
 <p>
-    The <code>_blank</code> is useful because we want to keep users within our webpage and 
+    The <code className="code">_blank</code> is useful because we want to keep users within our webpage and 
     we don't want them going off by clicking the hyperlink.
 </p>
 
@@ -84,7 +84,7 @@ export default function Hyperlinks() {
         <li>Create a new html file and name it <i>"my_hyperlink_work"</i></li>
         <li>Inside the single file, do the following;</li>
         <li>Create an hyperlink to a website of your choice</li>
-        <li>Use the <code>target</code> attribute to open the link in a new tab</li>
+        <li>Use the <code className="code">target</code> attribute to open the link in a new tab</li>
         <li>Ensure the hyperlink is displayed correctly on your webpage</li>
       </ol>
     </AssignmentBox>

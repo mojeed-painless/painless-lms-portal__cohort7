@@ -14,12 +14,12 @@ export default function HeightWidth() {
 
             <section>
                 <div className="course-content__container">
-                    <p>In CSS, the <code>height</code> and <code>width</code> properties define the size of an element’s content area. These are foundational for building well-structured and responsive designs.</p>
+                    <p>In CSS, the <code className="code">height</code> and <code className="code">width</code> properties define the size of an element’s content area. These are foundational for building well-structured and responsive designs.</p>
 
-  <p>By default, the width of block-level elements (like <code>&lt;div&gt;</code> ) spans the entire width of its parent container, while the height adjusts to the content inside it. But CSS gives you control over both.</p>
+  <p>By default, the width of block-level elements (like <code className="code">&lt;div&gt;</code> ) spans the entire width of its parent container, while the height adjusts to the content inside it. But CSS gives you control over both.</p>
   
     <h3>Width</h3>
-  <p>The <code>width</code> property defines how wide an element should be. By default, block-level elements like <code>&lt;div&gt;</code> stretch to the full width of their container, but you can control that:</p>
+  <p>The <code className="code">width</code> property defines how wide an element should be. By default, block-level elements like <code className="code">&lt;div&gt;</code> stretch to the full width of their container, but you can control that:</p>
 
 <ExampleCode> 
 {`div {
@@ -29,14 +29,14 @@ export default function HeightWidth() {
 
   <p><b> Common units for width:</b></p>
   <ul>
-    <li><code>px</code> – pixels</li>
-    <li><code>%</code> – percentage of the parent</li>
-    <li><code>vw</code> – viewport width</li>
-    <li><code>em/rem</code> – relative to font size</li>
+    <li><code className="code">px</code> – pixels</li>
+    <li><code className="code">%</code> – percentage of the parent</li>
+    <li><code className="code">vw</code> – viewport width</li>
+    <li><code className="code">em/rem</code> – relative to font size</li>
   </ul>
 
   <h3>Height</h3>
-  <p>The <code>height</code> property controls how tall an element should be. You can set it like this:</p>
+  <p>The <code className="code">height</code> property controls how tall an element should be. You can set it like this:</p>
 
 <ExampleCode> 
 {`div {
@@ -48,16 +48,16 @@ export default function HeightWidth() {
 
   <h3>Other Related Properties</h3>
   <ul>
-    <li><code>max-width</code>: Limits how wide an element can become</li>
-    <li><code>min-width</code>: Ensures a minimum width</li>
-    <li><code>max-height</code>: Prevents it from growing too tall</li>
-    <li><code>min-height</code>: Ensures minimum vertical space</li>
-    <li><code>auto</code>: Automatically adjusts to fit content</li>
+    <li><code className="code">max-width</code>: Limits how wide an element can become</li>
+    <li><code className="code">min-width</code>: Ensures a minimum width</li>
+    <li><code className="code">max-height</code>: Prevents it from growing too tall</li>
+    <li><code className="code">min-height</code>: Ensures minimum vertical space</li>
+    <li><code className="code">auto</code>: Automatically adjusts to fit content</li>
   </ul>
 
   <h3>width and margin: auto;</h3>
-                        <p><code>width</code> restricts the full width of a block element.</p>
-                        <p><code>margin: auto</code> centers the element horizontally.</p>
+                        <p><code className="code">width</code> restricts the full width of a block element.</p>
+                        <p><code className="code">margin: auto</code> centers the element horizontally.</p>
 
 <ExampleCode> 
 {`<div class="center-box">Centered Box</div>
@@ -70,7 +70,7 @@ export default function HeightWidth() {
 </ExampleCode>
 
   <h3>Conclusion</h3>
-  <p>Mastering height and width gives you better control over layout, responsiveness, and visual consistency. Use percentage and viewport-based units for flexibility, and combine with <code>min-</code> and <code>max-</code> values for better responsiveness.</p>
+  <p>Mastering height and width gives you better control over layout, responsiveness, and visual consistency. Use percentage and viewport-based units for flexibility, and combine with <code className="code">min-</code> and <code className="code">max-</code> values for better responsiveness.</p>
 
 
 

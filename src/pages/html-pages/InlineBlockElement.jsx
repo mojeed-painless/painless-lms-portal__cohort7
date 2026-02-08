@@ -47,7 +47,7 @@ export default function InlineBlockElement() {
 
   <h4>The &lt;div&gt; Element</h4>
   <p>
-    The <code>&lt;div&gt;</code> tag is one of the most commonly used block-level elements. It acts as a container for other elements, helping structure your page and making it easier to apply CSS styling later.
+    The <code className="code">&lt;div&gt;</code> tag is one of the most commonly used block-level elements. It acts as a container for other elements, helping structure your page and making it easier to apply CSS styling later.
   </p>
 
   <h3>Inline Elements</h3>
@@ -68,7 +68,7 @@ export default function InlineBlockElement() {
 
   <h4> The &lt;span&gt; Element</h4>
   <p>
-    The <code>&lt;span&gt;</code> tag is commonly used to style part of the text inside a block element. It's especially useful when combined with CSS.
+    The <code className="code">&lt;span&gt;</code> tag is commonly used to style part of the text inside a block element. It's especially useful when combined with CSS.
   </p>
 
   <h4>Formatting with Inline Tags</h4>
@@ -77,8 +77,8 @@ export default function InlineBlockElement() {
   </p>
 
   <ul>
-    <li><code>&lt;b&gt;</code> or <code>&lt;strong&gt;</code> – bold text</li>
-    <li><code>&lt;i&gt;</code> or <code>&lt;em&gt;</code> – italic text</li>
+    <li><code className="code">&lt;b&gt;</code> or <code className="code">&lt;strong&gt;</code> – bold text</li>
+    <li><code className="code">&lt;i&gt;</code> or <code className="code">&lt;em&gt;</code> – italic text</li>
   </ul>
 
   <h3 className="bold">
@@ -126,6 +126,7 @@ export default function InlineBlockElement() {
             <PrevNextBtn 
                 prevPath="/html-hyperlinks" 
                 // nextPath="/html-form"
+                nextPath=""
             />
         </section>
     );

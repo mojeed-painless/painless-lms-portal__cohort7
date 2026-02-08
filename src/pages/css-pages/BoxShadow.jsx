@@ -14,7 +14,7 @@ export default function BoxShadow() {
 
             <section>
                 <div className="course-content__container">
-                    <p>The <code>box-shadow</code> property in CSS adds shadow effects around an element’s frame. You can create one or more shadows using this property. It can be used to create depth, highlight elements, or create stylish UI effects.</p>
+                    <p>The <code className="code">box-shadow</code> property in CSS adds shadow effects around an element’s frame. You can create one or more shadows using this property. It can be used to create depth, highlight elements, or create stylish UI effects.</p>
 
             <h4>Syntax:</h4>
 <ExampleCode> 

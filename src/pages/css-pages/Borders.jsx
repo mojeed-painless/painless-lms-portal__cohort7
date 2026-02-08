@@ -21,7 +21,7 @@ export default function Borders() {
                         <h3>border-style</h3>
                         <p>
                             This property defines the type of line the border will be. You can use up to 4 values in clockwise order:
-                            <code>dotted</code>, <code>dashed</code>, <code>solid</code>, <code>double</code>, <code>groove</code>, <code>ridge</code>, <code>inset</code>, <code>outset</code>, <code>none</code>, <code>hidden</code>.
+                            <code className="code">dotted</code>, <code className="code">dashed</code>, <code className="code">solid</code>, <code className="code">double</code>, <code className="code">groove</code>, <code className="code">ridge</code>, <code className="code">inset</code>, <code className="code">outset</code>, <code className="code">none</code>, <code className="code">hidden</code>.
                         </p>
 
 <ExampleCode> 
@@ -34,7 +34,7 @@ export default function Borders() {
 
   <h3>border-width</h3>
   <p>
-    Defines the thickness of the border using units like <code>px</code>, <code>pt</code>, <code>cm</code>, <code>em</code>, or keywords like <code>thin</code>, <code>medium</code>, and <code>thick</code>.
+    Defines the thickness of the border using units like <code className="code">px</code>, <code className="code">pt</code>, <code className="code">cm</code>, <code className="code">em</code>, or keywords like <code className="code">thin</code>, <code className="code">medium</code>, and <code className="code">thick</code>.
   </p>
 <ExampleCode> 
 {`p {
@@ -55,10 +55,10 @@ export default function Borders() {
   <h3>Individual Sides</h3>
   <p>You can specify border styles, colors, and widths individually:</p>
   <ul>
-    <li><code>border-top-style</code></li>
-    <li><code>border-right-color</code></li>
-    <li><code>border-bottom-width</code></li>
-    <li><code>border-left</code>, etc.</li>
+    <li><code className="code">border-top-style</code></li>
+    <li><code className="code">border-right-color</code></li>
+    <li><code className="code">border-bottom-width</code></li>
+    <li><code className="code">border-left</code>, etc.</li>
   </ul>
 
   <h3> border (shorthand)</h3>

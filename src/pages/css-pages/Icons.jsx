@@ -30,7 +30,7 @@ export default function Icons() {
                         </p>
 
                         <h3>Using Font Awesome Icons</h3>
-                        <p>To use Font Awesome, include the CDN link in your <code>&lt;head&gt;</code> section. Then, use the <code>&lt;i&gt;</code> or <code>&lt;span&gt;</code> tag with the appropriate class name.</p>
+                        <p>To use Font Awesome, include the CDN link in your <code className="code">&lt;head&gt;</code> section. Then, use the <code className="code">&lt;i&gt;</code> or <code className="code">&lt;span&gt;</code> tag with the appropriate class name.</p>
                         
                         <h4>Example:</h4>
 <ExampleCode> 
@@ -58,7 +58,7 @@ export default function Icons() {
                         </ul>
 
                         <h3>2. Using Bootstrap Icons</h3>
-                        <p>Include the Bootstrap Icons CDN in your <code>&lt;head&gt;</code>, then use the <code>&lt;i&gt;</code> or <code>&lt;span&gt;</code> tag with <code>bi</code> classes.</p>
+                        <p>Include the Bootstrap Icons CDN in your <code className="code">&lt;head&gt;</code>, then use the <code className="code">&lt;i&gt;</code> or <code className="code">&lt;span&gt;</code> tag with <code className="code">bi</code> classes.</p>
 
                         <h4>Example:</h4>
 <ExampleCode> 
@@ -86,7 +86,7 @@ export default function Icons() {
                         </ul>
 
                         <h3>Using Google Material Icons</h3>
-                        <p>For Material Icons, include the Google Fonts link in your <code>&lt;head&gt;</code> and use the <code>&lt;span&gt;</code> tag with the class <code>material-icons</code>.</p>
+                        <p>For Material Icons, include the Google Fonts link in your <code className="code">&lt;head&gt;</code> and use the <code className="code">&lt;span&gt;</code> tag with the class <code className="code">material-icons</code>.</p>
 
                         <h4>Example:</h4>
 

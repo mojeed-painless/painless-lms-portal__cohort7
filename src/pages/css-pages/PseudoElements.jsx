@@ -50,7 +50,7 @@ export default function PseudoElements() {
 </ExampleCode>
 
             <h3>::before</h3>
-            <p>Inserts content before the element’s content. You must use the <code>content</code> property.</p>
+            <p>Inserts content before the element’s content. You must use the <code className="code">content</code> property.</p>
 <ExampleCode> 
 {`h1::before {
     content: " ";
@@ -60,7 +60,7 @@ export default function PseudoElements() {
             <p><strong>Use Case:</strong> Adding icons, labels, or quotes before headings or sections.</p>
 
             <h3>::after</h3>
-            <p>Inserts content after the element’s content. Also requires the <code>content</code> property.</p>
+            <p>Inserts content after the element’s content. Also requires the <code className="code">content</code> property.</p>
 <ExampleCode> 
 {`h1::after {
     content: " ";
@@ -68,7 +68,7 @@ export default function PseudoElements() {
 </ExampleCode>
 
             <h3>::marker</h3>
-            <p>Targets the bullet or number of a list item. Works on elements with <code>display: list-item</code>.</p>
+            <p>Targets the bullet or number of a list item. Works on elements with <code className="code">display: list-item</code>.</p>
 <ExampleCode> 
 {`li::marker {
     color: green;

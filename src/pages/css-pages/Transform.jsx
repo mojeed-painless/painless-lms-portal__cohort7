@@ -14,7 +14,7 @@ export default function Transform() {
 
             <section>
                 <div className="course-content__container">
-                    <p>The <code>transform</code> property in CSS allows you to visually manipulate an element’s shape, size, position, and rotation without affecting the document flow. This is widely used in animations, UI interactions, and responsive design effects.</p>
+                    <p>The <code className="code">transform</code> property in CSS allows you to visually manipulate an element’s shape, size, position, and rotation without affecting the document flow. This is widely used in animations, UI interactions, and responsive design effects.</p>
 
             <h4>Syntax:</h4>
 <ExampleCode> 

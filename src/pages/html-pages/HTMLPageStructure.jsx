@@ -36,8 +36,8 @@ export default function HTMLPageStructure() {
                         one you'll use often:
                       </p>
                       
- <ExampleCode>
- {`<!DOCTYPE html>
+<ExampleCode>
+{`<!DOCTYPE html>
  <html lang="en">
  <head>
     <meta charset="UTF-8">
@@ -68,9 +68,9 @@ export default function HTMLPageStructure() {
 
   <h3>The &lt;html&gt; Tag</h3>
   <p>
-    The <code>&lt;html&gt;</code> element wraps the entire page content. The <code className="code">lang="en"</code> attribute specifies the language of the document as English.
+    The <code className="code">&lt;html&gt;</code> element wraps the entire page content. The <code className="code">lang="en"</code> attribute specifies the language of the document as English.
   </p>
-  <code>&lt;html lang="en"&gt;</code>
+  <code className="code">&lt;html lang="en"&gt;</code>
 
 
 
@@ -78,16 +78,16 @@ export default function HTMLPageStructure() {
 
   <h3>The &lt;head&gt; Tag</h3>
   <p>
-    The <code>&lt;head&gt;</code> section contains metadata — information about the page — that is not visible to the user but essential to the browser.
+    The <code className="code">&lt;head&gt;</code> section contains metadata — information about the page — that is not visible to the user but essential to the browser.
   </p>
 
   <h4>Common elements in the &lt;head&gt;:</h4>
   <ul>
-    <li><code>&lt;meta charset="UTF-8"&gt;</code> – Sets character encoding to UTF-8. According to the World Wide Web Consortium, a Unicode based encoding such as UTF-8 can support many languages and can accommodate pages and forms in any mixture of these languages.</li>
-    <li><code>&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;</code> – Makes Internet Explorer use the latest engine</li>
-    <li><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> – Enables responsive design. So in order to have content resize for mobile devices and smaller screens, you need to add this viewport with your meta data at the top.</li>
-    <li><code>&lt;title&gt;Page Title&lt;/title&gt;</code> – This indicates the title for the web page. This text is shown in the browser's title bar.</li>
-    <li><code>&lt;link rel="stylesheet" href="style.css"&gt;</code> – Links to an external stylesheet</li>
+    <li><code className="code">&lt;meta charset="UTF-8"&gt;</code> – Sets character encoding to UTF-8. According to the World Wide Web Consortium, a Unicode based encoding such as UTF-8 can support many languages and can accommodate pages and forms in any mixture of these languages.</li>
+    <li><code className="code">&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;</code> – Makes Internet Explorer use the latest engine</li>
+    <li><code className="code">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> – Enables responsive design. So in order to have content resize for mobile devices and smaller screens, you need to add this viewport with your meta data at the top.</li>
+    <li><code className="code">&lt;title&gt;Page Title&lt;/title&gt;</code> – This indicates the title for the web page. This text is shown in the browser's title bar.</li>
+    <li><code className="code">&lt;link rel="stylesheet" href="style.css"&gt;</code> – Links to an external stylesheet</li>
   </ul>
 
 
@@ -97,12 +97,12 @@ export default function HTMLPageStructure() {
 
   <h3>The &lt;body&gt; Tag</h3>
   <p>
-    The <code>&lt;body&gt;</code> element holds all the visible content of the page — text, images, buttons, links, etc.
+    The <code className="code">&lt;body&gt;</code> element holds all the visible content of the page — text, images, buttons, links, etc.
   </p>
   <p>
     You can also link your JavaScript at the bottom of the body to allow the HTML to load first:
   </p>
-  <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code>
+  <code className="code">&lt;script src="script.js"&gt;&lt;/script&gt;</code>
 
 
 

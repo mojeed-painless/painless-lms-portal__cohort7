@@ -50,8 +50,8 @@ export default function Combinators() {
     }
  </style>`}
 </ExampleCode>
-            <p><strong>Explanation:</strong> All <code>&lt;p&gt;</code> elements inside 
-                <code>.parent</code> will be green, no matter how deeply nested.
+            <p><strong>Explanation:</strong> All <code className="code">&lt;p&gt;</code> elements inside 
+                <code className="code">.parent</code> will be green, no matter how deeply nested.
             </p>
 
             <h3>Child Selector (&gt;)</h3>
@@ -84,7 +84,7 @@ export default function Combinators() {
 </ExampleCode>
 
             <p><strong>Explanation:</strong> Only the first and third &lt;p&gt; (direct children of 
-                <code>.parent</code>) will be red. The nested &lt;p&gt; will not be 
+                <code className="code">.parent</code>) will be red. The nested &lt;p&gt; will not be 
                 affected.
             </p>
 

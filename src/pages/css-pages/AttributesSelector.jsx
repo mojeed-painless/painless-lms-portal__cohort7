@@ -16,8 +16,8 @@ export default function AttributesSelector() {
                 <div className="course-content__container">
                      <p>
                 Attribute selectors allow you to target HTML elements based on the presence or value of their attributes. 
-                This provides precise control over your styling based on HTML attributes like <code>type</code>, <code>href</code>, 
-                <code>src</code>, <code>alt</code>, <code>title</code>, <code>data-*</code>, etc.
+                This provides precise control over your styling based on HTML attributes like <code className="code">type</code>, <code className="code">href</code>, 
+                <code className="code">src</code>, <code className="code">alt</code>, <code className="code">title</code>, <code className="code">data-*</code>, etc.
             </p>
 
             <h4>Syntax</h4>

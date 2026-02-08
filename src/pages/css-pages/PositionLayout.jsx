@@ -65,7 +65,7 @@ export default function PositionLayout() {
             <ul>
                 <li>Removes the element from normal flow (no space is reserved for it).</li>
                 <li>Positioned relative to the nearest positioned ancestor (i.e., parent with position: relative, absolute, or fixed).</li>
-                <li>If no such ancestor exists, it’s positioned relative to the <code>&lt;html&gt;</code> (viewport).</li>
+                <li>If no such ancestor exists, it’s positioned relative to the <code className="code">&lt;html&gt;</code> (viewport).</li>
                 <li>Accepts top, right, bottom, and left.</li>
             </ul>
 <ExampleCode> 
@@ -142,15 +142,15 @@ export default function PositionLayout() {
 
             <h3>Tips &amp; Gotchas</h3>
             <ul>
-                <li><code>absolute</code> will not work as expected unless a parent is positioned.</li>
-                <li><code>sticky</code> may not work if:
+                <li><code className="code">absolute</code> will not work as expected unless a parent is positioned.</li>
+                <li><code className="code">sticky</code> may not work if:
                 <ul>
-                    <li>Its parent has <code>overflow: hidden</code>.</li>
+                    <li>Its parent has <code className="code">overflow: hidden</code>.</li>
                     <li>It’s not within a scrollable container.</li>
                 </ul>
                 </li>
-                <li>Always use <code>z-index</code> on a positioned element.</li>
-                <li><code>fixed</code> can cause layout shifts if you don’t reserve space for it.</li>
+                <li>Always use <code className="code">z-index</code> on a positioned element.</li>
+                <li><code className="code">fixed</code> can cause layout shifts if you don’t reserve space for it.</li>
             </ul>
 
     <VideoBox 

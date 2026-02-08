@@ -35,8 +35,8 @@ export default function Selectors() {
 
                         <h4>ID Selector</h4>
                         <p>
-                            This targets a specific HTML element by its unique <code>id</code> attribute.
-                            Use a hash <code>#</code> followed by the ID name.
+                            This targets a specific HTML element by its unique <code className="code">id</code> attribute.
+                            Use a hash <code className="code">#</code> followed by the ID name.
                         </p>
 <ExampleCode> 
 {`<div id="left"></div>
@@ -50,8 +50,8 @@ export default function Selectors() {
 
                         <h4>Class Selector</h4>
                         <p>
-                            This targets one or more elements with a shared <code>class</code> attribute.
-                            Use a dot <code>.</code> followed by the class name.
+                            This targets one or more elements with a shared <code className="code">class</code> attribute.
+                            Use a dot <code className="code">.</code> followed by the class name.
                         </p>
 <ExampleCode> 
 {`<p class="right">Content</p>
@@ -63,7 +63,7 @@ export default function Selectors() {
 
                         <h4>Universal Selector</h4>
                         <p>
-                            The universal selector <code>*</code> selects <strong>all</strong> elements on the page.
+                            The universal selector <code className="code">*</code> selects <strong>all</strong> elements on the page.
                             It's useful for resetting styles:
                         </p>
 <ExampleCode> 

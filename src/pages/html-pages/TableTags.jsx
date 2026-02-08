@@ -67,7 +67,7 @@ export default function TableTags() {
 
   <h3>Adding Borders</h3>
   <p>
-    To quickly apply borders, you can add <code>border="1"</code> to your <code>&lt;table&gt;</code> tag like this:
+    To quickly apply borders, you can add <code className="code">border="1"</code> to your <code className="code">&lt;table&gt;</code> tag like this:
   </p>
 
   <p>Click <i><b>"Run code"</b></i> to display output</p>

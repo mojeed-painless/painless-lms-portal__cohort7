@@ -16,7 +16,7 @@ export default function Colors() {
                 <div className="course-content__container">
                     <p>
                             CSS allows you to apply color to text, backgrounds, borders, and many other elements on a webpage.
-                            Colors can be specified using predefined names (like <code>green</code>, <code>orange</code>, <code>wine</code>) or using numeric systems like RGB, HEX, HSL, RGBA, and HSLA.
+                            Colors can be specified using predefined names (like <code className="code">green</code>, <code className="code">orange</code>, <code className="code">wine</code>) or using numeric systems like RGB, HEX, HSL, RGBA, and HSLA.
                         </p>
 
                         <h3>RGB Colors</h3>
@@ -48,14 +48,14 @@ export default function Colors() {
                         <h3> HEX Colors</h3>
                         <p>
                             HEX stands for hexadecimal and uses base-16 values to represent colors.
-                            The format is <code>#rrggbb</code>, where:
+                            The format is <code className="code">#rrggbb</code>, where:
                             <ul>
                             <li><strong>rr</strong> = red</li>
                             <li><strong>gg</strong> = green</li>
                             <li><strong>bb</strong> = blue</li>
                             </ul>
                         </p>
-                        <pre><code>#FFC0CB</code></pre>
+                        <pre><code className="code">#FFC0CB</code></pre>
                         <p>This also gives a pink color, just like the RGB example above.</p>
                         
                         <h3> HSL Colors</h3>

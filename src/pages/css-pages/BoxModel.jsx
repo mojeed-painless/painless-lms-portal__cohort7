@@ -51,7 +51,7 @@ export default function BoxModel() {
                         </p>
 
   <h3>Content</h3>
-  <p>This is the actual text, image, or element inside your HTML tag. You define its size using <code>width</code> and <code>height</code>.</p>
+  <p>This is the actual text, image, or element inside your HTML tag. You define its size using <code className="code">width</code> and <code className="code">height</code>.</p>
 
   <h3>Padding</h3>
   <p>This is the space between the content and the border. It "pushes" the border away from the content.</p>
@@ -65,10 +65,10 @@ export default function BoxModel() {
                         <p>
                             <strong>You can also control padding per side:</strong>
                             <ul>
-                                <li><code>padding-top</code></li>
-                                <li><code>padding-right</code></li>
-                                <li><code>padding-bottom</code></li>
-                                <li><code>padding-left</code></li>
+                                <li><code className="code">padding-top</code></li>
+                                <li><code className="code">padding-right</code></li>
+                                <li><code className="code">padding-bottom</code></li>
+                                <li><code className="code">padding-left</code></li>
                             </ul>
                         </p>
 
@@ -146,10 +146,10 @@ export default function BoxModel() {
                         <p>
                             <strong>Common outline properties:</strong>
                             <ul>
-                                <li><code>outline-style</code></li>
-                                <li><code>outline-color</code></li>
-                                <li><code>outline-width</code></li>
-                                <li><code>outline-offset</code></li>
+                                <li><code className="code">outline-style</code></li>
+                                <li><code className="code">outline-color</code></li>
+                                <li><code className="code">outline-width</code></li>
+                                <li><code className="code">outline-offset</code></li>
                             </ul>
                         </p>
 
@@ -161,7 +161,7 @@ export default function BoxModel() {
  }`}
 </ExampleCode>
 
-<p><code>outline-offset</code> adds space between the border and the outline.</p>
+<p><code className="code">outline-offset</code> adds space between the border and the outline.</p>
 
 
 <h3>Conclusion</h3>

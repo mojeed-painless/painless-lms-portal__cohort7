@@ -32,19 +32,19 @@ export default function CSSSyntax() {
 </ExampleCode>
 
                         <p>
-                            The <code>selector</code> points to the HTML element you want to style. For example, <code>div</code>, <code>p</code>, or <code>h1</code>.
+                            The <code className="code">selector</code> points to the HTML element you want to style. For example, <code className="code">div</code>, <code className="code">p</code>, or <code className="code">h1</code>.
                         </p>
 
                         <p>
-                            The <code>property</code> is the style attribute you want to change, such as <code>color</code>, <code>font-size</code>, or <code>background</code>.
+                            The <code className="code">property</code> is the style attribute you want to change, such as <code className="code">color</code>, <code className="code">font-size</code>, or <code className="code">background</code>.
                         </p>
 
                         <p>
-                            The <code>value</code> is what you want to assign to that property, such as <code>red</code>, <code>16px</code>, or <code>#333</code>.
+                            The <code className="code">value</code> is what you want to assign to that property, such as <code className="code">red</code>, <code className="code">16px</code>, or <code className="code">#333</code>.
                         </p>
 
                         <p>
-                            A colon <code>:</code> is used to separate the property from its value. A semicolon <code>;</code> is used to separate multiple declarations inside the block.
+                            A colon <code className="code">:</code> is used to separate the property from its value. A semicolon <code className="code">;</code> is used to separate multiple declarations inside the block.
                         </p>
 
                         <h4>Example</h4>
@@ -67,13 +67,13 @@ export default function CSSSyntax() {
                         </p>
 
                         <p>
-                            The entire block of styles (inside the curly braces <code>{ }</code>) is known as the <strong>declaration block</strong>.
+                            The entire block of styles (inside the curly braces <code className="code">{ }</code>) is known as the <strong>declaration block</strong>.
                         </p>
 
                         <h3>Styling Multiple Properties</h3>
 
                         <p>
-                            You can add multiple style properties inside a single declaration block. Just make sure to end each line with a semicolon <code>;</code>:
+                            You can add multiple style properties inside a single declaration block. Just make sure to end each line with a semicolon <code className="code">;</code>:
                         </p>
 
 <ExampleCode> 

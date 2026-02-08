@@ -15,7 +15,7 @@ export default function OverflowLayout() {
             <section>
                 <div className="course-content__container">
                     <p>
-                The <code>overflow</code> property in CSS controls what happens when content is too large to fit 
+                The <code className="code">overflow</code> property in CSS controls what happens when content is too large to fit 
                 in an element’s box.
                 It's useful for handling long text, images, or dynamic content that exceeds its container.
             </p>
@@ -36,7 +36,7 @@ export default function OverflowLayout() {
                 <li><strong>auto</strong>: Adds scrollbars only when content overflows.</li>
             </ul>
 
-            <h4>Overflow Example: <code>auto</code></h4>
+            <h4>Overflow Example: <code className="code">auto</code></h4>
 <ExampleCode> 
 {`<div class="scroll-box">
     This is a long content that overflows: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo voluptatem, necessitatibus sapiente eligendi sint quaerat nisi neque ipsa quos. Quaerat porro sapiente dolor corrupti cupiditate exercitationem voluptatibus soluta excepturi sint!<br>
@@ -51,7 +51,7 @@ export default function OverflowLayout() {
  }`}
 </ExampleCode>
 
-            <h4>Overflow Example: <code>hidden</code></h4>
+            <h4>Overflow Example: <code className="code">hidden</code></h4>
 <ExampleCode> 
 {`.scroll-box {
     width: 200px;
@@ -62,7 +62,7 @@ export default function OverflowLayout() {
  }`}
 </ExampleCode>
 
-            <h4>Overflow Example: <code>scroll</code></h4>
+            <h4>Overflow Example: <code className="code">scroll</code></h4>
 <ExampleCode> 
 {`.scroll-box {
     width: 200px;
@@ -94,7 +94,7 @@ export default function OverflowLayout() {
             <h3>Use Cases</h3>
             <ul>
                 <li>Scroll boxes for long comments, code blocks, or chat apps</li>
-                <li>Cut off content cleanly using <code>overflow: hidden</code></li>
+                <li>Cut off content cleanly using <code className="code">overflow: hidden</code></li>
                 <li>Image galleries or sliders</li>
                 <li>Prevent layout breaking by limiting overflow</li>
             </ul>

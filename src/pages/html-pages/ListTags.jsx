@@ -59,7 +59,7 @@ export default function ListTags() {
 </CodeBox>
 
                         <p>
-                            By default, an ordered list displays items with <strong>numbers (1, 2, 3...)</strong>, but you can change the numbering style using the <code>type</code> attribute.
+                            By default, an ordered list displays items with <strong>numbers (1, 2, 3...)</strong>, but you can change the numbering style using the <code className="code">type</code> attribute.
                         </p>
 
 

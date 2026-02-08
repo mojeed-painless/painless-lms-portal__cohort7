@@ -106,9 +106,9 @@ export default function GridLayout() {
             <h4>grid-area</h4>
             <p>
                 Used to name a grid item so that it can be placed using 
-                <code>grid-template-areas</code>.
+                <code className="code">grid-template-areas</code>.
             </p>
-            <p>Also works as a shorthand for <code>grid-row-start / grid-column-start 
+            <p>Also works as a shorthand for <code className="code">grid-row-start / grid-column-start 
                 / grid-row-end / grid-column-end</code>.
             </p>
 <ExampleCode> 
@@ -119,7 +119,7 @@ export default function GridLayout() {
             <h4>justify-self / align-self</h4>
             <p>
                 Align a single grid item independently inside its grid area.<br />
-                They work like <code>align-self</code> in Flexbox but for both horizontal 
+                They work like <code className="code">align-self</code> in Flexbox but for both horizontal 
                 and vertical alignment.
             </p>
 <ExampleCode> 

@@ -20,9 +20,9 @@ export default function Tables() {
                         </p>
 
                         <h3>Border Property</h3>
-                        <p>The <code>border</code> property is used to add borders around the table, 
-                            table rows <code>&lt;tr&gt;</code>, table headers <code>&lt;th&gt;</code>, and table data cells 
-                            <code>&lt;td&gt;</code>.
+                        <p>The <code className="code">border</code> property is used to add borders around the table, 
+                            table rows <code className="code">&lt;tr&gt;</code>, table headers <code className="code">&lt;th&gt;</code>, and table data cells 
+                            <code className="code">&lt;td&gt;</code>.
                         </p>
 
 <ExampleCode> 
@@ -34,7 +34,7 @@ export default function Tables() {
                         <p>This adds a 1-pixel solid black border to the table and all its cells.</p>
 
                         <h3>Table Width</h3>
-                        <p>You can control how wide your table is using the <code>width</code> property.</p>
+                        <p>You can control how wide your table is using the <code className="code">width</code> property.</p>
 
                         <h4>Full width table:</h4>
 <ExampleCode> 
@@ -56,7 +56,7 @@ export default function Tables() {
 
                         <h3>Border Collapse</h3>
                         <p>By default, table cells have separate borders. You can use the 
-                            <code>border-collapse</code> property to collapse them into a single border.
+                            <code className="code">border-collapse</code> property to collapse them into a single border.
                         </p>
 
 <ExampleCode> 
@@ -66,7 +66,7 @@ export default function Tables() {
 </ExampleCode>
 
                         <h3>Table Height</h3>
-                        <p>You can use the <code>height</code> property to set the height of the table 
+                        <p>You can use the <code className="code">height</code> property to set the height of the table 
                             or individual cells.
                         </p>
 
@@ -77,7 +77,7 @@ export default function Tables() {
 </ExampleCode>
 
                         <h3>Text Alignment</h3>
-                        <p>You can align text inside table cells using <code>text-align</code>.</p>
+                        <p>You can align text inside table cells using <code className="code">text-align</code>.</p>
 
 <ExampleCode> 
 {`th, td {
@@ -85,7 +85,7 @@ export default function Tables() {
  }`}
 </ExampleCode>
 
-                        <p>Other values include <code>left</code> and <code>right</code>.</p>
+                        <p>Other values include <code className="code">left</code> and <code className="code">right</code>.</p>
 
                         <h3>Hoverable Table Rows</h3>
                         <p>You can highlight rows when a user hovers over them:</p>

@@ -24,9 +24,9 @@ export default function Transition() {
 </ExampleCode>
 
             <ul>
-                <li><strong>property</strong>: the CSS property you want to animate (e.g., <code>width</code>, <code>color</code>, <code>opacity</code>)</li>
-                <li><strong>duration</strong>: how long the transition takes (e.g., <code>1s</code>, <code>500ms</code>)</li>
-                <li><strong>timing-function</strong> (optional): defines the speed curve (e.g., <code>ease</code>, <code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>)</li>
+                <li><strong>property</strong>: the CSS property you want to animate (e.g., <code className="code">width</code>, <code className="code">color</code>, <code className="code">opacity</code>)</li>
+                <li><strong>duration</strong>: how long the transition takes (e.g., <code className="code">1s</code>, <code className="code">500ms</code>)</li>
+                <li><strong>timing-function</strong> (optional): defines the speed curve (e.g., <code className="code">ease</code>, <code className="code">linear</code>, <code className="code">ease-in</code>, <code className="code">ease-out</code>, <code className="code">ease-in-out</code>)</li>
                 <li><strong>delay</strong> (optional): time to wait before the transition starts</li>
             </ul>
 
@@ -39,10 +39,10 @@ export default function Transition() {
 
             <h3>Longhand Properties:</h3>
             <ul>
-                <li><code>transition-property</code></li>
-                <li><code>transition-duration</code></li>
-                <li><code>transition-timing-function</code></li>
-                <li><code>transition-delay</code></li>
+                <li><code className="code">transition-property</code></li>
+                <li><code className="code">transition-duration</code></li>
+                <li><code className="code">transition-timing-function</code></li>
+                <li><code className="code">transition-delay</code></li>
             </ul>
 
             <h3>Longhand Example:</h3>
@@ -57,14 +57,14 @@ export default function Transition() {
 
             <h3>Common Properties You Can Animate:</h3>
             <ul>
-                <li><code>background-color</code></li>
-                <li><code>color</code></li>
-                <li><code>width</code>, <code>height</code></li>
-                <li><code>margin</code>, <code>padding</code></li>
-                <li><code>opacity</code></li>
-                <li><code>transform</code></li>
-                <li><code>box-shadow</code></li>
-                <li><code>border</code> properties</li>
+                <li><code className="code">background-color</code></li>
+                <li><code className="code">color</code></li>
+                <li><code className="code">width</code>, <code className="code">height</code></li>
+                <li><code className="code">margin</code>, <code className="code">padding</code></li>
+                <li><code className="code">opacity</code></li>
+                <li><code className="code">transform</code></li>
+                <li><code className="code">box-shadow</code></li>
+                <li><code className="code">border</code> properties</li>
             </ul>
 
             <h4>Examples:</h4>
@@ -122,7 +122,7 @@ export default function Transition() {
             <ul>
                 <li>Transitions only occur when a property value changes.</li>
                 <li>Only animatable properties can be transitioned.</li>
-                <li>Transitions need a trigger (like <code>:hover</code>, <code>:focus</code>, class toggle, or JavaScript).</li>
+                <li>Transitions need a trigger (like <code className="code">:hover</code>, <code className="code">:focus</code>, class toggle, or JavaScript).</li>
             </ul>
 
     <VideoBox 

@@ -22,13 +22,13 @@ export default function Forms() {
                 <div className="course-content__container">
                     <p>
     Forms are essential for gathering input from users on a website. They can range from simple contact forms to complex data entry systems.
-    All form elements are wrapped in the <code>&lt;form&gt;</code> tag.
+    All form elements are wrapped in the <code className="code">&lt;form&gt;</code> tag.
 </p>
 
   <h3>Basic Form Structure</h3>
 
   <p>
-    Traditionally, the <code>&lt;label&gt;</code> tag is used to indicate the purpose of a form field. However, in modern design, the <code>placeholder</code> attribute is often preferred for a cleaner look.
+    Traditionally, the <code className="code">&lt;label&gt;</code> tag is used to indicate the purpose of a form field. However, in modern design, the <code className="code">placeholder</code> attribute is often preferred for a cleaner look.
   </p>
 
 <ExampleCode>
@@ -41,19 +41,19 @@ export default function Forms() {
   <h3>Common Input Types</h3>
 
   <ul>
-    <li><code>&lt;input type="text"&gt;</code> – For single-line text input</li>
-    <li><code>&lt;input type="password"&gt;</code> – For entering passwords (hidden characters)</li>
-    <li><code>&lt;input type="submit"&gt;</code> – For submitting form data</li>
-    <li><code>&lt;input type="radio"&gt;</code> – For selecting only one option from a group</li>
-    <li><code>&lt;input type="checkbox"&gt;</code> – For selecting one or more options</li>
-    <li><code>&lt;input type="email"&gt;</code> – For validating email input</li>
-    <li><code>&lt;input type="date"&gt;</code> – For picking a calendar date</li>
-    <li><code>&lt;input type="color"&gt;</code> – For picking a color</li>
+    <li><code className="code">&lt;input type="text"&gt;</code> – For single-line text input</li>
+    <li><code className="code">&lt;input type="password"&gt;</code> – For entering passwords (hidden characters)</li>
+    <li><code className="code">&lt;input type="submit"&gt;</code> – For submitting form data</li>
+    <li><code className="code">&lt;input type="radio"&gt;</code> – For selecting only one option from a group</li>
+    <li><code className="code">&lt;input type="checkbox"&gt;</code> – For selecting one or more options</li>
+    <li><code className="code">&lt;input type="email"&gt;</code> – For validating email input</li>
+    <li><code className="code">&lt;input type="date"&gt;</code> – For picking a calendar date</li>
+    <li><code className="code">&lt;input type="color"&gt;</code> – For picking a color</li>
   </ul>
 
   <h3>Radio Buttons Note</h3>
   <p>
-    To ensure only one radio button can be selected, all radio inputs in the group must share the same <code>name</code> attribute.
+    To ensure only one radio button can be selected, all radio inputs in the group must share the same <code className="code">name</code> attribute.
   </p>
 
 <ExampleCode>
@@ -73,7 +73,7 @@ export default function Forms() {
 
   <h3>Dropdown Menus (&lt;select&gt;)</h3>
   <p>
-    The <code>&lt;select&gt;</code> tag creates a dropdown list. It uses <code>&lt;option&gt;</code> tags inside.
+    The <code className="code">&lt;select&gt;</code> tag creates a dropdown list. It uses <code className="code">&lt;option&gt;</code> tags inside.
   </p>
 
 <ExampleCode>
@@ -94,7 +94,7 @@ export default function Forms() {
 
   <h3>Textarea</h3>
   <p>
-    The <code>&lt;textarea&gt;</code> tag is used for multi-line input. The <code>rows</code> and <code>cols</code> attributes control its size.
+    The <code className="code">&lt;textarea&gt;</code> tag is used for multi-line input. The <code className="code">rows</code> and <code className="code">cols</code> attributes control its size.
   </p>
 
 <ExampleCode>

@@ -21,7 +21,7 @@ export default function HTMLStyling() {
             <section>
                 <div className="course-content__container">
                     <p>
-    HTML styling allows you to apply CSS (Cascading Style Sheets) directly within an HTML tag using the <code>style</code> attribute.
+    HTML styling allows you to apply CSS (Cascading Style Sheets) directly within an HTML tag using the <code className="code">style</code> attribute.
     It’s one of the simplest ways to apply quick visual formatting without using a separate CSS file or internal stylesheet.
   </p>
 

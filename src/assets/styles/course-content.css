@@ -108,7 +108,7 @@ blockquote {
     text-decoration: underline;
 }
 
-code {
+.code {
     background: #140524;
     padding: 0.2rem 0.5rem;
     margin: 1.5rem 0;
@@ -118,12 +118,12 @@ code {
 
 pre {
     background: #140524;
-    padding: 1rem;
+    /* padding: 1rem; */
     border-left: 3px solid greenyellow;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
     overflow-x: auto;
-    font-size: 1rem;
-    white-space: pre;
+    font-size: 1.2rem;
+    /* white-space: pre; */
 }
 
 .course-content pre[class*="language-"] {

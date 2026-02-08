@@ -15,10 +15,10 @@ export default function DisplayLayout() {
             <section>
                 <div className="course-content__container">
                     <h3>Display Property</h3>
-                        <p><strong>Block-level elements</strong>: Start on a new line and take full width. Examples include <code>&lt;div&gt;</code>, <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;section&gt;</code></p>
-                        <p><strong>Inline elements</strong>: Appear on the same line and take only the required width. Examples include <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;strong&gt;</code></p>
-                        <p>You can override these using the <code>display</code> property.</p>
-                        <p><code>display: block;</code> / <code>display: inline;</code></p>
+                        <p><strong>Block-level elements</strong>: Start on a new line and take full width. Examples include <code className="code">&lt;div&gt;</code>, <code className="code">&lt;h1&gt;</code> to <code className="code">&lt;h6&gt;</code>, <code className="code">&lt;p&gt;</code>, <code className="code">&lt;section&gt;</code></p>
+                        <p><strong>Inline elements</strong>: Appear on the same line and take only the required width. Examples include <code className="code">&lt;span&gt;</code>, <code className="code">&lt;a&gt;</code>, <code className="code">&lt;img&gt;</code>, <code className="code">&lt;strong&gt;</code></p>
+                        <p>You can override these using the <code className="code">display</code> property.</p>
+                        <p><code className="code">display: block;</code> / <code className="code">display: inline;</code></p>
 
 <ExampleCode> 
 {`<span class="block-example">span as block</span>
@@ -58,8 +58,8 @@ export default function DisplayLayout() {
                         
 
                          {/* <h3>Float and Clear Property</h3>
-                        <p><code>float</code>: Makes elements float beside each other.</p>
-                        <p><code>clear</code>: Stops the float behavior.</p>
+                        <p><code className="code">float</code>: Makes elements float beside each other.</p>
+                        <p><code className="code">clear</code>: Stops the float behavior.</p>
 
 <pre>
 &lt;div class="float-left"&gt;Left Float&lt;/div&gt;
