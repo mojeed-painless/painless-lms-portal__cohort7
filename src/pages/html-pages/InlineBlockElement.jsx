@@ -6,6 +6,7 @@ import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
 import TopicQuiz from '../../components/common/TopicQuiz';
+import { GiWhiteBook } from 'react-icons/gi';
 
 export default function InlineBlockElement() {
 
@@ -89,6 +90,26 @@ export default function InlineBlockElement() {
         code='ygcHUmkOjcI?si=8Yfg6zsn113tE4M3'
     />
 
+
+
+    <AssignmentBox title="HTML Inline & Block Elements Assignment">
+      <ol>
+        <li>Create a new html file and name it <i>"my_inline_work"</i></li>
+        <li>Inside the single file, write lines of codes to replicate the output below;</li>
+
+        <div style={{background:'white', color:'black', padding:'1rem',}}>
+          <h1 style={{color:'black', marginTop:'0rem',}}>My favorite pet</h1>
+          <p>My favorite pet is <b>cat</b></p>
+          <p>Cats have a unique way of being <i>incredibly affectionate</i> while still respecting your personal space</p>
+        </div>
+
+        <li>Take note of the following;</li>
+        <li>The first paragraph is an header</li>
+        <li>The "cat" in the second paragraph is bold</li>
+        <li>The "incredibly affectionate" in the last paragraph is italicized</li>
+      </ol>
+    </AssignmentBox>
+
                 </div>
             </section>
 
@@ -104,7 +125,7 @@ export default function InlineBlockElement() {
 
             <PrevNextBtn 
                 prevPath="/html-hyperlinks" 
-                nextPath="/html-form"
+                // nextPath="/html-form"
             />
         </section>
     );

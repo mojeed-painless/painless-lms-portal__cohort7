@@ -76,6 +76,19 @@ export default function Hyperlinks() {
         code='VAwnxU9RtvY?si=tWBf36oNXac5CNQf'
     />
 
+
+
+
+    <AssignmentBox title="HTML Hyperlinks Assignment">
+      <ol>
+        <li>Create a new html file and name it <i>"my_hyperlink_work"</i></li>
+        <li>Inside the single file, do the following;</li>
+        <li>Create an hyperlink to a website of your choice</li>
+        <li>Use the <code>target</code> attribute to open the link in a new tab</li>
+        <li>Ensure the hyperlink is displayed correctly on your webpage</li>
+      </ol>
+    </AssignmentBox>
+
                 </div>
             </section>
 

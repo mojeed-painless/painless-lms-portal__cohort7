@@ -120,8 +120,8 @@ export const topics = [
             {name: 'Lists', path: '/html-list'},
             {name: 'Tables', path: '/html-table'},
             {name: 'Images', path: '/html-image'},
-            // {name: 'Hyperlinks', path: '/html-hyperlinks'},
-            // {name: 'Inline & Block Elements', path: '/html-block-element'},
+            {name: 'Hyperlinks', path: '/html-hyperlinks'},
+            {name: 'Inline & Block Elements', path: '/html-block-element'},
             // {name: 'Forms, Types & Fields', path: '/html-form'},
             // {name: 'HTML Styling', path: '/html-style'}
         ]

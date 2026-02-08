@@ -607,6 +607,128 @@ export const TopicQuizData = [
         ],
     },
     {
+        topic: 'HTML Hyperlinks',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "Which HTML tag is known as the 'anchor' tag and is used to create hyperlinks?",
+                options: [
+                    { id: 'A', text: "<link>" },
+                    { id: 'B', text: "<a>" },
+                    { id: 'C', text: "<href>" },
+                    { id: 'D', text: "<nav>" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 2,
+                question: "What does the 'href' attribute specify in a hyperlink?",
+                options: [
+                    { id: 'A', text: "The font size of the link text" },
+                    { id: 'B', text: "The destination URL the link points to" },
+                    { id: 'C', text: "The name of the user clicking the link" },
+                    { id: 'D', text: "The color of the anchor tag" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 3,
+                question: "By default, where do hyperlinks open when clicked?",
+                options: [
+                    { id: 'A', text: "In a new browser window" },
+                    { id: 'B', text: "In a new tab" },
+                    { id: 'C', text: "In the same browser tab" },
+                    { id: 'D', text: "In a pop-up alert box" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 4,
+                question: "Which value should be assigned to the 'target' attribute to ensure a link opens in a new tab?",
+                options: [
+                    { id: 'A', text: "_self" },
+                    { id: 'B', text: "_new" },
+                    { id: 'C', text: "_tab" },
+                    { id: 'D', text: "_blank" }
+                ],
+                correctAnswer: 'D',
+            },
+            {
+                id: 5,
+                question: "According to the text, why is using target='_blank' useful for website owners?",
+                options: [
+                    { id: 'A', text: "It makes the link load faster" },
+                    { id: 'B', text: "It keeps users on your webpage while they explore the external link" },
+                    { id: 'C', text: "It automatically follows the user on social media" },
+                    { id: 'D', text: "It hides the URL from the browser's address bar" }
+                ],
+                correctAnswer: 'B',
+            }
+        ],
+    },
+    {
+        topic: 'Inline & Block Elements',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "How does a block-level element behave by default in a web page layout?",
+                options: [
+                    { id: 'A', text: "It only takes up as much width as its content needs" },
+                    { id: 'B', text: "It always starts on a new line and stretches to the full width of its container" },
+                    { id: 'C', text: "It remains on the same line as the previous element" },
+                    { id: 'D', text: "It is hidden from the user until hovered over" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 2,
+                question: "Which of the following is a common example of a block-level element used as a container?",
+                options: [
+                    { id: 'A', text: "<span>" },
+                    { id: 'B', text: "<a>" },
+                    { id: 'C', text: "<div>" },
+                    { id: 'D', text: "<img>" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 3,
+                question: "What is a defining characteristic of an inline element?",
+                options: [
+                    { id: 'A', text: "It forces a line break before and after the element" },
+                    { id: 'B', text: "It adds a large margin above and below the content" },
+                    { id: 'C', text: "It only takes up as much width as its content needs and does not start a new line" },
+                    { id: 'D', text: "It can only be used inside the <head> tag" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 4,
+                question: "Which tag is commonly used to style a specific part of text inside a block element without breaking the line?",
+                options: [
+                    { id: 'A', text: "<section>" },
+                    { id: 'B', text: "<span>" },
+                    { id: 'C', text: "<p>" },
+                    { id: 'D', text: "<h1>" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 5,
+                question: "Which pair of inline tags is used to make text appear bold?",
+                options: [
+                    { id: 'A', text: "<i> or <em>" },
+                    { id: 'B', text: "<sup> or <sub>" },
+                    { id: 'C', text: "<b> or <strong>" },
+                    { id: 'D', text: "<br> or <small>" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
         topic: '',
         category: 'html',
         questions: [
