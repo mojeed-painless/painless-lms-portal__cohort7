@@ -40,9 +40,9 @@ export default function InlineBlockElement() {
   <h4>Example of a Block Element</h4>
 <ExampleCode>
 {`<div>
-    <h2>Welcome to Web Development</h2>
-    <p>This is a paragraph inside a div.</p>
- </div>`}
+  <h2>Welcome to Web Development</h2>
+  <p>This is a paragraph inside a div.</p>
+</div>`}
 </ExampleCode>
 
   <h4>The &lt;div&gt; Element</h4>
