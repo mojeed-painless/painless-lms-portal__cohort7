@@ -117,24 +117,29 @@ blockquote {
 }
 
 pre {
-    background: #140524;
+    /* background: #140524; */
     /* padding: 1rem; */
     border-left: 3px solid greenyellow;
     /* margin-top: 0.5rem; */
     overflow-x: auto;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
     /* white-space: pre; */
 }
 
 .course-content pre[class*="language-"] {
     background: #140524;
+    font-size: 1rem;
 }
 
-.course-content .token.tag { color: #5280ff; }
+.course-content .token {
+    font-size: 1rem;
+}
+
+.course-content .token.tag { color: #5280ff; padding: 0; }
 .course-content .token.comment{ color: #007000; }
 .course-content .token.attr-name { color: #82cbfc; }
 .course-content .token.attr-value { color: #e2694b; }
-.course-content .token.punctuation { color: #8c94a1; }
+.course-content .token.punctuation { color: #8c94a1;}
 .course-content .token.selector { color: #b8b50c; }
 .course-content .token.property { color: #82cbfc; }
 .course-content .token.url { color: red; }
