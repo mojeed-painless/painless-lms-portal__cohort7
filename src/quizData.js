@@ -92,6 +92,34 @@ export const DailyQuizData = [
         day: 3,
         date: '02/08/2026',
         questions: [
+            {
+                id: 1,
+                question: "One of the anchor tag's (<a>) attributes is target. Which of its values opens a new browser tab whenever the link is clicked?",
+                options: [
+                    { id: 'A', text: "_blank" },
+                    { id: 'B', text: "_parent" },
+                    { id: 'C', text: "_self" },
+                    { id: 'D', text: "_top" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 2,
+                question: "Which of the following set of tags are all block elements?",
+                options: [
+                    { id: 'A', text: "<h6>, <span>, <p>" },
+                    { id: 'B', text: "<div>, <b>, <img>" },
+                    { id: 'C', text: "<span>, <em>, <a>" },
+                    { id: 'D', text: "<ul>, <h5>, <div>" }
+                ],
+                correctAnswer: 'D',
+            }
+        ],
+    },
+    {
+        day: 4,
+        date: '02/09/2026',
+        questions: [
             
         ],
     },
