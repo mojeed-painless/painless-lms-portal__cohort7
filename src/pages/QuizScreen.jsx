@@ -489,7 +489,10 @@ export default function QuizScreen() {
                     <div className="daily-quiz__questions">
                       {q ? (
                         <div className='daily-quiz__question'>
-                          <h4>{q.question}</h4>
+                          <div className="daily-quiz__question-header">
+                            <h4>{q.question}</h4>
+                            {q.image && <img src={q.image} alt="Question visual" className="daily-quiz__question-image" />}
+                          </div>
 
                           <div className="daily-quiz__options">
                             {q.options.map(opt => (

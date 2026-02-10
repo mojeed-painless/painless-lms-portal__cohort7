@@ -1,3 +1,5 @@
+import radioImg from '../src/assets/radio.jpg'
+
 export const DailyQuizData = [
     {
         day: 1,
@@ -118,9 +120,20 @@ export const DailyQuizData = [
     },
     {
         day: 4,
-        date: '02/09/2026',
+        date: '02/10/2026',
         questions: [
-            
+            {
+                id: 1,
+                question: "The buttons X & Y below are called _____ and _____ respectively.",
+                image: radioImg,
+                options: [
+                    { id: 'A', text: "checkbox and square button" },
+                    { id: 'B', text: "radio and checkbox button" },
+                    { id: 'C', text: "dot and square button" },
+                    { id: 'D', text: "click and mark button" }
+                ],
+                correctAnswer: 'B',
+            }
         ],
     },
 ]

@@ -822,6 +822,10 @@ h2 span.live-text {
     display: block;
 }
 
+.daily-quiz__question-header {
+  margin-bottom: 2rem;
+}
+
 .daily-quiz__question h4 {
     background: white;
     color: black;
@@ -829,10 +833,17 @@ h2 span.live-text {
     min-height: 6rem;
     text-align: center;
     border-radius: 8px;
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.daily-quiz__question-image {
+    max-width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+    border-radius: 8px;
 }
 
 .daily-quiz__options {
@@ -1023,8 +1034,13 @@ h2 span.live-text {
         padding: 0 0.8rem;
     }
 
+    .daily-quiz__question-header {
+      margin-bottom: 1rem;
+    }
+
     .daily-quiz__options {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .daily-quiz__nav {
