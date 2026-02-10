@@ -15,7 +15,7 @@ export default function Combinators() {
             <section>
                 <div className="course-content__container">
                     <p>In CSS, combinators define relationships between selectors, allowing you to 
-                target elements based on their position or relationship in the HTML 
+                target elements based on their position or relationship in the CSS 
                 structure. This is essential for building efficient and organized CSS rules.
             </p>
 
@@ -27,28 +27,27 @@ export default function Combinators() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`parent descendant { 
-    /* styles */ 
- }`}
+   /* styles */ 
+}`}
 </ExampleCode>
 
             <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<h2>Descendant Selector Example</h2>
 
- <div class="parent">
-    <p>This is a child paragraph.</p>
-    <div>
-        <p>This is a grandchild paragraph.</p>
-    </div>
- </div>
-
- <style>
-    .parent p {
-        color: green;
-    }
- </style>`}
+<div class="parent">
+   <p>This is a child paragraph.</p>
+   <div>
+       <p>This is a grandchild paragraph.</p>
+   </div>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.parent p {
+    color: green;
+}`}
 </ExampleCode>
             <p><strong>Explanation:</strong> All <code className="code">&lt;p&gt;</code> elements inside 
                 <code className="code">.parent</code> will be green, no matter how deeply nested.
@@ -58,29 +57,28 @@ export default function Combinators() {
             <p>Selects only the direct children of a specified element.</p>
             
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`parent > child { 
-    /* styles */ 
- }`}
+   /* styles */ 
+}`}
 </ExampleCode>
 
             <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<h2>Child Selector Example</h2>
 
- <div class="parent">
-    <p>This is a direct child paragraph.</p>
-    <div>
-        <p>This is a nested paragraph.</p>
-    </div>
-    <p>This is another direct child paragraph.</p>
- </div>
-
- <style>
-    .parent > p {
-        color: red;
-    }
- </style>`}
+<div class="parent">
+   <p>This is a direct child paragraph.</p>
+   <div>
+       <p>This is a nested paragraph.</p>
+   </div>
+   <p>This is another direct child paragraph.</p>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.parent > p {
+    color: red;
+}`}
 </ExampleCode>
 
             <p><strong>Explanation:</strong> Only the first and third &lt;p&gt; (direct children of 
@@ -94,27 +92,26 @@ export default function Combinators() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`element1 + element2 { 
-    /* styles */ 
- }`}
+   /* styles */ 
+}`}
 </ExampleCode>
 
             <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<h2>Adjacent Sibling Selector Example</h2>
 
- <div>
-    <h3>Heading</h3>
-    <p>This paragraph comes immediately after the heading.</p>
-    <p>This paragraph is not affected.</p>
- </div>
-
- <style>
-    h3 + p {
-        color: blue;
-    }
- </style>`}
+<div>
+   <h3>Heading</h3>
+   <p>This paragraph comes immediately after the heading.</p>
+   <p>This paragraph is not affected.</p>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`h3 + p {
+    color: blue;
+}`}
 </ExampleCode>
             <p><strong>Explanation:</strong> Only the first &lt;p&gt; after the &lt;h3&gt; 
                 will be blue. The second &lt;p&gt; won't be affected.
@@ -127,28 +124,27 @@ export default function Combinators() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`element1 ~ element2 { 
-    /* styles */ 
- }`}
+   /* styles */ 
+}`}
 </ExampleCode>
 
             <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<h2>General Sibling Selector Example</h2>
 
- <div>
-    <h4>Heading</h4>
-    <p>Paragraph 1 after heading</p>
-    <p>Paragraph 2 after heading</p>
-    <span>Span after heading</span>
- </div>
-
- <style>
-    h4 ~ p {
-        color: purple;
-    }
- </style>`}
+<div>
+   <h4>Heading</h4>
+   <p>Paragraph 1 after heading</p>
+   <p>Paragraph 2 after heading</p>
+   <span>Span after heading</span>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`h4 ~ p {
+    color: purple;
+}`}
 </ExampleCode>
             <p><strong>Explanation:</strong> Both &lt;p&gt; tags after &lt;h4&gt; will be 
                 purple because they are siblings of the &lt;h4&gt;.

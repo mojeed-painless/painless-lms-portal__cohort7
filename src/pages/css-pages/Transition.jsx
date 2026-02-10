@@ -17,10 +17,10 @@ export default function Transition() {
                     <p><strong>CSS Transitions</strong> allow you to change property values smoothly (over a given duration), instead of instantly.</p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
-    transition: property duration timing-function delay;
- }`}
+   transition: property duration timing-function delay;
+}`}
 </ExampleCode>
 
             <ul>
@@ -31,10 +31,10 @@ export default function Transition() {
             </ul>
 
             <h4>Shorthand Example:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    transition: all 0.5s ease-in-out;
- }`}
+   transition: all 0.5s ease-in-out;
+}`}
 </ExampleCode>
 
             <h3>Longhand Properties:</h3>
@@ -46,13 +46,13 @@ export default function Transition() {
             </ul>
 
             <h3>Longhand Example:</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    transition-property: background-color, width;
-    transition-duration: 0.3s;
-    transition-timing-function: ease;
-    transition-delay: 0s;
- }`}
+   transition-property: background-color, width;
+   transition-duration: 0.3s;
+   transition-timing-function: ease;
+   transition-delay: 0s;
+}`}
 </ExampleCode>
 
             <h3>Common Properties You Can Animate:</h3>
@@ -70,52 +70,53 @@ export default function Transition() {
             <h4>Examples:</h4>
 
             <h3>Width Transition on Hover</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    width: 100px;
-    transition: width 0.5s;
- }
+   width: 100px;
+   transition: width 0.5s;
+}
 
- div:hover {
-    width: 200px;
- }`}
+div:hover {
+   width: 200px;
+}`}
 </ExampleCode>
 
             <h3>Background Color Transition</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`button {
-    background-color: red;
-    transition: background-color 0.3s ease-in;
- }
+   background-color: red;
+   transition: background-color 0.3s ease-in;
+}
 
- button:hover {
-    background-color: green;
- }`}
+button:hover {
+   background-color: green;
+}`}
 </ExampleCode>
 
             <h3>Multiple Property Transition</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    width: 100px;
-    background-color: blue;
-    transition: width 0.5s, background-color 1s;
- }
+   width: 100px;
+   background-color: blue;
+   transition: width 0.5s, background-color 1s;
+}
 
- div:hover {
-    width: 200px;
-    background-color: orange;
- }`}
+div:hover {
+   width: 200px;
+   background-color: orange;
+}`}
 </ExampleCode>
 
             <h3>Using Transition Delay</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    background-color: grey;
-    transition: background-color 1s ease 0.5s;
- }
- div:hover {
-    background-color: black;
- }`}
+   background-color: grey;
+   transition: background-color 1s ease 0.5s;
+}
+
+div:hover {
+   background-color: black;
+}`}
 </ExampleCode>
 
             <h3>Notes:</h3>

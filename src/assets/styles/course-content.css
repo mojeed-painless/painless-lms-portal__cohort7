@@ -127,7 +127,7 @@ pre {
 }
 
 .course-content pre[class*="language-"] {
-    background: #140524;
+    background: rgb(20, 5, 36);
     font-size: 1rem;
 }
 
@@ -138,14 +138,14 @@ pre {
 .course-content .token.tag { color: #5280ff; padding: 0; }
 .course-content .token.comment{ color: #007000; }
 .course-content .token.attr-name { color: #82cbfc; }
-.course-content .token.attr-value { color: #e2694b; }
+.course-content .token.attr-value,
+.course-content .token.url { color: #e2694b; }
 .course-content .token.punctuation { color: #8c94a1;}
-.course-content .token.selector { color: #b8b50c; }
+.course-content .token.selector { color: #ddce46; }
 .course-content .token.property { color: #82cbfc; }
-.course-content .token.url { color: red; }
 .course-content .token.function { color: #f8b4a7; }
-/*
-.course-content .token.prolog,
+
+/*.course-content .token.prolog,
 .course-content .token.doctype,
 .course-content .token.cdata { color: #6b7280; }
 

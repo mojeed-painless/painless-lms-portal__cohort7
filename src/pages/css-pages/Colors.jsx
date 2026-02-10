@@ -24,10 +24,10 @@ export default function Colors() {
                             RGB stands for <strong>Red</strong>, <strong>Green</strong>, and <strong>Blue</strong>.
                             The values range from 0 to 255 for each color.
                         </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`rgb(red, green, blue)
 
- rgb(255, 192, 203)`}
+rgb(255, 192, 203)`}
 </ExampleCode>
 
                         <p>This gives a pink color by mixing full red (255), moderate green (192), and light blue (203).</p>
@@ -37,10 +37,10 @@ export default function Colors() {
                             RGBA is an extension of RGB that includes an <strong>Alpha</strong> value, which controls transparency.
                             The alpha value ranges from 0.0 (completely transparent) to 1.0 (fully opaque).
                         </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`rgb(red, green, blue, alpha)
 
- rgba(255, 192, 203, 0.3)`}
+rgba(255, 192, 203, 0.3)`}
 </ExampleCode>
 
                         <p>This gives a pink color with 30% opacity.</p>
@@ -63,7 +63,7 @@ export default function Colors() {
                             HSL stands for <strong>Hue</strong>, <strong>Saturation</strong>, and <strong>Lightness</strong>.
                             The hue is represented as a degree on the color wheel (0-360), saturation is a percentage (0% to 100%), and lightness is also a percentage (0% to 100%).
                         </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`hsl(350, 100%, 88%)`}
 </ExampleCode>
                         <p>This gives a light pink color with full saturation and lightness.</p>

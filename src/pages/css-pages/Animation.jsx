@@ -17,17 +17,17 @@ export default function Animation() {
                     <p>CSS animations make it possible to animate transitions from one CSS style configuration to another.</p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
-    animation-name: name;
-    animation-duration: time;
-    animation-timing-function: ease | linear | ease-in | ease-out | ease-in-out;
-    animation-delay: time;
-    animation-iteration-count: number | infinite;
-    animation-direction: normal | reverse | alternate | alternate-reverse;
-    animation-fill-mode: none | forwards | backwards | both;
-    animation-play-state: running | paused;
- }`}
+   animation-name: name;
+   animation-duration: time;
+   animation-timing-function: ease | linear | ease-in | ease-out | ease-in-out;
+   animation-delay: time;
+   animation-iteration-count: number | infinite;
+   animation-direction: normal | reverse | alternate | alternate-reverse;
+   animation-fill-mode: none | forwards | backwards | both;
+   animation-play-state: running | paused;
+}`}
 </ExampleCode>
 
             <h3>Key Concepts:</h3>
@@ -45,111 +45,96 @@ export default function Animation() {
             <h4>Examples:</h4>
 
             <h3>Slide In</h3>
-<ExampleCode> 
-{`<div class="slide">Sliding Box</div>
+<ExampleCode language="html"> 
+{`<div class="slide">Sliding Box</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
 
- <style>
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(-100%);
-      }
-      to {
-        transform: translateX(0);
-      }
-    }
-
-    .slide {
-        width: 200px;
-        height: 50px;
-        background: #ccc;
-        margin-bottom: 20px;
-        animation: slideIn 2s ease-in-out forwards;
-    }
-
- </style>`}
+.slide {
+    width: 200px;
+    height: 50px;
+    background: #ccc;
+    margin-bottom: 20px;
+    animation: slideIn 2s ease-in-out forwards;
+}`}
 </ExampleCode>
 
             <h3>Color Change</h3>
-<ExampleCode> 
-{`<div class="color">Color Cycle</div>
+<ExampleCode language="html"> 
+{`<div class="color">Color Cycle</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`@keyframes colorChange {
+    0% { background-color: red; }
+    50% { background-color: yellow; }
+    100% { background-color: green; }
+}
 
- <style>
-
-    @keyframes colorChange {
-        0% { background-color: red; }
-        50% { background-color: yellow; }
-        100% { background-color: green; }
-    }
-
-    .color {
-        width: 200px;
-        height: 50px;
-        margin-bottom: 20px;
-        animation: colorChange 3s infinite alternate;
-    }
-
- </style>`}
+.color {
+    width: 200px;
+    height: 50px;
+    margin-bottom: 20px;
+    animation: colorChange 3s infinite alternate;
+}`}
 </ExampleCode>
 
             <h3>Bounce</h3>
-<ExampleCode> 
-{`<div class="bounce">Bouncing</div>
+<ExampleCode language="html"> 
+{`<div class="bounce">Bouncing</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-50px); }
+}
 
- <style>
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-50px); }
-    }
-
-    .bounce {
-        width: 200px;
-        height: 50px;
-        background: orange;
-        margin-bottom: 20px;
-        animation: bounce 1s ease infinite;
-    }
-
- </style>`}
+.bounce {
+    width: 200px;
+    height: 50px;
+    background: orange;
+    margin-bottom: 20px;
+    animation: bounce 1s ease infinite;
+}`}
 </ExampleCode>
 
             <h3>Delay and Forward</h3>
-<ExampleCode> 
-{`<div class="delay">Delayed Slide</div>
+<ExampleCode language="html"> 
+{`<div class="delay">Delayed Slide</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`/* uses the slideIn @keyframes already created */
 
- <style>
-
-    /* uses the slideIn @keyframes already created */
-
-    .delay {
-        width: 200px;
-        height: 50px;
-        background: teal;
-        margin-bottom: 20px;
-        animation: slideIn 2s ease-in 1s forwards;
-    }
-
- </style>`}
+.delay {
+    width: 200px;
+    height: 50px;
+    background: teal;
+    margin-bottom: 20px;
+    animation: slideIn 2s ease-in 1s forwards;
+}`}
 </ExampleCode>
 
             <h3>Multiple Animations</h3>
-<ExampleCode> 
-{`<div class="multiple">Bounce + Color</div>
+<ExampleCode language="html"> 
+{`<div class="multiple">Bounce + Color</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`/* bounce & colorChange @keyframes already exist */
 
- <style>
-
-    /* bounce & colorChange @keyframes already exist */
-
-    .multiple {
-        width: 200px;
-        height: 50px;
-        background: orange;
-        margin-bottom: 20px;
-        animation: bounce 1s ease infinite, colorChange 3s infinite alternate;
-    }
-
- </style>`}
+.multiple {
+    width: 200px;
+    height: 50px;
+    background: orange;
+    margin-bottom: 20px;
+    animation: bounce 1s ease infinite, colorChange 3s infinite alternate;
+}`}
 </ExampleCode>
 
     <VideoBox 

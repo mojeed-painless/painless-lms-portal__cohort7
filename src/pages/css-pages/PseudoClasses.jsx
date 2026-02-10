@@ -22,10 +22,10 @@ export default function PseudoClasses() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector:pseudo-class {
-    property: value;
- }`}
+   property: value;
+}`}
 </ExampleCode>
 
             <p>There is no space between the selector and the pseudo-class.</p>
@@ -42,36 +42,36 @@ export default function PseudoClasses() {
                 <li><code className="code">:hover</code> – when the mouse is over the link.</li>
                 <li><code className="code">:active</code> – the moment a link is clicked.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`a:link {
-    color: blue;
- }
+   color: blue;
+}
 
- a:visited {
-    color: purple;
- }
+a:visited {
+   color: purple;
+}
 
- a:hover {
-    background-color: yellow;
- }
+a:hover {
+   background-color: yellow;
+}
 
- a:active {
-    color: red;
- }`}
+a:active {
+   color: red;
+}`}
 </ExampleCode>
 
             <h4>Interaction States</h4>
             <p>like <code className="code">:hover</code>, <code className="code">:focus</code>, <code className="code">:active</code> 
                 apply to various elements beyond links:
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`button:hover {
-    background-color: lightgreen;
- }
+   background-color: lightgreen;
+}
 
- input:focus {
-    border: 2px solid blue;
- }`}
+input:focus {
+   border: 2px solid blue;
+}`}
 </ExampleCode>
 
             <h4>Structural Pseudo-classes</h4>
@@ -82,18 +82,18 @@ export default function PseudoClasses() {
                 <li><code className="code">:nth-child(n)</code> – Selects the nth child.</li>
                 <li><code className="code">:nth-of-type(n)</code> – Selects the nth occurrence of an element of that type.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p:first-child {
-    color: green;
- }
+   color: green;
+}
 
- li:last-child {
-    font-weight: bold;
- }
+li:last-child {
+   font-weight: bold;
+}
 
- li:nth-child(2) {
-    color: red;
- }`}
+li:nth-child(2) {
+   color: red;
+}`}
 </ExampleCode>
 
             <h4>State-based Pseudo-classes</h4>
@@ -105,30 +105,30 @@ export default function PseudoClasses() {
                 <li><code className="code">:required</code> – required inputs.</li>
                 <li><code className="code">:optional</code> – optional inputs.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`input:checked {
-    outline: 2px solid red;
- }
+   outline: 2px solid red;
+}
 
- input:disabled {
-    background-color: #eee;
- }`}
+input:disabled {
+   background-color: #eee;
+}`}
 </ExampleCode>
 
             <h4>Negation Pseudo-class</h4>
             <p><code className="code">:not(selector)</code> – selects every element except the one specified.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p:not(.highlight) {
-    color: gray;
- }`}
+   color: gray;
+}`}
 </ExampleCode>
 
             <h4>Target Pseudo-class</h4>
             <p><code className="code">:target</code> – selects an element that's being targeted by a URL fragment (like <code className="code">#section1</code>).</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`#section1:target {
-    background: lightyellow;
- }`}
+   background: lightyellow;
+}`}
 </ExampleCode>
 
             <h3>Summary:</h3>

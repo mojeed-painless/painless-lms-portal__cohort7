@@ -757,6 +757,151 @@ export const TopicQuizData = [
         ],
     },
     {
+        topic: 'Forms, Types & Fields',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "Which HTML tag is used to wrap all elements of a user input form?",
+                options: [
+                    { id: 'A', text: "<input>" },
+                    { id: 'B', text: "<label>" },
+                    { id: 'C', text: "<form>" },
+                    { id: 'D', text: "<section>" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 2,
+                question: "Which input type should be used to ensure characters entered by the user are hidden?",
+                options: [
+                    { id: 'A', text: "type='text'" },
+                    { id: 'B', text: "type='hidden'" },
+                    { id: 'C', text: "type='password'" },
+                    { id: 'D', text: "type='secret'" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 3,
+                question: "To ensure that only one radio button can be selected from a group, what must all radio inputs in that group share?",
+                options: [
+                    { id: 'A', text: "The same 'id' attribute" },
+                    { id: 'B', text: "The same 'name' attribute" },
+                    { id: 'C', text: "The same 'value' attribute" },
+                    { id: 'D', text: "The same 'placeholder' attribute" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "Which tag is used to create a dropdown list, and which tag is used for the individual items inside it?",
+                options: [
+                    { id: 'A', text: "<dropdown> and <item>" },
+                    { id: 'B', text: "<list> and <li>" },
+                    { id: 'C', text: "<select> and <option>" },
+                    { id: 'D', text: "<form> and <input>" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 5,
+                question: "Which tag is specifically designed for multi-line text input, such as a message or comment box?",
+                options: [
+                    { id: 'A', text: "<input type='text'>" },
+                    { id: 'B', text: "<textarea>" },
+                    { id: 'C', text: "<textblock>" },
+                    { id: 'D', text: "<div>" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 6,
+                question: "What attribute can be added to a <select> tag to allow users to choose more than one option?",
+                options: [
+                    { id: 'A', text: "multi='true'" },
+                    { id: 'B', text: "checkbox" },
+                    { id: 'C', text: "multiple" },
+                    { id: 'D', text: "rows='5'" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 7,
+                question: "What is the purpose of the 'placeholder' attribute in an input field?",
+                options: [
+                    { id: 'A', text: "To set the permanent value of the field" },
+                    { id: 'B', text: "To provide a short hint that describes the expected value of the field" },
+                    { id: 'C', text: "To hide the input field from the user" },
+                    { id: 'D', text: "To validate that the user has entered an email" }
+                ],
+                correctAnswer: 'B',
+            }
+        ],
+    },
+    {
+        topic: 'Styling',
+        category: 'html',
+        questions: [
+            {
+                id: 1,
+                question: "What is the primary purpose of HTML inline styling?",
+                options: [
+                    { id: 'A', text: "To create a separate CSS file for the project" },
+                    { id: 'B', text: "To apply CSS directly within an HTML tag using the style attribute" },
+                    { id: 'C', text: "To define the skeletal structure of a web page" },
+                    { id: 'D', text: "To make a website interactive and responsive to clicks" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 2,
+                question: "Which attribute is used to apply CSS rules directly to an individual HTML element?",
+                options: [
+                    { id: 'A', text: "class" },
+                    { id: 'B', text: "id" },
+                    { id: 'C', text: "style" },
+                    { id: 'D', text: "format" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 3,
+                question: "What is the correct syntax for applying a background color to a <div> using inline styling?",
+                options: [
+                    { id: 'A', text: "<div background='blue'>" },
+                    { id: 'B', text: "<div style='background: blue;'>" },
+                    { id: 'C', text: "<div color: blue;>" },
+                    { id: 'D', text: "<div css='background-color: blue'>" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "According to the text, when is HTML inline styling best used?",
+                options: [
+                    { id: 'A', text: "For large-scale professional projects" },
+                    { id: 'B', text: "When you want to reuse styles across multiple pages" },
+                    { id: 'C', text: "For quick testing or applying a one-off style to a single element" },
+                    { id: 'D', text: "To keep the HTML code as clean as possible" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 5,
+                question: "Which of the following is recommended for larger projects instead of inline styling for better structure and reusability?",
+                options: [
+                    { id: 'A', text: "Using more <div> tags" },
+                    { id: 'B', text: "Using only inline styles for every element" },
+                    { id: 'C', text: "Internal or external stylesheets" },
+                    { id: 'D', text: "Notepad++ default formatting" }
+                ],
+                correctAnswer: 'C',
+            }
+        
+        ],
+    },
+    {
         topic: '',
         category: 'html',
         questions: [

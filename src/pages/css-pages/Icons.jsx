@@ -33,7 +33,7 @@ export default function Icons() {
                         <p>To use Font Awesome, include the CDN link in your <code className="code">&lt;head&gt;</code> section. Then, use the <code className="code">&lt;i&gt;</code> or <code className="code">&lt;span&gt;</code> tag with the appropriate class name.</p>
                         
                         <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<head>
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -61,7 +61,7 @@ export default function Icons() {
                         <p>Include the Bootstrap Icons CDN in your <code className="code">&lt;head&gt;</code>, then use the <code className="code">&lt;i&gt;</code> or <code className="code">&lt;span&gt;</code> tag with <code className="code">bi</code> classes.</p>
 
                         <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<head>
     <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -90,7 +90,7 @@ export default function Icons() {
 
                         <h4>Example:</h4>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<head>
     <!-- Google Material Icons CDN -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

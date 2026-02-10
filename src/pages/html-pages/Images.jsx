@@ -27,7 +27,7 @@ export default function Images() {
     The most important attribute is <code className="code">src</code>, which stands for "source". It tells the browser where to find the image.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<img src="./img/car.png">`}
 </ExampleCode>
 
@@ -43,7 +43,7 @@ export default function Images() {
     You can style the image using the <code className="code">style</code> attribute to control the <code className="code">width</code> and <code className="code">height</code>.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<img src="./img/car.png" style="width:120px; height:56px;">`}
 </ExampleCode>
 
@@ -55,7 +55,7 @@ export default function Images() {
     Instead of using <code className="code">style</code>, you can directly use the <code className="code">width</code> and <code className="code">height</code> attributes:
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<img src="./img/car.png" width="120" height="56">`}
 </ExampleCode>
 
@@ -63,7 +63,7 @@ export default function Images() {
 
 
   <p>⚠️ Always ensure your image path is correct. If you're using an external image, you can provide a full URL:</p>
-<ExampleCode>
+<ExampleCode language="html">
 {`<img src="https://example.com/image.jpg" width="300">`}
 </ExampleCode>
 

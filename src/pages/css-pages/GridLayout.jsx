@@ -25,63 +25,63 @@ export default function GridLayout() {
                         <h4>display</h4>
                         <p>Defines the element as a grid container.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`display: grid;`}
 </ExampleCode>
 
             <h4>grid-template-columns &amp; grid-template-rows</h4>
             <p>Defines the number and size of the columns and rows.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`grid-template-columns: 100px 200px auto;
- grid-template-rows: 100px auto;
+grid-template-rows: 100px auto;
 
- /* OR using repeat and fraction units */ 
- grid-template-columns: repeat(3, 1fr);`}
+/* OR using repeat and fraction units */ 
+grid-template-columns: repeat(3, 1fr);`}
 </ExampleCode>
 
             <h4>gap</h4>
             <p>Sets spacing between grid rows and columns.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`gap: 10px;
- row-gap: 10px;
- column-gap: 20px;`}
+row-gap: 10px;
+column-gap: 20px;`}
 </ExampleCode>
 
             <h4>justify-items</h4>
             <p>Aligns items horizontally (along the row axis).</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`justify-items: start;
- justify-items: end;
- justify-items: center;
- justify-items: stretch;`}
+justify-items: end;
+justify-items: center;
+justify-items: stretch;`}
 </ExampleCode>
 
             <h4>align-items</h4>
             <p>Aligns items vertically (along the column axis).</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`align-items: start;
- align-items: end;
- align-items: center;
- align-items: stretch;`}
+align-items: end;
+align-items: center;
+align-items: stretch;`}
 </ExampleCode>
 
             <h4>justify-content and align-content</h4>
             <p>Controls alignment of the grid itself inside the grid container.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`justify-content: start;
- justify-content: end;
- justify-content: center;
- justify-content: space-between;
- justify-content: space-around;
- justify-content: stretch;
- 
- align-content: start;
- align-content: end;
- align-content: center;
- align-content: space-between;
- align-content: space-around;
- align-content: stretch;`}
+justify-content: end;
+justify-content: center;
+justify-content: space-between;
+justify-content: space-around;
+justify-content: stretch;
+
+align-content: start;
+align-content: end;
+align-content: center;
+align-content: space-between;
+align-content: space-around;
+align-content: stretch;`}
 </ExampleCode>
 
             <h3>Grid Item Properties</h3>
@@ -93,14 +93,14 @@ export default function GridLayout() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`grid-column: start / end;`}
 </ExampleCode>
 
             <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`grid-column: 1 / 3;  /* spans from column 1 to column 3 */
- grid-row: 2 / 4;      /* spans from row 2 to row 4 */`}
+grid-row: 2 / 4;      /* spans from row 2 to row 4 */`}
 </ExampleCode>
 
             <h4>grid-area</h4>
@@ -111,9 +111,9 @@ export default function GridLayout() {
             <p>Also works as a shorthand for <code className="code">grid-row-start / grid-column-start 
                 / grid-row-end / grid-column-end</code>.
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`grid-area: header;
- grid-area: 1 / 1 / 2 / 3;  /* row-start / col-start / row-end / col-end */`}
+grid-area: 1 / 1 / 2 / 3;  /* row-start / col-start / row-end / col-end */`}
 </ExampleCode>
 
             <h4>justify-self / align-self</h4>
@@ -122,39 +122,40 @@ export default function GridLayout() {
                 They work like <code className="code">align-self</code> in Flexbox but for both horizontal 
                 and vertical alignment.
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`justify-self: start;
- justify-self: end;
- justify-self: center;
- justify-self: stretch;
+justify-self: end;
+justify-self: center;
+justify-self: stretch;
  
- align-self: start;
- align-self: end;
- align-self: center;
- align-self: stretch;`}
+align-self: start;
+align-self: end;
+align-self: center;
+align-self: stretch;`}
 </ExampleCode>
 
   <h3>Grid Example</h3>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<div class="grid-container">
-    <div>1</div>
-    <div>2</div>
-    <div>3</div>
-    <div>4</div>
- </div>
+   <div>1</div>
+   <div>2</div>
+   <div>3</div>
+   <div>4</div>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.grid-container {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   grid-template-rows: auto auto;
+   gap: 10px;
+}
 
- .grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto auto;
-    gap: 10px;
- }
-
- .grid-container div {
-    background: peachpuff;
-    padding: 20px;
- }`}
+.grid-container div {
+   background: peachpuff;
+   padding: 20px;
+}`}
 </ExampleCode>
 
     <VideoBox 

@@ -24,10 +24,10 @@ export default function InsertingCSS() {
                         </p>
                         <p>To use external CSS, link the stylesheet in the <code className="code">&lt;head&gt;</code> section of your HTML page:</p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<head>
     <link rel="stylesheet" href="styles.css">
- </head>`}
+</head>`}
 </ExampleCode>
 
                         <p><strong>Benefits:</strong> <em>Clean separation of structure and design, reusable styles, easier updates.</em></p>
@@ -37,7 +37,7 @@ export default function InsertingCSS() {
                             Internal CSS is used when a single HTML document needs its own unique styling. This CSS is placed within a <code className="code">&lt;style&gt;</code> tag in the <code className="code">&lt;head&gt;</code> section of the HTML file.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<head>
     <style>
         body {
@@ -48,7 +48,7 @@ export default function InsertingCSS() {
             color: #2980b9;
         }
     </style>
- </head>`}
+</head>`}
 </ExampleCode>
 
                         <p><strong>Use case:</strong> <em>Small projects or individual page tweaks where external files are unnecessary.</em></p>
@@ -58,7 +58,7 @@ export default function InsertingCSS() {
                             Inline CSS is applied directly inside an HTML tag using the <code className="code">style</code> attribute. This is best for quick testing or applying a one-time unique style to a single element.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<h1 style="color: green; font-size: 24px;"> Hello, styled world! </h1>`}
 </ExampleCode>
 

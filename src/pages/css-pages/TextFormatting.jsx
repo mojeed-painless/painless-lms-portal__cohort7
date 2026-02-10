@@ -29,18 +29,18 @@ export default function TextFormatting() {
 
                         <h3>text-align</h3>
                         <p>Used to align text horizontally. Acceptable values include: <code className="code">left</code>, <code className="code">right</code>, <code className="code">center</code>, and <code className="code">justify</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    text-align: center;
- }`}
+   text-align: center;
+}`}
 </ExampleCode>
 
                         <h3>text-align-last</h3>
                         <p>Aligns only the last line of a paragraph. Values include: <code className="code">left</code>, <code className="code">right</code>, <code className="code">center</code>, <code className="code">justify</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    text-align-last: justify;
- }`}
+   text-align-last: justify;
+}`}
 </ExampleCode>
 
                         <h3>direction &amp; unicode-bidi</h3>
@@ -49,11 +49,11 @@ export default function TextFormatting() {
                             <li><code className="code">direction: rtl;</code></li>
                             <li><code className="code">unicode-bidi: bidi-override;</code></li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    direction: rtl;
-    unicode-bidi: bidi-override;
- }`}
+   direction: rtl;
+   unicode-bidi: bidi-override;
+}`}
 </ExampleCode>
 
                         <h3>vertical-align</h3>
@@ -65,10 +65,10 @@ export default function TextFormatting() {
                             <li>sub</li>
                             <li>super</li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`span {
-    vertical-align: super;
- }`}
+   vertical-align: super;
+}`}
 </ExampleCode>
 
                         <h3>✅ Text Decoration</h3>
@@ -89,10 +89,10 @@ export default function TextFormatting() {
                             <li>overline</li>
                             <li>line-through</li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`h1 {
-    text-decoration-line: underline;
- }`}
+   text-decoration-line: underline;
+}`}
 </ExampleCode>
 
                         <h3>text-decoration-style</h3>
@@ -104,10 +104,10 @@ export default function TextFormatting() {
                             <li>dashed</li>
                             <li>wavy</li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`h1 {
-    text-decoration-style: wavy;
- }`}
+   text-decoration-style: wavy;
+}`}
 </ExampleCode>
                         <h3>✅ Text Transformation</h3>
                         <p>Controls letter casing of your text using the <code className="code">text-transform</code> property. Options include:</p>
@@ -116,10 +116,10 @@ export default function TextFormatting() {
                             <li>lowercase</li>
                             <li>capitalize</li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    text-transform: capitalize;
- }`}
+   text-transform: capitalize;
+}`}
 </ExampleCode>
 
                         <h3>✅ Text Spacing</h3>
@@ -136,48 +136,48 @@ export default function TextFormatting() {
 
                         <h3>text-indent</h3>
                         <p>Sets the indentation of the first line of text, often used for paragraphs. Example: <code className="code">text-indent: 50px;</code></p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    text-indent: 50px;
- }`}
+   text-indent: 50px;
+}`}
 </ExampleCode>
 
                         <h3>letter-spacing</h3>
                         <p>Adjusts space between characters. Positive values increase space, negative values reduce it.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`h2 {
-    letter-spacing: 2px;
- }`}
+   letter-spacing: 2px;
+}`}
 </ExampleCode>
 
                         <h3>line-height</h3>
                         <p>Specifies the vertical space between lines of text.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    line-height: 1.8;
- }`}
+   line-height: 1.8;
+}`}
 </ExampleCode>
 
                         <h3>word-spacing</h3>
                         <p>Adjusts the space between words in a line of text.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    word-spacing: 10px;
- }`}
+   word-spacing: 10px;
+}`}
 </ExampleCode>
 
                         <h3>white-space</h3>
                         <p>Determines how white space is handled inside an element. Example value: <code className="code">nowrap</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    white-space: nowrap;
- }`}
+   white-space: nowrap;
+}`}
 </ExampleCode>
 
                         <h3>✅ Text Shadow</h3>
                         <p>The <code className="code">text-shadow</code> property adds shadows behind text to create a 3D or glowing effect.</p>
                         <p>Syntax example:</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`text-shadow: 2px 2px 5px red;`}
 </ExampleCode>
 
@@ -215,14 +215,14 @@ export default function TextFormatting() {
                             <li>cursive</li>
                             <li>fantasy</li>
                         </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    font-family: "Trebuchet MS", sans-serif;
- }
+   font-family: "Trebuchet MS", sans-serif;
+}
 
- h3 {
-    font-family: Georgia, serif;
- }`}
+h3 {
+   font-family: Georgia, serif;
+}`}
 </ExampleCode>
 
                         <h4>Popular Web-Safe Fonts</h4>
@@ -241,34 +241,34 @@ export default function TextFormatting() {
 
                         <h3>font-style</h3>
                         <p>Sets the text style. Common values include: <code className="code">normal</code>, <code className="code">italic</code>, and <code className="code">oblique</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`span {
-    font-style: italic;
- }`}
+   font-style: italic;
+}`}
 </ExampleCode>
 
                         <h3>font-weight</h3>
                         <p>Defines the thickness of the text. Values: <code className="code">normal</code>, <code className="code">bold</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`span {
-    font-weight: bold;
- }`}
+   font-weight: bold;
+}`}
 </ExampleCode>
 
                         <h3>font-variant</h3>
                         <p>Displays text in small capital letters. Values: <code className="code">normal</code>, <code className="code">small-caps</code>.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    font-variant: small-caps;
- }`}
+   font-variant: small-caps;
+}`}
 </ExampleCode>
 
                         <h3>font-size</h3>
                         <p>Sets the size of the text. Units can be <code className="code">px</code>, <code className="code">em</code>, <code className="code">rem</code>, etc.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    font-size: 18px;
- }`}
+   font-size: 18px;
+}`}
 </ExampleCode>
 
 

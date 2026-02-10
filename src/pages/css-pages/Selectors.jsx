@@ -27,10 +27,10 @@ export default function Selectors() {
                             For example, to style all paragraph tags:
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
     color: green;
- }`}
+}`}
 </ExampleCode>
 
                         <h4>ID Selector</h4>
@@ -38,12 +38,13 @@ export default function Selectors() {
                             This targets a specific HTML element by its unique <code className="code">id</code> attribute.
                             Use a hash <code className="code">#</code> followed by the ID name.
                         </p>
-<ExampleCode> 
-{`<div id="left"></div>
-
- #left {
+<ExampleCode language="html"> 
+{`<div id="left"></div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`#left {
     background-color: lightblue;
- }`}
+}`}
 </ExampleCode>
 
                         <p style={{color: 'greenyellow'}}><strong><em>Note: IDs must be unique on a page.</em></strong></p>
@@ -53,12 +54,13 @@ export default function Selectors() {
                             This targets one or more elements with a shared <code className="code">class</code> attribute.
                             Use a dot <code className="code">.</code> followed by the class name.
                         </p>
-<ExampleCode> 
-{`<p class="right">Content</p>
-
- .right {
+<ExampleCode language="html"> 
+{`<p class="right">Content</p>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.right {
     text-align: right;
- }`}
+}`}
 </ExampleCode>
 
                         <h4>Universal Selector</h4>
@@ -66,22 +68,22 @@ export default function Selectors() {
                             The universal selector <code className="code">*</code> selects <strong>all</strong> elements on the page.
                             It's useful for resetting styles:
                         </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
- }`}
+}`}
 </ExampleCode>
 
                         <h4>Group Selector</h4>
                         <p>
                             This allows you to group multiple selectors that share the same styles. Use a comma to separate them.
                         </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p, div, h1 {
     font-family: Arial, sans-serif;
- }`}
+}`}
 </ExampleCode>
                         <h3>Conclusion</h3>
                          <p>

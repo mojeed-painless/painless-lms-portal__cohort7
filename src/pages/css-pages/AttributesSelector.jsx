@@ -21,30 +21,30 @@ export default function AttributesSelector() {
             </p>
 
             <h4>Syntax</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`element[attribute] {
-    property: value;
- }`}
+   property: value;
+}`}
 </ExampleCode>
 
             <h3>Types of Attribute Selectors and Examples</h3>
 
             <h4>[attribute]</h4>
             <p>Selects elements that have a specific attribute, regardless of value.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`input[required] {
-    border: 2px solid red;
- }`}
+   border: 2px solid red;
+}`}
 </ExampleCode>
   
             <p><strong>Use Case:</strong> Style all required input fields.</p>
 
             <h4>[attribute="value"]</h4>
             <p>Selects elements with a specific attribute and exact value.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`input[type="email"] {
-    background-color: lightblue;
- }`}
+   background-color: lightblue;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Target email input fields specifically.</p>
@@ -59,10 +59,10 @@ export default function AttributesSelector() {
                 Selects elements with an attribute containing a space-separated list of words, 
                 one of which matches the given value.
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div[class~="card"] {
-    border: 1px solid black;
- }`}
+   border: 1px solid black;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Select elements where the class attribute includes "card" among other classes.</p>
@@ -72,10 +72,10 @@ export default function AttributesSelector() {
                 Matches elements whose attribute value is exactly the value, or starts with the value 
                 followed by a hyphen -.
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p[lang|="en"] {
-    font-style: italic;
- }`}
+   font-style: italic;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Match English language values like en, en-US, etc.</p>
@@ -83,20 +83,20 @@ export default function AttributesSelector() {
             <h4>[attribute^="value"]</h4>
             <p>Selects elements whose attribute value starts with a given string.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`a[href^="https"] {
-    color: green;
- }`}
+   color: green;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Style all secure links (https://).</p>
 
             <h4>[attribute$="value"]</h4>
             <p>Selects elements whose attribute value ends with a given string.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`img[src$=".png"] {
-    border-radius: 8px;
- }`}
+   border-radius: 8px;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Apply styles to .png images.</p>
@@ -104,10 +104,10 @@ export default function AttributesSelector() {
             <h4>[attribute*="value"]</h4>
             <p>Selects elements whose attribute value contains a given substring.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`a[href*="example"] {
-    color: orange;
- }`}
+   color: orange;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Match any link that includes "example" in the URL.</p>

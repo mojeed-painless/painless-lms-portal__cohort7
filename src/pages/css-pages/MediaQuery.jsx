@@ -20,10 +20,10 @@ export default function MediaQuery() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`@media media-type and (condition) {
-    /* CSS rules */
- }`}
+   /* CSS rules */
+}`}
 </ExampleCode>
 
             <h3>Common Media Features:</h3>
@@ -38,82 +38,76 @@ export default function MediaQuery() {
             <h4>Examples:</h4>
 
             <h3>Change Background Color When Screen Width is ≤ 600px</h3>
-<ExampleCode> 
-{`<div class="color-change">Change is detected when you resize your browser below 600px</div>
-
- <style>
-    .color-change {
-        width: 100%;
-        padding: 20px;
-        background-color: lightgray;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+<ExampleCode language="html"> 
+{`<div class="color-change">Change is detected when you resize your browser below 600px</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.color-change {
+    width: 100%;
+    padding: 20px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+    text-align: center;
+}
     
-    @media (max-width: 600px) {
-        .color-change {
-          background-color: lightblue;
-        }
+@media (max-width: 600px) {
+    .color-change {
+      background-color: lightblue;
     }
-
- </style>`}
+}`}
 </ExampleCode>
 
             <h3>Hide Element on Screens Smaller Than 500px</h3>
-<ExampleCode> 
-{`<div class="hide-on-small">I will disappear on small screens</div>
-
- <style>
-    .hide-on-small {
-        width: 100%;
-        padding: 20px;
-        background-color: lightgray;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+<ExampleCode language="html"> 
+{`<div class="hide-on-small">I will disappear on small screens</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.hide-on-small {
+    width: 100%;
+    padding: 20px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+    text-align: center;
+}
     
-    @media (max-width: 500px) {
-        .hide-on-small {
-            display: none;
-        }
+@media (max-width: 500px) {
+    .hide-on-small {
+        display: none;
     }
-
- </style>`}
+}`}
 </ExampleCode>
 
             <h3>Column Layout on Larger Screens</h3>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<div class="column-layout">
-    <div class="box">Column 1</div>
-    <div class="box">Column 2</div>
-    <div class="box">Column 2</div>
- </div>
-
- <style>
-    .box {
-        width: 100%;
-        padding: 20px;
-        background-color: lightgray;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+   <div class="box">Column 1</div>
+   <div class="box">Column 2</div>
+   <div class="box">Column 2</div>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.box {
+    width: 100%;
+    padding: 20px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+    text-align: center;
+}
     
+.column-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
     .column-layout {
-        display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        gap: 10px;
     }
-
-    @media (min-width: 768px) {
-        .column-layout {
-            flex-direction: row;
-            gap: 10px;
-        }
-        .column-layout > div {
-            flex: 1;
-        }
+    .column-layout > div {
+        flex: 1;
     }
-
- </style>`}
+}`}
 </ExampleCode>
 
             <h3>Conclusion:</h3>

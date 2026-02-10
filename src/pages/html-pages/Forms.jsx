@@ -31,7 +31,7 @@ export default function Forms() {
     Traditionally, the <code className="code">&lt;label&gt;</code> tag is used to indicate the purpose of a form field. However, in modern design, the <code className="code">placeholder</code> attribute is often preferred for a cleaner look.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<form>
     <input type="text" placeholder="Enter your name">
     <input type="submit" value="Submit">
@@ -56,7 +56,7 @@ export default function Forms() {
     To ensure only one radio button can be selected, all radio inputs in the group must share the same <code className="code">name</code> attribute.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<input type="radio" name="gender" value="male"> Male
  <input type="radio" name="gender" value="female"> Female`}
 </ExampleCode>
@@ -66,7 +66,7 @@ export default function Forms() {
     Checkboxes allow users to select zero, one, or multiple options independently.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<input type="checkbox" name="skill" value="html"> HTML
  <input type="checkbox" name="skill" value="css"> CSS`}
 </ExampleCode>
@@ -76,7 +76,7 @@ export default function Forms() {
     The <code className="code">&lt;select&gt;</code> tag creates a dropdown list. It uses <code className="code">&lt;option&gt;</code> tags inside.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<select name="country">
     <option value="nigeria">Nigeria</option>
     <option value="ghana">Ghana</option>
@@ -85,7 +85,7 @@ export default function Forms() {
 
   <p>To allow multiple selections:</p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<select name="languages" multiple>
     <option value="english">English</option>
     <option value="french">French</option>
@@ -97,7 +97,7 @@ export default function Forms() {
     The <code className="code">&lt;textarea&gt;</code> tag is used for multi-line input. The <code className="code">rows</code> and <code className="code">cols</code> attributes control its size.
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<textarea rows="4" cols="50" placeholder="Write your message here..."></textarea>`}
 </ExampleCode>
 

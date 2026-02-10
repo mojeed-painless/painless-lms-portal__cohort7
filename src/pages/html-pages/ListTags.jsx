@@ -49,7 +49,7 @@ export default function ListTags() {
     lang='HTML'
     outputImg={listOutput1}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<ol>
     <li>Item One</li>
     <li>Item Two</li>
@@ -89,7 +89,7 @@ export default function ListTags() {
     lang='HTML'
     outputImg={listOutput2}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<ol type="A">
     <li>Apple</li>
     <li>Banana</li>
@@ -114,7 +114,7 @@ export default function ListTags() {
     lang='HTML'
     outputImg={listOutput3}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<ul>
     <li>Milk</li>
     <li>Bread</li>
@@ -146,7 +146,7 @@ export default function ListTags() {
     lang='HTML'
     outputImg={listOutput4}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<ul style="list-style-type: square;">
     <li>Red</li>
     <li>Green</li>
@@ -165,7 +165,7 @@ export default function ListTags() {
     lang='HTML'
     outputImg={listOutput5}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<ol>
     <li>Fruits
       <ul>

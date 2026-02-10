@@ -17,10 +17,10 @@ export default function BoxShadow() {
                     <p>The <code className="code">box-shadow</code> property in CSS adds shadow effects around an element’s frame. You can create one or more shadows using this property. It can be used to create depth, highlight elements, or create stylish UI effects.</p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
-    box-shadow: h-offset v-offset blur spread color inset;
- }`}
+   box-shadow: h-offset v-offset blur spread color inset;
+}`}
 </ExampleCode>
 
             <ul>
@@ -35,34 +35,34 @@ export default function BoxShadow() {
             <h4>Examples:</h4>
 
             <h3>Basic Shadow</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`box-shadow: 5px 5px 10px gray;`}
 </ExampleCode>
 
             <p>Adds a shadow 5px right and 5px down, blurred 10px, gray in color.</p>
 
             <h3>Shadow With Spread</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`box-shadow: 5px 5px 10px 5px blue;`}
 </ExampleCode>
 
             <p>Shadow spreads 5px beyond the blurred area.</p>
 
             <h3>Inset Shadow</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5);`}
 </ExampleCode>
   
             <p>Creates an inner shadow inside the element.</p>
 
             <h3>Multiple Shadows</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`box-shadow: 2px 2px 5px red, -2px -2px 5px green;`}
 </ExampleCode>
             <p>Adds multiple shadows in different directions and colors.</p>
 
             <h3>No Blur and Spread</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`box-shadow: 10px 10px black;`}
 </ExampleCode>
             <p>Sharp edge shadow without blur or spread.</p>

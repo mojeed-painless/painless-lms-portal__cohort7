@@ -25,10 +25,10 @@ export default function Tables() {
                             <code className="code">&lt;td&gt;</code>.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`table, th, td {
-    border: 1px solid black;
- }`}
+   border: 1px solid black;
+}`}
 </ExampleCode>
 
                         <p>This adds a 1-pixel solid black border to the table and all its cells.</p>
@@ -37,19 +37,19 @@ export default function Tables() {
                         <p>You can control how wide your table is using the <code className="code">width</code> property.</p>
 
                         <h4>Full width table:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`table {
-    width: 100%;
- }`}
+   width: 100%;
+}`}
 </ExampleCode>
 
                         <p>This will stretch the table across the entire width of its container.</p>
 
                         <h4>Fixed width table:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`table {
-    width: 500px;
- }`}
+   width: 500px;
+}`}
 </ExampleCode>
 
                         <p>This sets the table width to 500 pixels.</p>
@@ -59,7 +59,7 @@ export default function Tables() {
                             <code className="code">border-collapse</code> property to collapse them into a single border.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`table {
     border-collapse: collapse;
  }`}
@@ -70,19 +70,19 @@ export default function Tables() {
                             or individual cells.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`td {
-    height: 50px;
- }`}
+   height: 50px;
+}`}
 </ExampleCode>
 
                         <h3>Text Alignment</h3>
                         <p>You can align text inside table cells using <code className="code">text-align</code>.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`th, td {
-    text-align: center;
- }`}
+   text-align: center;
+}`}
 </ExampleCode>
 
                         <p>Other values include <code className="code">left</code> and <code className="code">right</code>.</p>
@@ -90,10 +90,10 @@ export default function Tables() {
                         <h3>Hoverable Table Rows</h3>
                         <p>You can highlight rows when a user hovers over them:</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`tr:hover {
-    background-color: #f2f2f2;
- }`}
+   background-color: #f2f2f2;
+}`}
 </ExampleCode>
 
 

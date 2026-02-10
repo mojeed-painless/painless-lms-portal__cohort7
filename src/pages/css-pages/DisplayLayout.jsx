@@ -20,38 +20,40 @@ export default function DisplayLayout() {
                         <p>You can override these using the <code className="code">display</code> property.</p>
                         <p><code className="code">display: block;</code> / <code className="code">display: inline;</code></p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<span class="block-example">span as block</span>
 
- <div class="inline-example">div as inline</div>
+<div class="inline-example">div as inline</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.block-example {
+   display: block;
+   background-color: lightblue;
+}
 
- .block-example {
-    display: block;
-    background-color: lightblue;
- }
-
- .inline-example {
-    display: inline;
-    background-color: lightcoral;
- }`}
+.inline-example {
+   display: inline;
+   background-color: lightcoral;
+}`}
 </ExampleCode>
 
                         <h3>display: none; vs visibility: hidden;</h3>
                         <p><strong>display: none</strong>: Hides the element and removes it from the flow.</p>
                         <p><strong>visibility: hidden</strong>: Hides the element, but it still takes up space.</p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<p class="none-example">This won't be visible at all.</p>
 
- <p class="hidden-example">This is hidden but still takes space.</p>
+<p class="hidden-example">This is hidden but still takes space.</p>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.none-example {
+   display: none;
+}
 
- .none-example {
-    display: none;
- }
-
- .hidden-example {
-    visibility: hidden;
- }`}
+.hidden-example {
+   visibility: hidden;
+}`}
 </ExampleCode>
 
 

@@ -21,134 +21,135 @@ export default function FlexboxLayout() {
             </p>
 
             <p><strong>To use Flexbox:</strong></p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`display: flex; /* enables flexbox */`}
 </ExampleCode>
 
             <h3>Flex Container Properties</h3>
 
             <h4>display</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`display: flex;      /* horizontal layout */`}
 </ExampleCode>
 
             <h4>flex-direction</h4>
             <p>Defines the direction of the main axis.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-direction: row;   /* default */
- flex-direction: row-reverse;
- flex-direction: column;
- flex-direction: column-reverse;`}
+flex-direction: row-reverse;
+flex-direction: column;
+flex-direction: column-reverse;`}
 </ExampleCode>
 
             <h4>flex-wrap</h4>
             <p>Allows items to wrap onto multiple lines.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-wrap: nowrap;    /* default */
- flex-wrap: wrap;
- flex-wrap: wrap-reverse;`}
+flex-wrap: wrap;
+flex-wrap: wrap-reverse;`}
 </ExampleCode>
 
             <h4>flex-flow</h4>
             <p>Shorthand for flex-direction and flex-wrap.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-flow: row wrap;`}
 </ExampleCode>
 
             <h4>justify-content</h4>
             <p>Aligns items along the main axis.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`justify-content: flex-start; /* default */
- justify-content: flex-end;
- justify-content: center;
- justify-content: space-between;
- justify-content: space-around;`}
+justify-content: flex-end;
+justify-content: center;
+justify-content: space-between;
+justify-content: space-around;`}
 </ExampleCode>
 
             <h4>align-items</h4>
             <p>Aligns items across the main axis.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`align-items: stretch;  /* default */
- align-items: flex-start;
- align-items: flex-end;
- align-items: center;
- align-items: baseline;`}
+align-items: flex-start;
+align-items: flex-end;
+align-items: center;
+align-items: baseline;`}
 </ExampleCode>
 
             <h4>align-content</h4>
             <p>Aligns rows of items when there is extra space (multi-line flex).</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`align-content: flex-start;
- align-content: flex-end;
- align-content: center;
- align-content: space-between;
- align-content: space-around;
- align-content: stretch; /* default */`}
+align-content: flex-end;
+align-content: center;
+align-content: space-between;
+align-content: space-around;
+align-content: stretch; /* default */`}
 </ExampleCode>
 
             <h3>Flex Item Properties</h3>
 
             <h4>order</h4>
             <p>Defines item order.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`order: 0;  /* 0 is the default */`}
 </ExampleCode>
 
             <h4>flex-grow</h4>
             <p>Defines how much an item should grow.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-grow: 1;`}
 </ExampleCode>
 
             <h4>flex-shrink</h4>
             <p>Defines how items shrink when necessary.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-shrink: 1; /* default */`}
 </ExampleCode>
 
             <h4>flex-basis</h4>
             <p>Defines the initial size of the item.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex-basis: auto; /* default */`}
 </ExampleCode>
 
             <h4>flex</h4>
             <p>Shorthand for grow, shrink, basis.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`flex: 1 0 200px;`}
 </ExampleCode>
 
             <h4>align-self</h4>
             <p>Overrides align-items for individual items.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`align-self: auto;
- align-self: flex-start;
- align-self: center;
- align-self: flex-end;
- align-self: stretch;`}
+align-self: flex-start;
+align-self: center;
+align-self: flex-end;
+align-self: stretch;`}
 </ExampleCode>
 
             <h3>Flexbox Example</h3>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<div class="flex-container">
-    <div>Item 1</div>
-    <div>Item 2</div>
-    <div>Item 3</div>
- </div>
+   <div>Item 1</div>
+   <div>Item 2</div>
+   <div>Item 3</div>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.flex-container {
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   height: 100px;
+   border: 1px solid black;
+}
 
- .flex-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 100px;
-    border: 1px solid black;
- }
-
- .flex-container div {
-    background: lightblue;
-    padding: 20px;
- }`}
+.flex-container div {
+   background: lightblue;
+   padding: 20px;
+}`}
 </ExampleCode>
 
     <VideoBox 

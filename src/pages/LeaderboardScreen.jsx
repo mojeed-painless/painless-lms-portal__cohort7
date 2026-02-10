@@ -122,7 +122,7 @@ export default function LeaderboardScreen() {
               Challenge others to climb up the leaderboard
             </p>
             {authRequired && (
-              <p style={{ color: '#b04545', marginTop: 8 }}>Administrator login required to view aggregated grades.</p>
+              <p style={{ color: '#b04545', marginTop: 8 }}></p>
             )}
           </div>
 

@@ -18,10 +18,10 @@ export default function Opacity() {
             <p>It takes a value from <code className="code">0</code> (completely transparent) to <code className="code">1</code> (fully opaque).</p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
-    opacity: value;
- }`}
+   opacity: value;
+}`}
 </ExampleCode>
 
             <ul>
@@ -34,46 +34,46 @@ export default function Opacity() {
             <h4>Examples:</h4>
 
             <h3>Fully Opaque Element</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    opacity: 1;
- }`}
+   opacity: 1;
+}`}
 </ExampleCode>
 
             <p>This element is completely visible.</p>
 
             <h3>Semi-Transparent Element</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    opacity: 0.5;
- }`}
+   opacity: 0.5;
+}`}
 </ExampleCode>
 
             <p>This makes the element 50% transparent.</p>
 
             <h3>Fully Transparent Element</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    opacity: 0;
- }`}
+   opacity: 0;
+}`}
 </ExampleCode>
 
             <p>The element becomes invisible but still takes up space.</p>
 
             <h3>Image Transparency</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`img {
-    opacity: 0.3;
- }`}
+   opacity: 0.3;
+}`}
 </ExampleCode>
 
             <p>Makes the image faint or "ghost-like".</p>
 
             <h3>Hover Effect</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`button:hover {
-    opacity: 0.7;
- }`}
+   opacity: 0.7;
+}`}
 </ExampleCode>
 
             <p>Reduces the opacity of a button when hovered.</p>

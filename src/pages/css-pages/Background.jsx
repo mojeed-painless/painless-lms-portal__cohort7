@@ -32,58 +32,58 @@ export default function Background() {
                         <h4> Examples</h4>
 
   <h3> background-color</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    background-color: lightblue;
- }`}
+  background-color: lightblue;
+}`}
 </ExampleCode>
 
   <h3>background-image</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-    background-image: url("background.jpg");
- }`}
+  background-image: url("background.jpg");
+}`}
 </ExampleCode>
 
   <h3> background-repeat</h3>
   <p>By default, background images repeat both horizontally and vertically.</p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-   background-repeat: no-repeat;
- }
+  background-repeat: no-repeat;
+}
 
- OR
+OR
 
- body {
-    background-repeat: repeat-x;
- }
+body {
+  background-repeat: repeat-x;
+}
 
- OR
+OR
 
- body {
-    background-repeat: repeat-y;
- }`}
+body {
+  background-repeat: repeat-y;
+}`}
 </ExampleCode>
 
   <h3> background-position</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-    background-position: center top;
- }`}
+  background-position: center top;
+}`}
 </ExampleCode>
 
   <h3>background-attachment</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-    background-attachment: fixed;
- }`}
+  background-attachment: fixed;
+}`}
 </ExampleCode>
 
   <h3> background-size</h3>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-    background-size: cover;
- }`}
+  background-size: cover;
+}`}
 </ExampleCode>
 
   <h3>Shorthand Property</h3>
@@ -91,10 +91,10 @@ export default function Background() {
     You can combine multiple background properties into a single line using shorthand. The order should be:
     <em>background-color background-image background-repeat background-attachment background-position</em>
   </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`body {
-    background: #f1f1f1 url("bg.jpg") no-repeat fixed center;
- }`}
+  background: #f1f1f1 url("bg.jpg") no-repeat fixed center;
+}`}
 </ExampleCode>
 
             <h3> Conclusion</h3>

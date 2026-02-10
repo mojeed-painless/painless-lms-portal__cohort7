@@ -21,11 +21,11 @@ export default function OverflowLayout() {
             </p>
 
             <h4>Syntax:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`overflow: visible;
- overflow: hidden;
- overflow: scroll;
- overflow: auto;`}
+overflow: hidden;
+overflow: scroll;
+overflow: auto;`}
 </ExampleCode>
 
             <h4>Values</h4>
@@ -37,40 +37,41 @@ export default function OverflowLayout() {
             </ul>
 
             <h4>Overflow Example: <code className="code">auto</code></h4>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<div class="scroll-box">
-    This is a long content that overflows: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo voluptatem, necessitatibus sapiente eligendi sint quaerat nisi neque ipsa quos. Quaerat porro sapiente dolor corrupti cupiditate exercitationem voluptatibus soluta excepturi sint!<br>
- </div>
-
- .scroll-box {
-    width: 300px;
-    height: 100px;
-    overflow: auto;
-    background-color: lightyellow;
-    padding: 10px;
- }`}
+   This is a long content that overflows: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo voluptatem, necessitatibus sapiente eligendi sint quaerat nisi neque ipsa quos. Quaerat porro sapiente dolor corrupti cupiditate exercitationem voluptatibus soluta excepturi sint!<br>
+</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.scroll-box {
+   width: 300px;
+   height: 100px;
+   overflow: auto;
+   background-color: lightyellow;
+   padding: 10px;
+}`}
 </ExampleCode>
 
             <h4>Overflow Example: <code className="code">hidden</code></h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.scroll-box {
-    width: 200px;
-    height: 60px;
-    overflow: hidden;
-    background-color: #e6e6fa;
-    padding: 10px;
- }`}
+   width: 200px;
+   height: 60px;
+   overflow: hidden;
+   background-color: #e6e6fa;
+   padding: 10px;
+}`}
 </ExampleCode>
 
             <h4>Overflow Example: <code className="code">scroll</code></h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.scroll-box {
-    width: 200px;
-    height: 60px;
-    overflow: scroll;
-    background-color: #ffe4e1;
-    padding: 10px;
- }`}
+   width: 200px;
+   height: 60px;
+   overflow: scroll;
+   background-color: #ffe4e1;
+   padding: 10px;
+}`}
 </ExampleCode>
 
             <h3>Related Properties</h3>
@@ -78,16 +79,16 @@ export default function OverflowLayout() {
             <h4>overflow-x and overflow-y</h4>
             <p>These control the horizontal and vertical overflow separately.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`overflow-x: auto;
- overflow-y: hidden;`}
+overflow-y: hidden;`}
 </ExampleCode>
 
             <h4>Shorthand Use:</h4>
             <p>
                 You can combine both in one line like:
             </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`overflow: auto hidden;  /* x is auto, y is hidden */`}
 </ExampleCode>
 

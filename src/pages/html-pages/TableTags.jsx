@@ -36,7 +36,7 @@ export default function TableTags() {
     lang='HTML'
     outputImg={tableOutput1}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<table>
     <tr>
       <th>Header 1</th>
@@ -76,7 +76,7 @@ export default function TableTags() {
     lang='HTML'
     outputImg={tableOutput2}
 >
-<ExampleCode>
+<ExampleCode language="html">
 {`<table border="1">
     <tr>
       <th>Header 1</th>

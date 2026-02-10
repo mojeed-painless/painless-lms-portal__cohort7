@@ -24,10 +24,10 @@ export default function Borders() {
                             <code className="code">dotted</code>, <code className="code">dashed</code>, <code className="code">solid</code>, <code className="code">double</code>, <code className="code">groove</code>, <code className="code">ridge</code>, <code className="code">inset</code>, <code className="code">outset</code>, <code className="code">none</code>, <code className="code">hidden</code>.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    border-style: dotted dashed solid double;
- }`}
+  border-style: dotted dashed solid double;
+}`}
 </ExampleCode>
 
                         <p><strong> And these values are in the following sequences, top right bottom left</strong></p>
@@ -36,20 +36,20 @@ export default function Borders() {
   <p>
     Defines the thickness of the border using units like <code className="code">px</code>, <code className="code">pt</code>, <code className="code">cm</code>, <code className="code">em</code>, or keywords like <code className="code">thin</code>, <code className="code">medium</code>, and <code className="code">thick</code>.
   </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    border-width: 20px 5px 15px 10px;
- }`}
+  border-width: 20px 5px 15px 10px;
+}`}
 </ExampleCode>
 
   <h3>border-color</h3>
   <p>
     Sets the color of the border. You can use color names, HEX, RGB, or other supported color values. You can also assign different colors for each side.
   </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    border-color: red green blue yellow;
- }`}
+  border-color: red green blue yellow;
+}`}
 </ExampleCode>
 
   <h3>Individual Sides</h3>
@@ -65,24 +65,24 @@ export default function Borders() {
   <p>
     Instead of writing multiple properties, you can use a shorthand to combine width, style, and color.
   </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    border: 5px solid red;
- }
+  border: 5px solid red;
+}
 
- p {
-    border: width style color;
- }`}
+p {
+  border: width style color;
+}`}
 </ExampleCode>
 
   <h3> border-radius</h3>
   <p>
     Adds rounded corners to elements. You can apply different radii to each corner in clockwise order.
   </p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
-    border-radius: 5px 10px 15px 2px;
- }`}
+  border-radius: 5px 10px 15px 2px;
+}`}
 </ExampleCode>
 
 

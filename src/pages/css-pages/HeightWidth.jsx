@@ -21,10 +21,10 @@ export default function HeightWidth() {
     <h3>Width</h3>
   <p>The <code className="code">width</code> property defines how wide an element should be. By default, block-level elements like <code className="code">&lt;div&gt;</code> stretch to the full width of their container, but you can control that:</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     width: 300px;
- }`}
+}`}
 </ExampleCode>
 
   <p><b> Common units for width:</b></p>
@@ -38,10 +38,10 @@ export default function HeightWidth() {
   <h3>Height</h3>
   <p>The <code className="code">height</code> property controls how tall an element should be. You can set it like this:</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     height: 150px;
- }`}
+}`}
 </ExampleCode>
 
   <p>It accepts the same units as width: px, %, vh, em, etc.</p>
@@ -59,14 +59,15 @@ export default function HeightWidth() {
                         <p><code className="code">width</code> restricts the full width of a block element.</p>
                         <p><code className="code">margin: auto</code> centers the element horizontally.</p>
 
-<ExampleCode> 
-{`<div class="center-box">Centered Box</div>
-
- .center-box {
-    width: 300px;
-    margin: auto;
-    background-color: lightgreen;
- }`}
+<ExampleCode language="html"> 
+{`<div class="center-box">Centered Box</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.center-box {
+   width: 300px;
+   margin: auto;
+   background-color: lightgreen;
+}`}
 </ExampleCode>
 
   <h3>Conclusion</h3>

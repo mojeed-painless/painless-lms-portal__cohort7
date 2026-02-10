@@ -36,7 +36,7 @@ export default function HTMLPageStructure() {
                         one you'll use often:
                       </p>
                       
-<ExampleCode>
+<ExampleCode language="html">
 {`<!DOCTYPE html>
  <html lang="en">
  <head>

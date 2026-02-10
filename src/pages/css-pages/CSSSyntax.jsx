@@ -25,10 +25,10 @@ export default function CSSSyntax() {
 
                         <h3>Basic Syntax Structure</h3>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
     property: value;
- }`}
+}`}
 </ExampleCode>
 
                         <p>
@@ -49,12 +49,12 @@ export default function CSSSyntax() {
 
                         <h4>Example</h4>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     color: red;
     font-size: 18px;
     background-color: #f0f0f0;
- }`}
+}`}
 </ExampleCode>
 
                         <p>
@@ -76,12 +76,12 @@ export default function CSSSyntax() {
                             You can add multiple style properties inside a single declaration block. Just make sure to end each line with a semicolon <code className="code">;</code>:
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`p {
     color: blue;
     line-height: 1.5;
     text-align: justify;
- }`}
+}`}
 </ExampleCode>
 
     <VideoBox 

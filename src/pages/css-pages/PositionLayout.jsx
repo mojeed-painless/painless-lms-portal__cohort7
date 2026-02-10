@@ -19,14 +19,14 @@ export default function PositionLayout() {
             </p>
 
             <h4>Syntax</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`selector {
-    position: static;
-    position: relative;
-    position: absolute;
-    position: fixed;
-    position: sticky;
- }`}
+   position: static;
+   position: relative;
+   position: absolute;
+   position: fixed;
+   position: sticky;
+}`}
 </ExampleCode>
 
             <h3>static (default)</h3>
@@ -35,11 +35,11 @@ export default function PositionLayout() {
                 <li>The element flows naturally with the document (i.e., in the order it appears in HTML).</li>
                 <li>No top, right, bottom, or left values apply.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
-    position: static;
-    /* top, left, etc. won't affect anything */
- }`}
+   position: static;
+   /* top, left, etc. won't affect anything */
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> When you want elements to appear in the normal document flow without 
@@ -51,12 +51,12 @@ export default function PositionLayout() {
             <ul>
                 <li>Other elements are not affected by this shift — they still act as if the element was in its original spot.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.relative-box {
-    position: relative;
-    top: 20px;
-    left: 40px;
- }`}
+   position: relative;
+   top: 20px;
+   left: 40px;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> When you need to nudge an element while keeping its original space in layout (e.g., for animation or decoration).</p>
@@ -68,12 +68,12 @@ export default function PositionLayout() {
                 <li>If no such ancestor exists, it’s positioned relative to the <code className="code">&lt;html&gt;</code> (viewport).</li>
                 <li>Accepts top, right, bottom, and left.</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.absolute-box {
-    position: absolute;
-    top: 10px;
-    left: 100px;
- }`}
+   position: absolute;
+   top: 10px;
+   left: 100px;
+}`}
 </ExampleCode>
   
             <p><strong>Use Case:</strong> For tooltips, dropdowns, modals, or placing something exactly where you want inside a parent container.</p>
@@ -85,13 +85,13 @@ export default function PositionLayout() {
                 <li>Stays in place when the page is scrolled.</li>
             </ul>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.fixed-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: black;
- }`}
+   position: fixed;
+   top: 0;
+   width: 100%;
+   background: black;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Sticky navbars, back-to-top buttons, floating footers, etc.</p>
@@ -104,11 +104,11 @@ export default function PositionLayout() {
                 <li>Needs a scrollable parent with enough height.</li>
             </ul>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`.sticky-bar {
-    position: sticky;
-    top: 0;
- }`}
+   position: sticky;
+   top: 0;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Sticky headers, table headings that stick as you scroll, etc.</p>
@@ -121,21 +121,22 @@ export default function PositionLayout() {
                 <li>Higher z-index = in front.</li>
                 <li>Only works on positioned elements (relative, absolute, fixed, sticky).</li>
             </ul>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<div class="z1">Box 1</div>
- <div class="z2">Box 2 (on top)</div>
+<div class="z2">Box 2 (on top)</div>`}
+</ExampleCode>
+<ExampleCode language="css"> 
+{`.z1 {
+   position: absolute;
+   background-color: red;
+   z-index: 1;
+}
 
- .z1 {
-    position: absolute;
-    background-color: red;
-    z-index: 1;
- }
-
- .z2 {
-    position: absolute;
-    background-color: blue;
-    z-index: 2;
- }`}
+.z2 {
+   position: absolute;
+   background-color: blue;
+   z-index: 2;
+}`}
 </ExampleCode>
 
             <p><strong>Use Case:</strong> Control layer priority — like showing a modal over a darkened background, keeping buttons above images, etc.</p>

@@ -23,7 +23,7 @@ import {
 
 // SIDEBAR DATA
 export const listTexts = [
-  { id: 1, text: 'Home', icon: FiHome, to: '/' },
+  { id: 1, text: 'Dashboard', icon: FiHome, to: '/' },
   { id: 2, text: 'Course Contents', icon: MdOutlineMenuBook, to: '/welcome' },
   { id: 3, text: 'Assignments', icon: MdOutlineAssignment, to: '/assignments' },
   { id: 4, text: 'Quizzes', icon: LuSparkles, to: '/quizzes' },
@@ -122,8 +122,8 @@ export const topics = [
             {name: 'Images', path: '/html-image'},
             {name: 'Hyperlinks', path: '/html-hyperlinks'},
             {name: 'Inline & Block Elements', path: '/html-block-element'},
-            // {name: 'Forms, Types & Fields', path: '/html-form'},
-            // {name: 'HTML Styling', path: '/html-style'}
+            {name: 'Forms, Types & Fields', path: '/html-form'},
+            {name: 'HTML Styling', path: '/html-style'}
         ]
     },
     {

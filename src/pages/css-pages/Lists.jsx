@@ -34,10 +34,10 @@ export default function Lists() {
             </ul>
 
             <h4>Example:</h4>
-<ExampleCode>
+<ExampleCode language="css">
 {`ul {
-    list-style-type: square;
- }`}    
+   list-style-type: square;
+}`}    
 </ExampleCode> 
 
 
@@ -52,10 +52,10 @@ export default function Lists() {
 
             <h4>Example:</h4>
 
-<ExampleCode>
+<ExampleCode language="css">
 {`ol {
-    list-style-type: upper-roman;
- }`}    
+   list-style-type: upper-roman;
+}`}    
 </ExampleCode>
 
             <h3>Removing Default List Styling</h3>
@@ -63,12 +63,12 @@ export default function Lists() {
                 numbers. You can remove them like this:
             </p>
 
-<ExampleCode>
+<ExampleCode language="css">
 {`ul {
-    list-style-type: none; 
-    margin: 0; 
-    padding: 0;
- }`}    
+   list-style-type: none; 
+   margin: 0; 
+   padding: 0;
+}`}    
 </ExampleCode> 
 
             <h3>Conclusion</h3>

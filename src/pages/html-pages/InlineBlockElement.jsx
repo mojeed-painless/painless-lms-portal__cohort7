@@ -33,12 +33,12 @@ export default function InlineBlockElement() {
 
   <p>Common examples of block elements include:</p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<div>, <p>, <h1> <h6>, <table>, <ol>, <ul>, <form>, <nav>, <header>, <footer>, <section>, <article>, <aside>`}
 </ExampleCode>
 
   <h4>Example of a Block Element</h4>
-<ExampleCode>
+<ExampleCode language="html">
 {`<div>
   <h2>Welcome to Web Development</h2>
   <p>This is a paragraph inside a div.</p>
@@ -57,12 +57,12 @@ export default function InlineBlockElement() {
 
   <p>Common examples of inline elements include:</p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<span>, <a>, <img>, <strong>, <em>, <i>, <b>, <br>, <small>, <sup>, <sub>, <select>, <textarea>, <button>`}
 </ExampleCode>
 
   <h4>Example of an Inline Element</h4>
-<ExampleCode>
+<ExampleCode language="html">
 {`<p>This is a <span>highlighted</span> word in a sentence.</p>`}
 </ExampleCode>
 
@@ -125,8 +125,7 @@ export default function InlineBlockElement() {
 
             <PrevNextBtn 
                 prevPath="/html-hyperlinks" 
-                // nextPath="/html-form"
-                nextPath=""
+                nextPath="/html-form"
             />
         </section>
     );

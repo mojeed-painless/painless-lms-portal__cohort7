@@ -20,7 +20,7 @@ export default function Links() {
                             and more.
                         </p>
 
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`<a href="https://www.example.com">Visit Example</a>`}
 </ExampleCode>
 
@@ -48,24 +48,24 @@ export default function Links() {
 
                         <p>Here’s how you might define styles for the different link states:</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`a:link {
-    color: blue;
-    text-decoration: none;
- }
+   color: blue;
+   text-decoration: none;
+}
 
- a:visited {
-    color: purple;
- }
+a:visited {
+   color: purple;
+}
 
- a:hover {
-    color: green;
-    text-decoration: underline;
- }
+a:hover {
+   color: green;
+   text-decoration: underline;
+}
 
- a:active {
-    color: red;
- }`}
+a:active {
+   color: red;
+}`}
 </ExampleCode>
 
                         <p>This means:</p>

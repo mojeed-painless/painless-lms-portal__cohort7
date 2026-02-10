@@ -36,7 +36,7 @@ export default function BoxModel() {
 
  
     <p> <strong> From innermost to outermost:</strong></p>
-<ExampleCode> 
+<ExampleCode language="html"> 
 {`Content → Padding → Border → Margin`}
 </ExampleCode>
 
@@ -56,10 +56,10 @@ export default function BoxModel() {
   <h3>Padding</h3>
   <p>This is the space between the content and the border. It "pushes" the border away from the content.</p>
 
-<ExampleCode> 
-{`p  {
+<ExampleCode language="css"> 
+{`p {
     padding: 10px 20px;
- }`}
+}`}
 </ExampleCode>
 
                         <p>
@@ -73,7 +73,7 @@ export default function BoxModel() {
                         </p>
 
                         <p><strong>Or shorthand like this:</strong></p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`padding: 10px 20px 15px 5px; /* top right bottom left */`}
 </ExampleCode>
 
@@ -82,35 +82,35 @@ export default function BoxModel() {
   <h3>Border</h3>
   <p>This wraps around both the content and the padding. Borders can be styled, colored, and have their width adjusted.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     border: 2px solid #333;
- }`}
+}`}
 </ExampleCode>
 
 
   <h3>Margin</h3>
   <p>Margin is the space outside the border, separating the element from its neighbors. It’s what gives elements breathing room on the page.</p>
 
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     margin: 20px;
- }`}
+}`}
 </ExampleCode>
 
  <p><strong>Margin can also be set individually:</strong></p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     margin-top: 10px;
     margin-bottom: 20px;
- }`}
+}`}
 </ExampleCode>
 
  <p><strong>Or shorthand:</strong></p>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     margin: 10px 20px 15px 5px; 
- }`}
+}`}
 </ExampleCode>
 
 <h4>Difference Between Margin and Padding</h4>
@@ -154,11 +154,11 @@ export default function BoxModel() {
                         </p>
 
 <h4>Example:</h4>
-<ExampleCode> 
+<ExampleCode language="css"> 
 {`div {
     outline: 2px dashed red;
     outline-offset: 10px;
- }`}
+}`}
 </ExampleCode>
 
 <p><code className="code">outline-offset</code> adds space between the border and the outline.</p>

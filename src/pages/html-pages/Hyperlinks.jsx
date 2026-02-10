@@ -27,7 +27,7 @@ export default function Hyperlinks() {
 
   <h3>Syntax</h3>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<a href="https://www.example.com">Click here</a>`}
 </ExampleCode>
 
@@ -39,7 +39,7 @@ export default function Hyperlinks() {
 
   <h3>Example</h3>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<a href="https://www.facebook.com">Visit Facebook</a>`}
 </ExampleCode>
 
@@ -62,7 +62,7 @@ export default function Hyperlinks() {
     To open a link in a new tab while keeping your website open, use:
   </p>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<a href="https://www.twitter.com" target="_blank">Follow us on Twitter</a>`}
 </ExampleCode>
 

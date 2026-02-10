@@ -39,28 +39,28 @@ export default function HTMLStyling() {
 
   <h3>Syntax</h3>
 
-<ExampleCode>
+<ExampleCode language="html">
 {`<tag style="property: value;">Content</tag>`}
 </ExampleCode>
 
   <h4>Examples</h4>
 
   <h3>Background Color</h3>
-<ExampleCode>
+<ExampleCode language="html">
 {`<div style="background: blue;">
     This div has a blue background.
  </div>`}
 </ExampleCode>
 
   <h3>Font Size</h3>
-<ExampleCode>
+<ExampleCode language="html">
 {`<p style="font-size: 18px;">
     This paragraph has a larger font size.
  </p>`}
 </ExampleCode>
 
   <h3>Multiple Styles</h3>
-<ExampleCode>
+<ExampleCode language="html">
 {`<h2 style="color: #ff6600; background: #f0f0f0; padding: 10px; border-radius: 5px;">
     Styled Heading
  </h2>`}
@@ -81,21 +81,16 @@ export default function HTMLStyling() {
         code='cfsRLanIjTw?si=TlklC8mi5X0tYQVF'
     />
 
-  <hr />
+
+        <AssignmentBox title="Form & Style">
+          <ol>
+              <li>Create an application form for a new established school</li>
+              <li>Add inputs as much as possible to receive students' information</li>
+              <li>Add some touch of styling</li>
+          </ol>
+        </AssignmentBox>
 
 
-<div className="exercise">
-    
-    <h3>Practice Exercise</h3>
-
-    <p>Instructions:</p>
-
-    <ol>
-        <li>Create an application form for a new established school</li>
-        <li>Add inputs as much as possible to receive students' information</li>
-        <li>Add some touch of styling</li>
-    </ol>
-</div>
                 </div>
             </section>
 
@@ -111,7 +106,8 @@ export default function HTMLStyling() {
 
             <PrevNextBtn 
                 prevPath="/html-form" 
-                nextPath="/css-transition"
+                // nextPath="/css-transition"
+                nextPath=""
             />
         </section>
     );
