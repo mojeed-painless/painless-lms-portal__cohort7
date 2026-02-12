@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function CSSIntroduction() {
 
@@ -41,6 +42,9 @@ export default function CSSIntroduction() {
                         </h3>
                 </div>
             </section>
+
+
+            <QuizBox currentCategory="css1" currentTopic="Introduction to CSS" />
 
             <PrevNextBtn 
                 prevPath="/css-transition" 

@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Animation() {
 
@@ -145,6 +146,7 @@ export default function Animation() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Animations" />
             <PrevNextBtn 
                 prevPath="/css_transition" 
                 nextPath="/css_mediaquery"

@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function DisplayLayout() {
 
@@ -97,6 +98,7 @@ export default function DisplayLayout() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css2" currentTopic="Layout: Display" />
             <PrevNextBtn 
                 prevPath="/css_icon" 
                 nextPath="/css_overflow"

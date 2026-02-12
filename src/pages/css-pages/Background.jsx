@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Background() {
 
@@ -119,9 +120,10 @@ body {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Background" />
             <PrevNextBtn 
-                prevPath="/css_color" 
-                nextPath="/css_border"
+              prevPath="/css_color" 
+              nextPath="/css_border"
             />
         </section>
     );

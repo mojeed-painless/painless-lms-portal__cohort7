@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function HeightWidth() {
 
@@ -99,9 +100,10 @@ export default function HeightWidth() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Height & Width" />
             <PrevNextBtn 
-                prevPath="/css_boxmodel" 
-                nextPath="/css_formatting"
+              prevPath="/css_boxmodel" 
+              nextPath="/css_formatting"
             />
         </section>
     );

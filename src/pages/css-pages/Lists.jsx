@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Lists() {
 
@@ -85,6 +86,7 @@ export default function Lists() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="CSS Lists" />
             <PrevNextBtn 
                 prevPath="/css_links" 
                 nextPath="/css_table"

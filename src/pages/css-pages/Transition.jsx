@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Transition() {
 
@@ -134,6 +135,7 @@ div:hover {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Transition" />
             <PrevNextBtn 
                 prevPath="/css_transform" 
                 nextPath="/css_animation"

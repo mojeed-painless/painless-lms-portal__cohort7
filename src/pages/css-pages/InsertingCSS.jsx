@@ -2,6 +2,8 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
+import AssignmentBox from '../../components/common/AssignmentBox';
 
 export default function InsertingCSS() {
 
@@ -94,25 +96,21 @@ export default function InsertingCSS() {
     />
             
 
-                        <hr />
 
+            <AssignmentBox title="Linking CSS">
+                <ol>
+                    <li>Create a css file</li>
+                    <li>Link it correctly to your html file</li>
+                    <li>Test if it works and add a screenshot of the outcome in your submission folder</li>
+                </ol>
+            </AssignmentBox>
 
-
-                        
-<div className="exercise">
-    
-    <h3>Practice Exercise</h3>
-
-    <p>Instructions:</p>
-
-    <ol>
-        <li>Create a css file</li>
-        <li>Link it correctly to your html file</li>
-        <li>Test if it works and add a screenshot of the outcome in your submission folder</li>
-    </ol>
-</div>
+            
                 </div>
             </section>
+
+            <QuizBox currentCategory="css1" currentTopic="Inserting CSS" />
+
 
             <PrevNextBtn 
                 prevPath="/css_introduction" 

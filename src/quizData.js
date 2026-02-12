@@ -1,4 +1,5 @@
 import radioImg from '../src/assets/radio.jpg'
+import internalImg from '../src/assets/internalImg.png'
 
 export const DailyQuizData = [
     {
@@ -136,7 +137,44 @@ export const DailyQuizData = [
             }
         ],
     },
+    {
+        day: 5,
+        date: '02/12/2026',
+        questions: [
+            {
+                id: 1,
+                question: "What type of styling is shown below?",
+                image: internalImg,
+                options: [
+                    { id: 'A', text: "Internal styling" },
+                    { id: 'B', text: "Inline styling" },
+                    { id: 'C', text: "General styling" },
+                    { id: 'D', text: "External styling" }
+                ],
+                correctAnswer: 'A',
+            }
+        ],
+    },
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -923,46 +961,1412 @@ export const TopicQuizData = [
     },
 
 
+// BASIC CSS QUIZ
 
 
-
+    {
+        topic: 'Introduction to CSS',
+        category: 'css1',
+        questions: [
+            {
+                id: 1,
+                question: "According to the text, what was the original purpose of HTML?",
+                options: [
+                    { id: 'A', text: "To control fonts and colors on a webpage" },
+                    { id: 'B', text: "To solely structure and describe the content of a webpage" },
+                    { id: 'C', text: "To act as a central location for styling rules" },
+                    { id: 'D', text: "To replace the need for CSS entirely" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 2,
+                question: "Why is applying styles manually to every tag on every page considered a problem for large websites?",
+                options: [
+                    { id: 'A', text: "It is repetitive and very time-consuming" },
+                    { id: 'B', text: "Browsers cannot render manual styles" },
+                    { id: 'C', text: "It makes the website load faster than using CSS" },
+                    { id: 'D', text: "The World Wide Web Consortium (W3C) banned it" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 3,
+                question: "Which organization introduced CSS to solve the difficulties of styling in HTML?",
+                options: [
+                    { id: 'A', text: "Microsoft" },
+                    { id: 'B', text: "The World Wide Web Consortium (W3C)" },
+                    { id: 'C', text: "Google" },
+                    { id: 'D', text: "The Apple Inc. Design Team" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 4,
+                question: "What is a major benefit of using a single CSS file to manage styling rules?",
+                options: [
+                    { id: 'A', text: "It allows you to change the look of an entire website by editing one file" },
+                    { id: 'B', text: "It makes the HTML code more complex and harder to read" },
+                    { id: 'C', text: "It eliminates the need for any HTML tags" },
+                    { id: 'D', text: "It only works for small personal blogs" }
+                ],
+                correctAnswer: 'A',
+            } 
+        ],
+    },
+    {
+        topic: 'Inserting CSS',
+        category: 'css1',
+        questions: [
+            {
+                id: 1,
+                question: "Which CSS method is considered the most common and scalable for large, multi-page websites?",
+                options: [
+                    { id: 'A', text: "Inline Styling" },
+                    { id: 'B', text: "Internal Styling" },
+                    { id: 'C', text: "External Styling" },
+                    { id: 'D', text: "JavaScript Styling" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 2,
+                question: "Where must the <link> tag be placed when using an external stylesheet?",
+                options: [
+                    { id: 'A', text: "At the bottom of the <body> section" },
+                    { id: 'B', text: "Inside the <head> section" },
+                    { id: 'C', text: "Directly inside the <html> tag" },
+                    { id: 'D', text: "Inside a <div> container" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 3,
+                question: "What is a primary drawback of using Inline Styling mentioned in the text?",
+                options: [
+                    { id: 'A', text: "It is not reusable across pages and can clutter your HTML" },
+                    { id: 'B', text: "It requires a separate .css file to work" },
+                    { id: 'C', text: "It only works for the background-color property" },
+                    { id: 'D', text: "It is the most expensive method to use" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 4,
+                question: "Which method involves placing CSS rules inside a <style> tag within the HTML file?",
+                options: [
+                    { id: 'A', text: "External Styling" },
+                    { id: 'B', text: "Inline Styling" },
+                    { id: 'C', text: "Internal Styling" },
+                    { id: 'D', text: "Boilerplate Styling" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
     {
         topic: 'CSS Syntax',
         category: 'css1',
         questions: [
             {
                 id: 1,
-                question: "A complete css syntax consists of ______?",
+                question: "What are the two main parts that make up every CSS rule?",
                 options: [
-                    { id: 'A', text: "div, value & selector" },
-                    { id: 'B', text: "selector, property & value" },
-                    { id: 'C', text: "class, id, element" },
-                    { id: 'D', text: "html, css & javascript" }
+                    { id: 'A', text: "The skeleton and the skin" },
+                    { id: 'B', text: "The selector and the declaration block" },
+                    { id: 'C', text: "The property and the colon" },
+                    { id: 'D', text: "The tag and the link" }
+                ],
+                correctAnswer: 'B', //
+            },
+            {
+                id: 2,
+                question: "What is the role of the 'selector' in a CSS rule?",
+                options: [
+                    { id: 'A', text: "It defines the font size of the text" },
+                    { id: 'B', text: "It points to the HTML element you want to style" },
+                    { id: 'C', text: "It ends the declaration block" },
+                    { id: 'D', text: "It links an external CSS file" }
+                ],
+                correctAnswer: 'B', //
+            },
+            {
+                id: 3,
+                question: "Which symbol is used to separate a CSS property from its value?",
+                options: [
+                    { id: 'A', text: "A semicolon (;)" },
+                    { id: 'B', text: "A comma (,)" },
+                    { id: 'C', text: "A colon (:)" },
+                    { id: 'D', text: "A period (.)" }
+                ],
+                correctAnswer: 'C', //
+            },
+            {
+                id: 4,
+                question: "What is the purpose of the semicolon (;) in a CSS declaration block?",
+                options: [
+                    { id: 'A', text: "To start a new selector" },
+                    { id: 'B', text: "To separate multiple declarations inside the block" },
+                    { id: 'C', text: "To open the declaration block" },
+                    { id: 'D', text: "To define a hex color code" }
+                ],
+                correctAnswer: 'B', //
+            },
+            {
+                id: 5,
+                question: "In the example 'p { color: blue; }', what is 'color'?",
+                options: [
+                    { id: 'A', text: "The selector" },
+                    { id: 'B', text: "The value" },
+                    { id: 'C', text: "The property" },
+                    { id: 'D', text: "The declaration block" }
+                ],
+                correctAnswer: 'C', //
+            }
+        ],
+    },
+    {
+        topic: 'Selectors',
+        category: 'css1',
+        questions: [
+            {
+                id: 1,
+                question: "Which CSS selector targets HTML elements directly by their tag name?",
+                options: [
+                    { id: 'A', text: "ID Selector" },
+                    { id: 'B', text: "Class Selector" },
+                    { id: 'C', text: "Element Selector" },
+                    { id: 'D', text: "Universal Selector" }
+                ],
+                correctAnswer: 'C',
+            },
+            {
+                id: 2,
+                question: "What symbol is used before the name of an ID selector in CSS?",
+                options: [
+                    { id: 'A', text: "A dot (.)" },
+                    { id: 'B', text: "A hash (#)" },
+                    { id: 'C', text: "An asterisk (*)" },
+                    { id: 'D', text: "A comma (,)" }
                 ],
                 correctAnswer: 'B',
             },
             {
-                id: 2,
-                question: "_____ is used to separate css property from its value",
+                id: 3,
+                question: "True or False: IDs must be unique on a single webpage.",
                 options: [
-                    { id: 'A', text: ":" },
-                    { id: 'B', text: "-" },
-                    { id: 'C', text: ";" },
-                    { id: 'D', text: "*" }
+                    { id: 'A', text: "True" },
+                    { id: 'B', text: "False" }
                 ],
                 correctAnswer: 'A',
             },
             {
-                id: 3,
-                question: "The entire block of styles (inside the curly braces) is called a ________",
+                id: 4,
+                question: "What is the primary use of the Universal Selector (*)?",
                 options: [
-                    { id: 'A', text: "style block" },
-                    { id: 'B', text: "selector block" },
-                    { id: 'C', text: "property block" },
-                    { id: 'D', text: "declaration block" }
+                    { id: 'A', text: "To style only the <body> tag" },
+                    { id: 'B', text: "To select all elements on the page" },
+                    { id: 'C', text: "To group two different selectors together" },
+                    { id: 'D', text: "To target elements by their ID" }
                 ],
-                correctAnswer: 'D',
+                correctAnswer: 'B',
             },
+            {
+                id: 5,
+                question: "How do you separate different selectors when using a Group Selector to share the same styles?",
+                options: [
+                    { id: 'A', text: "With a dot" },
+                    { id: 'B', text: "With a semicolon" },
+                    { id: 'C', text: "With a comma" },
+                    { id: 'D', text: "With a hash" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
+        topic: 'Colors',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "What does RGB stand for in CSS color values?",
+        options: [
+            { id: 'A', text: "Real, Green, Black" },
+            { id: 'B', text: "Red, Gray, Blue" },
+            { id: 'C', text: "Red, Green, Blue" },
+            { id: 'D', text: "Random, Gradient, Brightness" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "What is the range of numeric values for each color in the RGB system?",
+        options: [
+            { id: 'A', text: "0 to 100" },
+            { id: 'B', text: "0 to 255" },
+            { id: 'C', text: "1 to 360" },
+            { id: 'D', text: "0.0 to 1.0" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "In the RGBA color system, what does the 'Alpha' value control?",
+        options: [
+            { id: 'A', text: "The brightness of the color" },
+            { id: 'B', text: "The transparency or opacity" },
+            { id: 'C', text: "The saturation level" },
+            { id: 'D', text: "The hue on the color wheel" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "Which color system uses base-16 values and starts with a hash (#) symbol?",
+        options: [
+            { id: 'A', text: "HSL" },
+            { id: 'B', text: "HEX" },
+            { id: 'C', text: "RGBA" },
+            { id: 'D', text: "RGB" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "If you want a color to be 30% opaque (mostly transparent), what alpha value should be used in RGBA?",
+        options: [
+            { id: 'A', text: "30" },
+            { id: 'B', text: "3.0" },
+            { id: 'C', text: "0.3" },
+            { id: 'D', text: "0.03" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Background',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS property is used to set an image as the background of an element?",
+        options: [
+            { id: 'A', text: "background-color" },
+            { id: 'B', text: "background-image" },
+            { id: 'C', text: "image-source" },
+            { id: 'D', text: "background-url" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What is the default behavior of a background image in CSS regarding repetition?",
+        options: [
+            { id: 'A', text: "It does not repeat" },
+            { id: 'B', text: "It repeats only horizontally" },
+            { id: 'C', text: "It repeats both horizontally and vertically" },
+            { id: 'D', text: "It repeats only vertically" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "Which property determines whether a background image scrolls with the rest of the page or remains fixed?",
+        options: [
+            { id: 'A', text: "background-position" },
+            { id: 'B', text: "background-attachment" },
+            { id: 'C', text: "background-size" },
+            { id: 'D', text: "background-repeat" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "Which value for the 'background-size' property ensures the image covers the entire background area, even if it has to be cropped?",
+        options: [
+            { id: 'A', text: "contain" },
+            { id: 'B', text: "fill" },
+            { id: 'C', text: "cover" },
+            { id: 'D', text: "auto" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "What is the correct order of properties when using the CSS background shorthand?",
+        options: [
+            { id: 'A', text: "color, image, repeat, attachment, position" },
+            { id: 'B', text: "image, color, position, repeat, attachment" },
+            { id: 'C', text: "attachment, repeat, image, color, position" },
+            { id: 'D', text: "position, size, repeat, image, color" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "Which property allows you to move a background image to the 'center top' of its container?",
+        options: [
+            { id: 'A', text: "background-attachment" },
+            { id: 'B', text: "background-position" },
+            { id: 'C', text: "background-origin" },
+            { id: 'D', text: "background-clip" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 7,
+        question: "How do you correctly specify an image file named 'bg.png' for a background-image property?",
+        options: [
+            { id: 'A', text: "background-image: 'bg.png';" },
+            { id: 'B', text: "background-image: src('bg.png');" },
+            { id: 'C', text: "background-image: url('bg.png');" },
+            { id: 'D', text: "background-image: link('bg.png');" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Borders',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which property is used to define the type of line for an element's boundary (e.g., solid, dashed, or dotted)?",
+        options: [
+            { id: 'A', text: "border-width" },
+            { id: 'B', text: "border-line" },
+            { id: 'C', text: "border-style" },
+            { id: 'D', text: "border-type" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "When providing four values for a border property (like 'border-style: dotted dashed solid double;'), what is the correct order in which they are applied?",
+        options: [
+            { id: 'A', text: "Top, Bottom, Left, Right" },
+            { id: 'B', text: "Top, Right, Bottom, Left" },
+            { id: 'C', text: "Left, Right, Top, Bottom" },
+            { id: 'D', text: "Clockwise starting from the Left" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which of the following is NOT a valid keyword for the 'border-width' property?",
+        options: [
+            { id: 'A', text: "thin" },
+            { id: 'B', text: "medium" },
+            { id: 'C', text: "thick" },
+            { id: 'D', text: "bold" }
+        ],
+        correctAnswer: 'D',
+    },
+    {
+        id: 4,
+        question: "What is the correct order for the values in the 'border' shorthand property?",
+        options: [
+            { id: 'A', text: "style, width, color" },
+            { id: 'B', text: "width, style, color" },
+            { id: 'C', text: "color, width, style" },
+            { id: 'D', text: "width, color, style" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "Which property allows you to add rounded corners to an element?",
+        options: [
+            { id: 'A', text: "border-corner" },
+            { id: 'B', text: "border-radius" },
+            { id: 'C', text: "border-style" },
+            { id: 'D', text: "border-shape" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "How would you style the color of only the bottom border of a paragraph?",
+        options: [
+            { id: 'A', text: "border-color-bottom" },
+            { id: 'B', text: "bottom-border-color" },
+            { id: 'C', text: "border-bottom-color" },
+            { id: 'D', text: "border-style-bottom" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 7,
+        question: "What does the style value 'double' represent for a border?",
+        options: [
+            { id: 'A', text: "A border that is twice as thick" },
+            { id: 'B', text: "A border with two parallel lines" },
+            { id: 'C', text: "A border that appears on both the top and bottom" },
+            { id: 'D', text: "A border that changes color twice" }
+        ],
+        correctAnswer: 'B',
+    }
+        ],
+    },
+    {
+        topic: 'Box Model',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which of the following represents the correct order of the Box Model layers, from the innermost to the outermost?",
+        options: [
+            { id: 'A', text: "Margin → Border → Padding → Content" },
+            { id: 'B', text: "Content → Padding → Border → Margin" },
+            { id: 'C', text: "Content → Border → Padding → Margin" },
+            { id: 'D', text: "Padding → Content → Border → Margin" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "In the 'gift box' analogy, what does the 'Padding' represent?",
+        options: [
+            { id: 'A', text: "The actual gift inside" },
+            { id: 'B', text: "The space between the gift and the inner walls of the box" },
+            { id: 'C', text: "The cardboard walls of the box" },
+            { id: 'D', text: "The distance between two different gift boxes" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which area is responsible for creating space outside the border to separate an element from its neighbors?",
+        options: [
+            { id: 'A', text: "Padding" },
+            { id: 'B', text: "Content" },
+            { id: 'C', text: "Margin" },
+            { id: 'D', text: "Outline" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "What is a key difference between Margin and Padding?",
+        options: [
+            { id: 'A', text: "Padding is outside the border, while Margin is inside" },
+            { id: 'B', text: "Margin inherits the background color, while Padding is transparent" },
+            { id: 'C', text: "Padding is inside the border, while Margin is outside and always transparent" },
+            { id: 'D', text: "There is no functional difference between the two" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "How does an 'Outline' differ from a 'Border'?",
+        options: [
+            { id: 'A', text: "Outlines are inside the padding" },
+            { id: 'B', text: "Outlines take up more layout space than borders" },
+            { id: 'C', text: "Outlines are drawn outside the border but do not take up space or affect layout" },
+            { id: 'D', text: "Outlines cannot have a specific color" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 6,
+        question: "Which property adds space specifically between the border and the outline?",
+        options: [
+            { id: 'A', text: "margin-offset" },
+            { id: 'B', text: "padding-outer" },
+            { id: 'C', text: "outline-offset" },
+            { id: 'D', text: "border-spacing" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 7,
+        question: "Using shorthand 'padding: 10px 20px 15px 5px;', which value represents the left padding?",
+        options: [
+            { id: 'A', text: "10px" },
+            { id: 'B', text: "20px" },
+            { id: 'C', text: "15px" },
+            { id: 'D', text: "5px" }
+        ],
+        correctAnswer: 'D',
+    }
+        ],
+    },
+    {
+        topic: 'Height & Width',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "By default, what is the width of a block-level element like a <div>?",
+        options: [
+            { id: 'A', text: "It is always 300px wide" },
+            { id: 'B', text: "It spans the entire width of its parent container" },
+            { id: 'C', text: "It only takes up as much width as the content inside it" },
+            { id: 'D', text: "It has a width of 0px until styled" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which CSS property ensures that an element does not become wider than a certain limit, even if the screen is large?",
+        options: [
+            { id: 'A', text: "min-width" },
+            { id: 'B', text: "auto-width" },
+            { id: 'C', text: "max-width" },
+            { id: 'D', text: "limit-width" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "What does the 'vh' unit represent when setting the height of an element?",
+        options: [
+            { id: 'A', text: "Vertical Height" },
+            { id: 'B', text: "Variable Height" },
+            { id: 'C', text: "Viewport Height" },
+            { id: 'D', text: "Visual Height" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "To horizontally center a block-level element with a fixed width, which property-value pair should you use alongside 'width'?",
+        options: [
+            { id: 'A', text: "text-align: center;" },
+            { id: 'B', text: "margin: auto;" },
+            { id: 'C', text: "padding: auto;" },
+            { id: 'D', text: "display: center;" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "Which property ensures that an element maintains at least a specific amount of vertical space, even if it is empty?",
+        options: [
+            { id: 'A', text: "min-height" },
+            { id: 'B', text: "base-height" },
+            { id: 'C', text: "max-height" },
+            { id: 'D', text: "static-height" }
+        ],
+        correctAnswer: 'A',
+    }
+        ],
+    },
+    {
+        topic: 'Text Formatting',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which property is used to horizontally align text as 'left', 'right', 'center', or 'justify'?",
+        options: [
+            { id: 'A', text: "vertical-align" },
+            { id: 'B', text: "text-indent" },
+            { id: 'C', text: "text-align" },
+            { id: 'D', text: "direction" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "What is the purpose of the 'text-transform' property?",
+        options: [
+            { id: 'A', text: "To change the font family of the text" },
+            { id: 'B', text: "To add a shadow effect behind the text" },
+            { id: 'C', text: "To control letter casing like uppercase, lowercase, or capitalize" },
+            { id: 'D', text: "To adjust the space between words" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "Which property would you use to create a 'strikethrough' effect (a line through the text)?",
+        options: [
+            { id: 'A', text: "text-decoration-line: overline;" },
+            { id: 'B', text: "font-style: italic;" },
+            { id: 'C', text: "text-decoration-line: line-through;" },
+            { id: 'D', text: "text-transform: capitalize;" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "In the 'text-shadow: 2px 2px 5px red;' declaration, what does the third value (5px) represent?",
+        options: [
+            { id: 'A', text: "Horizontal offset" },
+            { id: 'B', text: "Vertical offset" },
+            { id: 'C', text: "Blur radius" },
+            { id: 'D', text: "Shadow transparency" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "Which property defines the vertical space between lines of text in a paragraph?",
+        options: [
+            { id: 'A', text: "letter-spacing" },
+            { id: 'B', text: "word-spacing" },
+            { id: 'C', text: "line-height" },
+            { id: 'D', text: "white-space" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 6,
+        question: "When using 'font-family', why is it recommended to list multiple fonts ending with a generic family like 'sans-serif'?",
+        options: [
+            { id: 'A', text: "To make the text look more colorful" },
+            { id: 'B', text: "To provide a fallback in case the browser doesn't support the first font" },
+            { id: 'C', text: "To automatically bold the text" },
+            { id: 'D', text: "To decrease the file size of the webpage" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 7,
+        question: "Which value for 'font-variant' displays the text in small capital letters?",
+        options: [
+            { id: 'A', text: "italic" },
+            { id: 'B', text: "bold" },
+            { id: 'C', text: "small-caps" },
+            { id: 'D', text: "capitalize" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Links',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS pseudo-class is used to style a link that a user has not yet clicked?",
+        options: [
+            { id: 'A', text: ":hover" },
+            { id: 'B', text: ":visited" },
+            { id: 'C', text: ":link" },
+            { id: 'D', text: ":active" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "What is the default browser styling for a link that has already been clicked (visited)?",
+        options: [
+            { id: 'A', text: "Blue and underlined" },
+            { id: 'B', text: "Green and bold" },
+            { id: 'C', text: "Purple and underlined" },
+            { id: 'D', text: "Red and italicized" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "In what specific order must link states be defined in CSS to function correctly?",
+        options: [
+            { id: 'A', text: "hover → active → link → visited" },
+            { id: 'B', text: "link → visited → hover → active" },
+            { id: 'C', text: "active → hover → visited → link" },
+            { id: 'D', text: "visited → link → active → hover" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "Which state is triggered at the exact moment a user is clicking down on a link?",
+        options: [
+            { id: 'A', text: ":link" },
+            { id: 'B', text: ":hover" },
+            { id: 'C', text: ":active" },
+            { id: 'D', text: ":visited" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "If you want to remove the default underline from a link in its normal state, which property-value pair should you use?",
+        options: [
+            { id: 'A', text: "text-style: none;" },
+            { id: 'B', text: "link-decoration: none;" },
+            { id: 'C', text: "text-decoration: none;" },
+            { id: 'D', text: "underline: hidden;" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 6,
+        question: "What happens to a link styled with 'a:hover { color: green; }' when the user moves their mouse over it?",
+        options: [
+            { id: 'A', text: "The link turns green" },
+            { id: 'B', text: "The link disappears" },
+            { id: 'C', text: "The link opens in a new tab" },
+            { id: 'D', text: "The link turns purple" }
+        ],
+        correctAnswer: 'A',
+    }
+        ],
+    },
+    {
+        topic: 'CSS Lists',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS property is used to control the marker (bullet or number style) of a list?",
+        options: [
+            { id: 'A', text: "marker-style" },
+            { id: 'B', text: "list-style-type" },
+            { id: 'C', text: "bullet-type" },
+            { id: 'D', text: "list-format" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What is the default bullet style for an unordered list (<ul>) in CSS?",
+        options: [
+            { id: 'A', text: "circle" },
+            { id: 'B', text: "square" },
+            { id: 'C', text: "disc" },
+            { id: 'D', text: "none" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "Which value for 'list-style-type' should be used to display an ordered list with Roman numerals like I, II, III?",
+        options: [
+            { id: 'A', text: "lower-roman" },
+            { id: 'B', text: "upper-alpha" },
+            { id: 'C', text: "decimal" },
+            { id: 'D', text: "upper-roman" }
+        ],
+        correctAnswer: 'D',
+    },
+    {
+        id: 4,
+        question: "If you want to create a list with square bullets, which rule is correct?",
+        options: [
+            { id: 'A', text: "ul { list-style: square-bullet; }" },
+            { id: 'B', text: "ul { marker: square; }" },
+            { id: 'C', text: "ul { list-style-type: square; }" },
+            { id: 'D', text: "li { bullet: square; }" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "To completely remove the bullets or numbers from a list, which value should you assign to 'list-style-type'?",
+        options: [
+            { id: 'A', text: "hidden" },
+            { id: 'B', text: "none" },
+            { id: 'C', text: "0" },
+            { id: 'D', text: "invisible" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "Besides 'list-style-type', which other properties are commonly set to 0 to completely remove default browser list styling?",
+        options: [
+            { id: 'A', text: "border and outline" },
+            { id: 'B', text: "margin and padding" },
+            { id: 'C', text: "width and height" },
+            { id: 'D', text: "font-size and color" }
+        ],
+        correctAnswer: 'B',
+    }
+        ],
+    },
+    {
+        topic: 'CSS Tables',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "Which property is used to add borders around the table, headers, and data cells?",
+        options: [
+            { id: 'A', text: "table-border" },
+            { id: 'B', text: "border" },
+            { id: 'C', text: "outline" },
+            { id: 'D', text: "grid-line" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What does setting 'width: 100%;' on a table element do?",
+        options: [
+            { id: 'A', text: "It fixes the table width to 100 pixels" },
+            { id: 'B', text: "It stretches the table across the entire width of its container" },
+            { id: 'C', text: "It makes the table text 100% larger" },
+            { id: 'D', text: "It centers the table on the page" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which property should you use to combine separate cell borders into a single, clean border?",
+        options: [
+            { id: 'A', text: "border-style: join;" },
+            { id: 'B', text: "border-collapse: collapse;" },
+            { id: 'C', text: "table-layout: fixed;" },
+            { id: 'D', text: "border-spacing: 0;" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "How can you make a table row change color when a user moves their mouse over it?",
+        options: [
+            { id: 'A', text: "tr:active { background-color: #f2f2f2; }" },
+            { id: 'B', text: "tr:hover { background-color: #f2f2f2; }" },
+            { id: 'C', text: "tr:focus { background-color: #f2f2f2; }" },
+            { id: 'D', text: "tr:link { background-color: #f2f2f2; }" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "Which property is used to align text horizontally (left, center, or right) inside table cells?",
+        options: [
+            { id: 'A', text: "vertical-align" },
+            { id: 'B', text: "text-align" },
+            { id: 'C', text: "content-align" },
+            { id: 'D', text: "padding" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "By default, how do browsers display table cell borders before applying 'border-collapse'?",
+        options: [
+            { id: 'A', text: "They are merged into one" },
+            { id: 'B', text: "They are separate from each other" },
+            { id: 'C', text: "They are invisible" },
+            { id: 'D', text: "They only appear on the headers" }
+        ],
+        correctAnswer: 'B',
+    }
+        ],
+    },
+    {
+        topic: 'Icons',
+        category: 'css1',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: 'Icons',
+        category: 'css1',
+        questions: [
+            {
+        id: 1,
+        question: "What is the simplest and most common way to add professional icons to a web page?",
+        options: [
+            { id: 'A', text: "Drawing them with CSS shapes" },
+            { id: 'B', text: "Using an icon library like Font Awesome or Google Material Icons" },
+            { id: 'C', text: "Uploading a separate .jpg file for every icon" },
+            { id: 'D', text: "Typing them using a standard keyboard" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Where should you place the CDN link when using an icon library like Font Awesome?",
+        options: [
+            { id: 'A', text: "At the very end of the <body> section" },
+            { id: 'B', text: "Inside the <head> section" },
+            { id: 'C', text: "Inside the <footer> tag" },
+            { id: 'D', text: "In a separate JavaScript file only" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which HTML tags are commonly used to display icons from libraries?",
+        options: [
+            { id: 'A', text: "<div> or <p>" },
+            { id: 'B', text: "<i> or <span>" },
+            { id: 'C', text: "<img> or <picture>" },
+            { id: 'D', text: "<button> or <form>" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "In Font Awesome, which class prefix is used for icons (e.g., for a home icon)?",
+        options: [
+            { id: 'A', text: "bi bi-" },
+            { id: 'B', text: "material-icons" },
+            { id: 'C', text: "fas fa-" },
+            { id: 'D', text: "icon-" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "Which icon library uses the 'bi bi-' class prefix?",
+        options: [
+            { id: 'A', text: "Font Awesome" },
+            { id: 'B', text: "Google Material Icons" },
+            { id: 'C', text: "Bootstrap Icons" },
+            { id: 'D', text: "Simple Line Icons" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ADVANCED CSS
+    {
+        topic: 'Layout: Display',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which type of element naturally starts on a new line and takes up the full width of its parent container?",
+        options: [
+            { id: 'A', text: "Inline elements" },
+            { id: 'B', text: "Block-level elements" },
+            { id: 'C', text: "Hidden elements" },
+            { id: 'D', text: "Floating elements" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which of the following is an example of an 'inline' element by default?",
+        options: [
+            { id: 'A', text: "<div>" },
+            { id: 'B', text: "<p>" },
+            { id: 'C', text: "<span>" },
+            { id: 'D', text: "<section>" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "If you want to make a <span> behave like a <div> (taking up the full width), which CSS rule should you apply?",
+        options: [
+            { id: 'A', text: "display: inline;" },
+            { id: 'B', text: "display: block;" },
+            { id: 'C', text: "visibility: visible;" },
+            { id: 'D', text: "display: full;" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "What is the primary difference between 'display: none;' and 'visibility: hidden;'?",
+        options: [
+            { id: 'A', text: "There is no difference; both do the same thing" },
+            { id: 'B', text: "display: none; hides the element but keeps its space, while visibility: hidden; removes it" },
+            { id: 'C', text: "display: none; removes the element from the flow, while visibility: hidden; hides it but keeps its space" },
+            { id: 'D', text: "visibility: hidden; only works on images" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "How do inline elements handle width and height compared to block-level elements?",
+        options: [
+            { id: 'A', text: "They only take up as much width as required by their content" },
+            { id: 'B', text: "They always take up 100% width" },
+            { id: 'C', text: "They start on a new line automatically" },
+            { id: 'D', text: "They cannot be styled with colors" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "Which property allows you to hide an element while ensuring the layout of the page remains unchanged (the gap remains)?",
+        options: [
+            { id: 'A', text: "display: none;" },
+            { id: 'B', text: "opacity: 0;" },
+            { id: 'C', text: "visibility: hidden;" },
+            { id: 'D', text: "display: inline;" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Layout: Overflow',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "What is the default value of the CSS overflow property?",
+        options: [
+            { id: 'A', text: "hidden" },
+            { id: 'B', text: "scroll" },
+            { id: 'C', text: "visible" },
+            { id: 'D', text: "auto" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "Which overflow value adds scrollbars only when the content actually exceeds the size of the container?",
+        options: [
+            { id: 'A', text: "scroll" },
+            { id: 'B', text: "auto" },
+            { id: 'C', text: "hidden" },
+            { id: 'D', text: "visible" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "If you want to cut off extra content so it is not seen and no scrollbars are provided, which value should you use?",
+        options: [
+            { id: 'A', text: "overflow: scroll;" },
+            { id: 'B', text: "overflow: auto;" },
+            { id: 'C', text: "overflow: hidden;" },
+            { id: 'D', text: "overflow: clip-all;" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "How does the 'scroll' value differ from the 'auto' value?",
+        options: [
+            { id: 'A', text: "'scroll' always shows scrollbars even if the content fits; 'auto' only shows them if needed." },
+            { id: 'B', text: "'auto' always shows scrollbars; 'scroll' hides them." },
+            { id: 'C', text: "There is no difference between them." },
+            { id: 'D', text: "'scroll' only works horizontally; 'auto' works vertically." }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 5,
+        question: "Which property would you use if you only wanted to control the overflow that happens horizontally (left-to-right)?",
+        options: [
+            { id: 'A', text: "overflow-y" },
+            { id: 'B', text: "overflow-x" },
+            { id: 'C', text: "horizontal-overflow" },
+            { id: 'D', text: "side-scroll" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "What happens to content with 'overflow: visible;' when it is larger than its container?",
+        options: [
+            { id: 'A', text: "It is deleted automatically." },
+            { id: 'B', text: "It stays inside the box and shrinks." },
+            { id: 'C', text: "It spills outside the container's box." },
+            { id: 'D', text: "The container expands to fit the content." }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Layout: Position',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which position value is the default for all HTML elements and ignores top, right, bottom, and left properties?",
+        options: [
+            { id: 'A', text: "relative" },
+            { id: 'B', text: "fixed" },
+            { id: 'C', text: "static" },
+            { id: 'D', text: "sticky" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "How does 'position: relative;' affect an element's placement in the document flow?",
+        options: [
+            { id: 'A', text: "It removes the element completely from the flow." },
+            { id: 'B', text: "The element stays in the flow, but can be offset while its original space is preserved." },
+            { id: 'C', text: "It fixes the element to the browser window." },
+            { id: 'D', text: "It makes the element behave like a table cell." }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "An element with 'position: absolute;' is positioned relative to what?",
+        options: [
+            { id: 'A', text: "Always the browser viewport" },
+            { id: 'B', text: "The very next sibling element" },
+            { id: 'C', text: "The nearest positioned ancestor (relative, absolute, or fixed)" },
+            { id: 'D', text: "The center of the screen" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which position value would you use to create a navbar that stays at the top of the screen even as the user scrolls down the page?",
+        options: [
+            { id: 'A', text: "static" },
+            { id: 'B', text: "absolute" },
+            { id: 'C', text: "fixed" },
+            { id: 'D', text: "relative" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "What is a unique characteristic of 'position: sticky;'?",
+        options: [
+            { id: 'A', text: "It is a hybrid of relative and fixed that 'sticks' after a scroll threshold." },
+            { id: 'B', text: "It only works if the element is inside a <table>." },
+            { id: 'C', text: "It makes the element invisible until hovered." },
+            { id: 'D', text: "It automatically centers the element." }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "What is the purpose of the 'z-index' property in CSS layout?",
+        options: [
+            { id: 'A', text: "To zoom in on an image" },
+            { id: 'B', text: "To control the stacking order (layering) of overlapping elements" },
+            { id: 'C', text: "To set the transparency level of a box" },
+            { id: 'D', text: "To align text to the right side of a container" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 7,
+        question: "For 'z-index' to function properly, what condition must be met by the element?",
+        options: [
+            { id: 'A', text: "It must have a background color." },
+            { id: 'B', text: "It must be an <img> tag." },
+            { id: 'C', text: "It must have a 'position' value other than 'static'." },
+            { id: 'D', text: "It must be at least 500px wide." }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Layout: Flexbox',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS property is required to enable Flexbox on a container?",
+        options: [
+            { id: 'A', text: "position: flex;" },
+            { id: 'B', text: "display: flexbox;" },
+            { id: 'C', text: "display: flex;" },
+            { id: 'D', text: "layout: flexible;" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 2,
+        question: "By default, what is the 'flex-direction' of a flex container?",
+        options: [
+            { id: 'A', text: "column" },
+            { id: 'B', text: "row" },
+            { id: 'C', text: "stack" },
+            { id: 'D', text: "wrap" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which property is used to align items horizontally along the main axis (e.g., center, space-between)?",
+        options: [
+            { id: 'A', text: "align-items" },
+            { id: 'B', text: "justify-content" },
+            { id: 'C', text: "flex-wrap" },
+            { id: 'D', text: "align-content" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "If you want flex items to move to a new line when there isn't enough space, which property should you use?",
+        options: [
+            { id: 'A', text: "flex-wrap: wrap;" },
+            { id: 'B', text: "flex-flow: nowrap;" },
+            { id: 'C', text: "display: block;" },
+            { id: 'D', text: "overflow: scroll;" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 5,
+        question: "Which property allows an individual flex item to override the container's 'align-items' setting?",
+        options: [
+            { id: 'A', text: "order" },
+            { id: 'B', text: "align-self" },
+            { id: 'C', text: "flex-grow" },
+            { id: 'D', text: "flex-basis" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "What does the 'flex-grow' property define?",
+        options: [
+            { id: 'A', text: "The initial size of the item before space is distributed" },
+            { id: 'B', text: "The order in which the item appears" },
+            { id: 'C', text: "How much a specific item should grow relative to others to fill extra space" },
+            { id: 'D', text: "The spacing between items" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 7,
+        question: "Which value for 'justify-content' places equal space between items, with no space at the edges of the container?",
+        options: [
+            { id: 'A', text: "space-around" },
+            { id: 'B', text: "center" },
+            { id: 'C', text: "space-between" },
+            { id: 'D', text: "flex-start" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Layout: Grid',
+        category: 'css2',
+        questions: [
+            {
+                id: 1,
+                question: "What is the primary difference between Flexbox and CSS Grid?",
+                options: [
+                    { id: 'A', text: "Flexbox is for images, Grid is for text" },
+                    { id: 'B', text: "Flexbox is 1-dimensional, while Grid is 2-dimensional (rows and columns simultaneously)" },
+                    { id: 'C', text: "Grid only works on mobile devices" },
+                    { id: 'D', text: "Flexbox requires a CDN, while Grid is built-in" }
+                ],
+                correctAnswer: 'B',
+            },
+    {
+        id: 2,
+        question: "Which property is used to define the number and size of columns in a grid container?",
+        options: [
+            { id: 'A', text: "grid-column-count" },
+            { id: 'B', text: "grid-template-columns" },
+            { id: 'C', text: "column-gap" },
+            { id: 'D', text: "grid-layout-columns" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "What does the 'fr' unit represent in CSS Grid?",
+        options: [
+            { id: 'A', text: "Fixed Resolution" },
+            { id: 'B', text: "Font Ratio" },
+            { id: 'C', text: "Fractional unit (a fraction of the available space)" },
+            { id: 'D', text: "Frame Rate" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which property is a shorthand for setting both row and column spacing between grid items?",
+        options: [
+            { id: 'A', text: "margin" },
+            { id: 'B', text: "grid-spacing" },
+            { id: 'C', text: "gap" },
+            { id: 'D', text: "padding" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "In the rule 'grid-column: 1 / 3;', what do the numbers represent?",
+        options: [
+            { id: 'A', text: "The item spans from column line 1 to column line 3" },
+            { id: 'B', text: "The item is 1 pixel wide and 3 pixels tall" },
+            { id: 'C', text: "The item is placed in row 1, column 3" },
+            { id: 'D', text: "The item repeats 1 to 3 times" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "Which property allows you to name a grid item for use in a template layout?",
+        options: [
+            { id: 'A', text: "grid-name" },
+            { id: 'B', text: "grid-id" },
+            { id: 'C', text: "grid-area" },
+            { id: 'D', text: "grid-label" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 7,
+        question: "Which value for 'justify-items' or 'align-items' is the default, making items fill the entire grid area?",
+        options: [
+            { id: 'A', text: "center" },
+            { id: 'B', text: "start" },
+            { id: 'C', text: "stretch" },
+            { id: 'D', text: "end" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
+        ],
+    },
+    {
+        topic: '',
+        category: 'css2',
+        questions: [
+            
         ],
     },
 ];

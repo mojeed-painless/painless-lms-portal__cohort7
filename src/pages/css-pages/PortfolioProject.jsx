@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function PortfolioProject() {
 
@@ -43,6 +44,7 @@ export default function PortfolioProject() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Portfolio Project" />
             <PrevNextBtn 
                 prevPath="/css_navbar" 
                 nextPath="/js-transition"

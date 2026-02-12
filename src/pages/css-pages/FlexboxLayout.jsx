@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function FlexboxLayout() {
 
@@ -170,6 +171,7 @@ align-self: stretch;`}
                 </div>
             </section>
 
+            <QuizBox currentCategory="css2" currentTopic="Layout: Flexbox" />
             <PrevNextBtn 
                 prevPath="/css_position" 
                 nextPath="/css_grid"

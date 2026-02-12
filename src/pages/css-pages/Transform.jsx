@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Transform() {
 
@@ -120,6 +121,7 @@ transform: translateY(-50px);`}
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Transform" />
             <PrevNextBtn 
                 prevPath="/css_opacity" 
                 nextPath="/css_transition"

@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function StylingForms() {
 
@@ -33,6 +34,7 @@ export default function StylingForms() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Styling Forms" />
             <PrevNextBtn 
                 prevPath="/css_mediaquery" 
                 nextPath="/css_navbar"

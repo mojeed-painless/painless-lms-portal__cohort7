@@ -5,6 +5,7 @@ import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 import TakeQuizButton from '../../components/common/TakeQuizButton';
 import TopicQuiz from '../../components/common/TopicQuiz';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function CSSSyntax() {
 
@@ -95,20 +96,11 @@ export default function CSSSyntax() {
 
 
 
-
-                        <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
-            
-                        <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
-                          <TopicQuiz 
-                            onSelect={() => setIsQuizActive(prev => !prev)} 
-                            currentCategory="css" 
-                            currentTopic="CSS Syntax" 
-                          />
-                        </article>
-
+            <QuizBox currentCategory="css1" currentTopic="CSS Syntax" />
             <PrevNextBtn 
                 prevPath="/css_insert" 
-                nextPath="/css_selectors"
+                // nextPath="/css_selectors"
+                nextPath=""
             />
         </section>
     );

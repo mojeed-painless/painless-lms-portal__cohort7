@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Borders() {
 
@@ -94,9 +95,10 @@ p {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Borders" />
             <PrevNextBtn 
-                prevPath="/css_background" 
-                nextPath="/css_boxmodel"
+              prevPath="/css_background" 
+              nextPath="/css_boxmodel"
             />
         </section>
     );

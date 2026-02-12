@@ -132,9 +132,9 @@ export const topics = [
         section: "CSS Basics",
         description: "Discover how to transform plain structures into visually appealing designs.",
         subjects: [
-            // {name: 'Introduction to CSS', path: '/css_introduction'},
-            // {name: 'Inserting CSS', path: '/css_insert'},
-            // {name: 'CSS Syntax', path: '/css_syntax'},
+            {name: 'Introduction to CSS', path: '/css_introduction'},
+            {name: 'Inserting CSS', path: '/css_insert'},
+            {name: 'CSS Syntax', path: '/css_syntax'},
             // {name: 'Selectors', path: '/css_selectors'},
             // {name: 'Colors', path: '/css_color'},
             // {name: 'Background', path: '/css_background'},

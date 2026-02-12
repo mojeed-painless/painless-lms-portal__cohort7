@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Colors() {
 
@@ -90,6 +91,7 @@ rgba(255, 192, 203, 0.3)`}
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Colors" />
             <PrevNextBtn 
                 prevPath="/css_selectors" 
                 nextPath="/css_background"

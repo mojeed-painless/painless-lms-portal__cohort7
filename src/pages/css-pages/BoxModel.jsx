@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function BoxModel() {
 
@@ -183,6 +184,7 @@ export default function BoxModel() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Box Model" />
             <PrevNextBtn 
                 prevPath="/css_border" 
                 nextPath="/css_width"

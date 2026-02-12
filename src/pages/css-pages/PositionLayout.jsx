@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function PositionLayout() {
 
@@ -167,6 +168,7 @@ export default function PositionLayout() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css2" currentTopic="Layout: Position" />
             <PrevNextBtn 
                 prevPath="/css_overflow" 
                 nextPath="/css_flexbox"

@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Icons() {
 
@@ -130,6 +131,7 @@ export default function Icons() {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Icons" />
             <PrevNextBtn 
                 prevPath="/css_table" 
                 nextPath="/css_display"

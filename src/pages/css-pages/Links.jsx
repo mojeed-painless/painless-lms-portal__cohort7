@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function Links() {
 
@@ -89,6 +90,7 @@ a:active {
                 </div>
             </section>
 
+            <QuizBox currentCategory="css1" currentTopic="Links" />
             <PrevNextBtn 
                 prevPath="/css_formatting" 
                 nextPath="/css_lists"

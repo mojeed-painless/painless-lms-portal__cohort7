@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import QuizBox from '../../components/common/QuizBox';
 
 export default function OverflowLayout() {
 
@@ -128,6 +129,7 @@ overflow-y: hidden;`}
                 </div>
             </section>
 
+            <QuizBox currentCategory="css2" currentTopic="Layout: Overflow" />
             <PrevNextBtn 
                 prevPath="/css_display" 
                 nextPath="/css_position"
