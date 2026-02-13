@@ -99,8 +99,7 @@ export default function CSSSyntax() {
             <QuizBox currentCategory="css1" currentTopic="CSS Syntax" />
             <PrevNextBtn 
                 prevPath="/css_insert" 
-                // nextPath="/css_selectors"
-                nextPath=""
+                nextPath="/css_selectors"
             />
         </section>
     );

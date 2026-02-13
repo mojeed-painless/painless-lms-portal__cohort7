@@ -2,7 +2,6 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
-import QuizBox from '../../components/common/QuizBox';
 
 export default function NavigationBar() {
 
@@ -33,7 +32,6 @@ export default function NavigationBar() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Navigation Bar" />
             <PrevNextBtn 
                 prevPath="/css_form" 
                 nextPath="/css_portfolio"

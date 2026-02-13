@@ -122,7 +122,7 @@ export default function AttributesSelector() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Attributes Selectors" />
+            <QuizBox currentCategory="css2" currentTopic="Attributes Selectors" />
             <PrevNextBtn 
                 prevPath="/css_pseudoelement" 
                 nextPath="/css_boxshadow"

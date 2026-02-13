@@ -101,7 +101,7 @@ export default function Opacity() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Opacity" />
+            <QuizBox currentCategory="css2" currentTopic="Opacity" />
             <PrevNextBtn 
                 prevPath="/css_boxshadow" 
                 nextPath="/css_transform"

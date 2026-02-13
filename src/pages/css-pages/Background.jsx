@@ -123,7 +123,8 @@ body {
             <QuizBox currentCategory="css1" currentTopic="Background" />
             <PrevNextBtn 
               prevPath="/css_color" 
-              nextPath="/css_border"
+              // nextPath="/css_border"
+              nextPath=""
             />
         </section>
     );

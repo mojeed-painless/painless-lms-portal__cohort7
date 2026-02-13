@@ -84,7 +84,7 @@ export default function BoxShadow() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Box Shadow" />
+            <QuizBox currentCategory="css2" currentTopic="Box Shadow" />
             <PrevNextBtn 
                 prevPath="/css_attribute" 
                 nextPath="/css_opacity"

@@ -185,7 +185,7 @@ input:disabled {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Pseudo Classes" />
+            <QuizBox currentCategory="css2" currentTopic="Pseudo Classes" />
             <PrevNextBtn 
                 prevPath="/css_conbinator" 
                 nextPath="/css_pseudoelement"

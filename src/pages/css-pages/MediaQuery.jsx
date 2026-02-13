@@ -122,7 +122,7 @@ export default function MediaQuery() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Media Query" />
+            <QuizBox currentCategory="css2" currentTopic="Media Query" />
             <PrevNextBtn 
                 prevPath="/css_animation" 
                 nextPath="/css_form"

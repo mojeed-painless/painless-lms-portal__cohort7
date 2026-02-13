@@ -94,7 +94,7 @@ export default function PseudoElements() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Pseudo Elements" />
+            <QuizBox currentCategory="css2" currentTopic="Pseudo Elements" />
             <PrevNextBtn 
                 prevPath="/css_pseudoclass" 
                 nextPath="/css_attribute"

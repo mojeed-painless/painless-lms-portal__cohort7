@@ -121,7 +121,7 @@ transform: translateY(-50px);`}
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Transform" />
+            <QuizBox currentCategory="css2" currentTopic="Transform" />
             <PrevNextBtn 
                 prevPath="/css_opacity" 
                 nextPath="/css_transition"

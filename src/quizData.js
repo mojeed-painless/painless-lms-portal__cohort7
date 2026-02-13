@@ -1,5 +1,6 @@
 import radioImg from '../src/assets/radio.jpg'
 import internalImg from '../src/assets/internalImg.png'
+import borderImg from '../src/assets/borderImg.jpg'
 
 export const DailyQuizData = [
     {
@@ -153,6 +154,255 @@ export const DailyQuizData = [
                 ],
                 correctAnswer: 'A',
             }
+        ],
+    },
+    {
+        day: 6,
+        date: '02/13/2026',
+        questions: [
+            {
+                id: 1,
+                question: "The characters * and # respectively used for _____ and _____ selectors in CSS",
+                options: [
+                    { id: 'A', text: "class & id" },
+                    { id: 'B', text: "universal & id" },
+                    { id: 'C', text: "id & elements" },
+                    { id: 'D', text: "class & universal" }
+                ],
+                correctAnswer: 'B',
+            },
+            {
+                id: 2,
+                question: "RGBA is a numeric system of adding colors to your web page. The 'A' in the acronym stands for _____",
+                options: [
+                    { id: 'A', text: "all" },
+                    { id: 'B', text: "attribute" },
+                    { id: 'C', text: "anchor" },
+                    { id: 'D', text: "alpha" }
+                ],
+                correctAnswer: 'D',
+            },
+            {
+                id: 3,
+                question: "The hexadecimal values below represents what colors respectively? '#00FF00', '#FF0000', '0000FF'",
+                options: [
+                    { id: 'A', text: "Blue, Red, Green" },
+                    { id: 'B', text: "Red, Green, Blue" },
+                    { id: 'C', text: "Green, Red, Blue" },
+                    { id: 'D', text: "Red, Blue, green" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
+        day: 7,
+        date: '02/14/2026',
+        questions: [
+            {
+                id: 1,
+                question: "The correct order for the border values below is _____",
+                image: borderImg,
+                options: [
+                    { id: 'A', text: "top, right, bottom, left" },
+                    { id: 'B', text: "bottom, left, top, right" },
+                    { id: 'C', text: "right, bottom, left, top" },
+                    { id: 'D', text: "left, bottom, right, top" }
+                ],
+                correctAnswer: 'A',
+            },
+            {
+                id: 2,
+                question: "Which of the following is not a component of a box-model?",
+                options: [
+                    { id: 'A', text: "border" },
+                    { id: 'B', text: "outline" },
+                    { id: 'C', text: "margin" },
+                    { id: 'D', text: "padding" }
+                ],
+                correctAnswer: 'B',
+            }
+        ],
+    },
+    {
+        day: 8,
+        date: '02/15/2026',
+        questions: [
+            {
+                id: 1,
+                question: "Which of the following text properties can be used to add a line under texts",
+                options: [
+                    { id: 'A', text: "text-align" },
+                    { id: 'B', text: "text-transformation" },
+                    { id: 'C', text: "text-decoration" },
+                    { id: 'D', text: "text-spacing" }
+                ],
+                correctAnswer: 'C',
+            },
+        ],
+    },
+    {
+        day: 9,
+        date: '02/16/2026',
+        questions: [
+            {
+                id: 1,
+                question: "What is the name of the first programmer?",
+                options: [
+                    { id: 'A', text: "Ada Lovelace" },
+                    { id: 'B', text: "Lord Byron" },
+                    { id: 'C', text: "Bill Gate" },
+                    { id: 'D', text: "Mark Zuckerberg" }
+                ],
+                correctAnswer: 'A',
+            },
+        ],
+    },
+    {
+        day: 10,
+        date: '02/17/2026',
+        questions: [
+            {
+                id: 1,
+                question: "What is the name of the first programmer?",
+                options: [
+                    { id: 'A', text: "Ada Lovelace" },
+                    { id: 'B', text: "Lord Byron" },
+                    { id: 'C', text: "Bill Gate" },
+                    { id: 'D', text: "Mark Zuckerberg" }
+                ],
+                correctAnswer: 'A',
+            },
+        ],
+    },
+    {
+        day: 11,
+        date: '02/18/2026',
+        questions: [
+            {
+                id: 1,
+                question: "Which of the following is not a link state in CSS?",
+                options: [
+                    { id: 'A', text: ":hover" },
+                    { id: 'B', text: ":focus" },
+                    { id: 'C', text: ":visited" },
+                    { id: 'D', text: ":link" }
+                ],
+                correctAnswer: 'B',
+            },
+        ],
+    },
+    {
+        day: 12,
+        date: '02/19/2026',
+        questions: [
+            {
+                id: "12",
+                question: "Which of the following property-value pairs below is used to remove double border from tables?",
+                options: [
+                    { id: 'A', text: "border: 1px solid black;" },
+                    { id: 'B', text: "border-collapse: single;" },
+                    { id: 'C', text: "border-collapse: collapse;" },
+                    { id: 'D', text: "border: single-line;" }
+                ],
+                correctAnswer: 'C',
+            },
+        ],
+    },
+    {
+        day: 13,
+        date: '02/20/2026',
+        questions: [
+            {
+                id: "13",
+                question: "display: none removes both content and space while visibility: hidden removes just content but keeps the space.",
+                options: [
+                    { id: 'A', text: "maybe" },
+                    { id: 'B', text: "false" },
+                    { id: 'C', text: "I don't know" },
+                    { id: 'D', text: "true" }
+                ],
+                correctAnswer: 'D',
+            },
+        ],
+    },
+    {
+        day: 15,
+        date: '02/21/2026',
+        questions: [
+            {
+                id: 1,
+                question: "What is the missing property in the syntax below [ _____: start / end; ]",
+                options: [
+                    { id: 'A', text: "grid-column" },
+                    { id: 'B', text: "flex-box" },
+                    { id: 'C', text: "align-items" },
+                    { id: 'D', text: "justify-content" }
+                ],
+                correctAnswer: 'A',
+            },
+        ],
+    },
+    {
+        day: 16,
+        date: '02/22/2026',
+        questions: [
+            {
+                id: "16",
+                question: "Which of the following symbols is used for adjacent sibling selector",
+                options: [
+                    { id: 'A', text: "+" },
+                    { id: 'B', text: "?" },
+                    { id: 'C', text: "~" },
+                    { id: 'D', text: ">" }
+                ],
+                correctAnswer: 'A',
+            },
+        ],
+    },
+    {
+        day: 17,
+        date: '02/23/2026',
+        questions: [
+            {
+                id: "17",
+                question: "Which of the following is the correct way of using attribute selectors?",
+                options: [
+                    { id: 'A', text: "element::attribute" },
+                    { id: 'B', text: "element > attribute" },
+                    { id: 'C', text: "element[attribute]" },
+                    { id: 'D', text: "element + attribute" }
+                ],
+                correctAnswer: 'C',
+            }
+        ],
+    },
+    {
+        day: 6,
+        date: '02/13/2026',
+        questions: [
+            
+        ],
+    },
+    {
+        day: 6,
+        date: '02/13/2026',
+        questions: [
+            
+        ],
+    },
+    {
+        day: 6,
+        date: '02/13/2026',
+        questions: [
+            
+        ],
+    },
+    {
+        day: 6,
+        date: '02/13/2026',
+        questions: [
+            
         ],
     },
 ]
@@ -959,6 +1209,13 @@ export const TopicQuizData = [
             
         ],
     },
+
+
+
+
+
+
+
 
 
 // BASIC CSS QUIZ
@@ -1933,6 +2190,11 @@ export const TopicQuizData = [
 
 
 
+
+
+
+
+
     // ADVANCED CSS
     {
         topic: 'Layout: Display',
@@ -2328,38 +2590,723 @@ export const TopicQuizData = [
         ],
     },
     {
-        topic: '',
+        topic: 'Combinators',
         category: 'css2',
         questions: [
-            
+            {
+        id: 1,
+        question: "Which combinator selects all descendants of a specified element, including children, grandchildren, and beyond?",
+        options: [
+            { id: 'A', text: "Child Selector (>)" },
+            { id: 'B', text: "Descendant Selector (space)" },
+            { id: 'C', text: "Adjacent Sibling Selector (+)" },
+            { id: 'D', text: "General Sibling Selector (~)" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What is the main difference between the Descendant Selector (space) and the Child Selector (>)?",
+        options: [
+            { id: 'A', text: "There is no difference" },
+            { id: 'B', text: "The descendant selector only targets the first child" },
+            { id: 'C', text: "The child selector only targets direct children, while the descendant selector targets all levels of nesting" },
+            { id: 'D', text: "The child selector targets siblings, not children" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "In the rule 'h3 + p { color: blue; }', which paragraph will be affected?",
+        options: [
+            { id: 'A', text: "All paragraphs inside the h3" },
+            { id: 'B', text: "Every paragraph on the entire page" },
+            { id: 'C', text: "Only the paragraph that comes immediately after the h3" },
+            { id: 'D', text: "All paragraphs that are siblings of the h3" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which symbol is used for the General Sibling Selector, which targets all following siblings of the same parent?",
+        options: [
+            { id: 'A', text: "+" },
+            { id: 'B', text: ">" },
+            { id: 'C', text: "~" },
+            { id: 'D', text: "*" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "If you want to style every <p> tag that follows an <h1> within the same container, regardless of whether they are immediately adjacent, which combinator is best?",
+        options: [
+            { id: 'A', text: "h1 p" },
+            { id: 'B', text: "h1 > p" },
+            { id: 'C', text: "h1 + p" },
+            { id: 'D', text: "h1 ~ p" }
+        ],
+        correctAnswer: 'D',
+    }
         ],
     },
     {
-        topic: '',
+        topic: 'Pseudo Classes',
         category: 'css2',
         questions: [
-            
+            {
+        id: 1,
+        question: "What is the primary purpose of a pseudo-class in CSS?",
+        options: [
+            { id: 'A', text: "To create new HTML elements" },
+            { id: 'B', text: "To define a special state of an element (like hover or focus)" },
+            { id: 'C', text: "To link external JavaScript files" },
+            { id: 'D', text: "To calculate math equations in CSS" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which pseudo-class applies when a user clicks into an <input> field and it becomes ready for typing?",
+        options: [
+            { id: 'A', text: ":hover" },
+            { id: 'B', text: ":active" },
+            { id: 'C', text: ":focus" },
+            { id: 'D', text: ":visited" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "To style every second list item (<li>) in a group, which structural pseudo-class should you use?",
+        options: [
+            { id: 'A', text: "li:first-child" },
+            { id: 'B', text: "li:last-child" },
+            { id: 'C', text: "li:nth-child(2)" },
+            { id: 'D', text: "li:second-child" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "How do you correctly write the syntax for a pseudo-class?",
+        options: [
+            { id: 'A', text: "selector :pseudo-class (with a space)" },
+            { id: 'B', text: "selector:pseudo-class (no space)" },
+            { id: 'C', text: "selector.pseudo-class" },
+            { id: 'D', text: "selector#pseudo-class" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "Which pseudo-class is specifically used for radio or checkbox inputs that are currently selected?",
+        options: [
+            { id: 'A', text: ":active" },
+            { id: 'B', text: ":checked" },
+            { id: 'C', text: ":enabled" },
+            { id: 'D', text: ":required" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "Which pseudo-class targets an element that is referred to in the URL's hash (e.g., website.com/#section1)?",
+        options: [
+            { id: 'A', text: ":link" },
+            { id: 'B', text: ":target" },
+            { id: 'C', text: ":active" },
+            { id: 'D', text: ":focus" }
+        ],
+        correctAnswer: 'B',
+    }
         ],
     },
     {
-        topic: '',
+        topic: 'Pseudo Elements',
         category: 'css2',
         questions: [
-            
+            {
+        id: 1,
+        question: "What is the primary difference between a pseudo-class and a pseudo-element in CSS syntax?",
+        options: [
+            { id: 'A', text: "Pseudo-classes use a dot (.), while pseudo-elements use a hash (#)" },
+            { id: 'B', text: "Pseudo-classes generally use a single colon (:), while pseudo-elements use a double colon (::)" },
+            { id: 'C', text: "Pseudo-elements only work with images" },
+            { id: 'D', text: "There is no difference in syntax" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which pseudo-element is commonly used to create a 'drop cap' effect by styling only the first character of a paragraph?",
+        options: [
+            { id: 'A', text: "::first-line" },
+            { id: 'B', text: "::marker" },
+            { id: 'C', text: "::first-letter" },
+            { id: 'D', text: "::before" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "When using the ::before or ::after pseudo-elements, which property MUST be included for the element to appear?",
+        options: [
+            { id: 'A', text: "display" },
+            { id: 'B', text: "content" },
+            { id: 'C', text: "position" },
+            { id: 'D', text: "visibility" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 4,
+        question: "Which pseudo-element allows you to change the background color of text specifically when a user highlights it with their cursor?",
+        options: [
+            { id: 'A', text: "::highlight" },
+            { id: 'B', text: "::selection" },
+            { id: 'C', text: "::active" },
+            { id: 'D', text: "::focus" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "If you want to change the color of the bullets in an unordered list, which pseudo-element should you target?",
+        options: [
+            { id: 'A', text: "li::before" },
+            { id: 'B', text: "li::bullet" },
+            { id: 'C', text: "li::marker" },
+            { id: 'D', text: "li::first-letter" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 6,
+        question: "Which statement about the ::first-line pseudo-element is true?",
+        options: [
+            { id: 'A', text: "It styles the first sentence of a paragraph regardless of its length." },
+            { id: 'B', text: "It only applies to the first line of text as it appears in the browser's current view." },
+            { id: 'C', text: "It makes the entire paragraph bold." },
+            { id: 'D', text: "It only works on <h1> tags." }
+        ],
+        correctAnswer: 'B',
+    }
         ],
     },
     {
-        topic: '',
+        topic: 'Attributes Selectors',
         category: 'css2',
         questions: [
-            
+            {
+        id: 1,
+        question: "Which attribute selector targets an element that has a specific attribute, regardless of what its actual value is?",
+        options: [
+            { id: 'A', text: "[attribute='value']" },
+            { id: 'B', text: "[attribute]" },
+            { id: 'C', text: "[attribute*='value']" },
+            { id: 'D', text: "[attribute^='value']" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What is the purpose of the [attribute^='value'] selector?",
+        options: [
+            { id: 'A', text: "It selects elements whose attribute value ends with a specific string." },
+            { id: 'B', text: "It selects elements whose attribute value contains a specific substring anywhere." },
+            { id: 'C', text: "It selects elements whose attribute value starts with a specific string." },
+            { id: 'D', text: "It selects elements with a space-separated list of values." }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "Which selector would you use to style all links that point to a secure 'https' website?",
+        options: [
+            { id: 'A', text: "a[href$='https']" },
+            { id: 'B', text: "a[href*='https']" },
+            { id: 'C', text: "a[href^='https']" },
+            { id: 'D', text: "a[href|='https']" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "To apply a specific style to all images with a '.png' file extension, which selector is correct?",
+        options: [
+            { id: 'A', text: "img[src$='.png']" },
+            { id: 'B', text: "img[src^='.png']" },
+            { id: 'C', text: "img[src~='.png']" },
+            { id: 'D', text: "img[src='.png']" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 5,
+        question: "What does the [attribute*='value'] selector do?",
+        options: [
+            { id: 'A', text: "Matches the value exactly or starts with it followed by a hyphen." },
+            { id: 'B', text: "Matches any element whose attribute value contains the given string anywhere inside it." },
+            { id: 'C', text: "Matches only the first occurrence of the attribute." },
+            { id: 'D', text: "Matches elements with no value assigned to the attribute." }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "Which selector is best for targeting a language code like 'en' or 'en-US'?",
+        options: [
+            { id: 'A', text: "[lang~='en']" },
+            { id: 'B', text: "[lang^='en']" },
+            { id: 'C', text: "[lang|='en']" },
+            { id: 'D', text: "[lang$='en']" }
+        ],
+        correctAnswer: 'C',
+    }
         ],
     },
     {
-        topic: '',
+        topic: 'Box Shadow',
         category: 'css2',
         questions: [
-            
+            {
+        id: 1,
+        question: "Which two values are strictly required for the box-shadow property to function?",
+        options: [
+            { id: 'A', text: "blur and spread" },
+            { id: 'B', text: "h-offset and v-offset" },
+            { id: 'C', text: "color and inset" },
+            { id: 'D', text: "h-offset and blur" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What happens if you provide a negative value for the horizontal offset (h-offset)?",
+        options: [
+            { id: 'A', text: "The shadow moves to the right of the element" },
+            { id: 'B', text: "The shadow moves to the left of the element" },
+            { id: 'C', text: "The shadow becomes an inner shadow" },
+            { id: 'D', text: "The shadow disappears" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which property value controls how 'blurry' or soft the edges of the shadow appear?",
+        options: [
+            { id: 'A', text: "spread" },
+            { id: 'B', text: "v-offset" },
+            { id: 'C', text: "blur" },
+            { id: 'D', text: "inset" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "How do you change a shadow from an outer shadow to an inner shadow?",
+        options: [
+            { id: 'A', text: "Use a negative spread value" },
+            { id: 'B', text: "Set the color to transparent" },
+            { id: 'C', text: "Add the 'inset' keyword to the declaration" },
+            { id: 'D', text: "Set both offsets to 0" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "What does the 'spread' value do in a box-shadow declaration?",
+        options: [
+            { id: 'A', text: "It changes the color of the shadow" },
+            { id: 'B', text: "It determines the transparency of the shadow" },
+            { id: 'C', text: "It expands or shrinks the size of the shadow beyond the blur radius" },
+            { id: 'D', text: "It moves the shadow vertically" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 6,
+        question: "Is it possible to apply more than one shadow to a single HTML element?",
+        options: [
+            { id: 'A', text: "No, only one shadow is allowed per element" },
+            { id: 'B', text: "Yes, by separating multiple shadow declarations with commas" },
+            { id: 'C', text: "Yes, but only if one is an inset shadow" },
+            { id: 'D', text: "No, you must use a different element for each shadow" }
+        ],
+        correctAnswer: 'B',
+    }
+        ],
+    },
+    {
+        topic: 'Opacity',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which range of values is used for the CSS opacity property?",
+        options: [
+            { id: 'A', text: "0 to 100" },
+            { id: 'B', text: "0.0 to 1.0" },
+            { id: 'C', text: "1 to 10" },
+            { id: 'D', text: "-1 to 1" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "What happens to an element when its opacity is set to 0?",
+        options: [
+            { id: 'A', text: "It is removed from the document layout." },
+            { id: 'B', text: "It becomes fully visible." },
+            { id: 'C', text: "It becomes completely invisible but still occupies its space in the layout." },
+            { id: 'D', text: "Its background color changes to white." }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "If you want an element to be exactly halfway transparent, which value should you use?",
+        options: [
+            { id: 'A', text: "opacity: 5;" },
+            { id: 'B', text: "opacity: 50;" },
+            { id: 'C', text: "opacity: 0.5;" },
+            { id: 'D', text: "opacity: 0.05;" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which of the following statements about 'opacity' is true?",
+        options: [
+            { id: 'A', text: "It only affects the background color of an element." },
+            { id: 'B', text: "It affects the entire element, including its text and child elements." },
+            { id: 'C', text: "It only works on <img> tags." },
+            { id: 'D', text: "It makes elements disappear from the DOM." }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "If you want to make *only* the background of a div transparent while keeping the text fully opaque, what should you use instead of the opacity property?",
+        options: [
+            { id: 'A', text: "opacity: 0.5;" },
+            { id: 'B', text: "rgba() or hsla() color values" },
+            { id: 'C', text: "visibility: hidden;" },
+            { id: 'D', text: "display: none;" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "What is the default opacity value for every HTML element?",
+        options: [
+            { id: 'A', text: "0" },
+            { id: 'B', text: "0.5" },
+            { id: 'C', text: "1" },
+            { id: 'D', text: "auto" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Transform',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS property allows you to rotate, scale, and move elements without affecting the document flow?",
+        options: [
+            { id: 'A', text: "transition" },
+            { id: 'B', text: "transform" },
+            { id: 'C', text: "position" },
+            { id: 'D', text: "animation" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "In the function 'transform: translate(50px, 100px);', what do the two values represent?",
+        options: [
+            { id: 'A', text: "Rotate 50 degrees and scale by 100" },
+            { id: 'B', text: "Move 50px horizontally (X) and 100px vertically (Y)" },
+            { id: 'C', text: "Increase width by 50px and height by 100px" },
+            { id: 'D', text: "Skew the element by 50px and 100px" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 3,
+        question: "Which value for 'scale()' would make an element appear twice as large as its original size?",
+        options: [
+            { id: 'A', text: "scale(0.5)" },
+            { id: 'B', text: "scale(1)" },
+            { id: 'C', text: "scale(2)" },
+            { id: 'D', text: "scale(200)" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "What unit is typically used with the 'rotate()' function?",
+        options: [
+            { id: 'A', text: "px (pixels)" },
+            { id: 'B', text: "deg (degrees)" },
+            { id: 'C', text: "% (percentage)" },
+            { id: 'D', text: "rem (root em)" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 5,
+        question: "Which function would you use to 'tilt' an element along the X or Y axis, making it look slanted?",
+        options: [
+            { id: 'A', text: "skew()" },
+            { id: 'B', text: "matrix()" },
+            { id: 'C', text: "translate()" },
+            { id: 'D', text: "rotate()" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "Does the order of functions matter when applying multiple transforms (e.g., 'rotate(45deg) translate(100px)')?",
+        options: [
+            { id: 'A', text: "No, the browser applies them all at once regardless of order." },
+            { id: 'B', text: "Yes, transforms are applied in the sequence they are written." },
+            { id: 'C', text: "Only if you are using 'scale()'." },
+            { id: 'D', text: "Order only matters in Internet Explorer." }
+        ],
+        correctAnswer: 'B',
+    }
+        ],
+    },
+    {
+        topic: 'Transition',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "What is the primary purpose of CSS transitions?",
+        options: [
+            { id: 'A', text: "To create complex 3D models" },
+            { id: 'B', text: "To change property values smoothly over a specific duration instead of instantly" },
+            { id: 'C', text: "To link HTML pages together" },
+            { id: 'D', text: "To validate form inputs" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which property defines how long a transition should take to complete (e.g., 2s or 500ms)?",
+        options: [
+            { id: 'A', text: "transition-property" },
+            { id: 'B', text: "transition-delay" },
+            { id: 'C', text: "transition-duration" },
+            { id: 'D', text: "transition-timing" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "In the shorthand 'transition: opacity 0.5s ease-in 1s;', what does the '1s' value at the end represent?",
+        options: [
+            { id: 'A', text: "The duration of the transition" },
+            { id: 'B', text: "The number of times it repeats" },
+            { id: 'C', text: "The delay before the transition begins" },
+            { id: 'D', text: "The speed of the animation" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which timing function makes a transition start slowly, speed up in the middle, and then end slowly?",
+        options: [
+            { id: 'A', text: "linear" },
+            { id: 'B', text: "ease-in" },
+            { id: 'C', text: "ease-out" },
+            { id: 'D', text: "ease-in-out" }
+        ],
+        correctAnswer: 'D',
+    },
+    {
+        id: 5,
+        question: "Which keyword can you use in 'transition-property' to apply a transition to every animatable property that changes?",
+        options: [
+            { id: 'A', text: "any" },
+            { id: 'B', text: "all" },
+            { id: 'C', text: "everything" },
+            { id: 'D', text: "none" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "What is required for a transition to actually occur?",
+        options: [
+            { id: 'A', text: "A change in a property value, usually triggered by an interaction like :hover" },
+            { id: 'B', text: "The use of a <div> tag" },
+            { id: 'C', text: "A background image" },
+            { id: 'D', text: "The position: fixed property" }
+        ],
+        correctAnswer: 'A',
+    }
+        ],
+    },
+    {
+        topic: 'Animations',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "Which CSS rule is used to define the actual steps and styles of an animation sequence?",
+        options: [
+            { id: 'A', text: "@animation-steps" },
+            { id: 'B', text: "@keyframes" },
+            { id: 'C', text: "@frames" },
+            { id: 'D', text: "@animate" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which property is used to bind an element to a specific @keyframes rule?",
+        options: [
+            { id: 'A', text: "animation-link" },
+            { id: 'B', text: "animation-id" },
+            { id: 'C', text: "animation-name" },
+            { id: 'D', text: "animation-source" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "If you want an animation to play forever without stopping, what value should you use for 'animation-iteration-count'?",
+        options: [
+            { id: 'A', text: "loop" },
+            { id: 'B', text: "always" },
+            { id: 'C', text: "infinite" },
+            { id: 'D', text: "0" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "Which property value ensures that an element stays at its final animation state (the 'to' or '100%' styles) after the animation finishes?",
+        options: [
+            { id: 'A', text: "animation-fill-mode: forwards;" },
+            { id: 'B', text: "animation-direction: alternate;" },
+            { id: 'C', text: "animation-play-state: paused;" },
+            { id: 'D', text: "animation-fill-mode: backwards;" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 5,
+        question: "What does 'animation-direction: alternate;' do?",
+        options: [
+            { id: 'A', text: "It plays the animation upside down" },
+            { id: 'B', text: "It plays the animation forward, then backward, in repeating cycles" },
+            { id: 'C', text: "It skips every other frame" },
+            { id: 'D', text: "It changes the color of the animation randomly" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 6,
+        question: "In a @keyframes rule, which keywords can be used as shorthand for 0% and 100%?",
+        options: [
+            { id: 'A', text: "start and finish" },
+            { id: 'B', text: "first and last" },
+            { id: 'C', text: "from and to" },
+            { id: 'D', text: "alpha and omega" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 7,
+        question: "Which property allows you to pause an animation, perhaps via a hover effect or JavaScript?",
+        options: [
+            { id: 'A', text: "animation-stop" },
+            { id: 'B', text: "animation-wait" },
+            { id: 'C', text: "animation-play-state" },
+            { id: 'D', text: "animation-freeze" }
+        ],
+        correctAnswer: 'C',
+    }
+        ],
+    },
+    {
+        topic: 'Media Query',
+        category: 'css2',
+        questions: [
+            {
+        id: 1,
+        question: "What is the primary purpose of using media queries in CSS?",
+        options: [
+            { id: 'A', text: "To play videos and audio files on a webpage" },
+            { id: 'B', text: "To apply different styles based on device characteristics like screen width" },
+            { id: 'C', text: "To connect the website to social media platforms" },
+            { id: 'D', text: "To speed up the website's loading time" }
+        ],
+        correctAnswer: 'B',
+    },
+    {
+        id: 2,
+        question: "Which CSS at-rule is used to start a media query?",
+        options: [
+            { id: 'A', text: "@screen" },
+            { id: 'B', text: "@responsive" },
+            { id: 'C', text: "@media" },
+            { id: 'D', text: "@device" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 3,
+        question: "What does the condition '(max-width: 600px)' target?",
+        options: [
+            { id: 'A', text: "Screens that are exactly 600px wide" },
+            { id: 'B', text: "Screens that are 600px or wider" },
+            { id: 'C', text: "Screens that are 600px or narrower" },
+            { id: 'D', text: "Only printed documents" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 4,
+        question: "If you want a layout to change only when a tablet is rotated sideways, which media feature should you use?",
+        options: [
+            { id: 'A', text: "resolution" },
+            { id: 'B', text: "aspect-ratio" },
+            { id: 'C', text: "orientation" },
+            { id: 'D', text: "min-device-pixel-ratio" }
+        ],
+        correctAnswer: 'C',
+    },
+    {
+        id: 5,
+        question: "Which of the following is the correct syntax for a media query that targets screens with a minimum width of 768px?",
+        options: [
+            { id: 'A', text: "@media (min-width: 768px) { ... }" },
+            { id: 'B', text: "@media screen and 768px { ... }" },
+            { id: 'C', text: "if screen > 768px { ... }" },
+            { id: 'D', text: "@responsive 768px { ... }" }
+        ],
+        correctAnswer: 'A',
+    },
+    {
+        id: 6,
+        question: "In responsive design, what is a 'breakpoint'?",
+        options: [
+            { id: 'A', text: "A point where the website code stops working" },
+            { id: 'B', text: "The specific screen width where the layout changes via a media query" },
+            { id: 'C', text: "The time it takes for an image to load" },
+            { id: 'D', text: "A error in the CSS file" }
+        ],
+        correctAnswer: 'B',
+    }
         ],
     },
     {

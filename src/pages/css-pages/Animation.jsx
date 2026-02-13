@@ -146,7 +146,7 @@ export default function Animation() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Animations" />
+            <QuizBox currentCategory="css2" currentTopic="Animations" />
             <PrevNextBtn 
                 prevPath="/css_transition" 
                 nextPath="/css_mediaquery"

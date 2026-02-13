@@ -197,7 +197,7 @@ export default function Combinators() {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Combinators" />
+            <QuizBox currentCategory="css2" currentTopic="Combinators" />
             <PrevNextBtn 
                 prevPath="/css_grid" 
                 nextPath="/css_pseudoclass"

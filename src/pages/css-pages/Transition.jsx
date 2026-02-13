@@ -135,7 +135,7 @@ div:hover {
                 </div>
             </section>
 
-            <QuizBox currentCategory="css1" currentTopic="Transition" />
+            <QuizBox currentCategory="css2" currentTopic="Transition" />
             <PrevNextBtn 
                 prevPath="/css_transform" 
                 nextPath="/css_animation"
