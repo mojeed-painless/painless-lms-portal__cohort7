@@ -103,7 +103,8 @@ export default function HeightWidth() {
             <QuizBox currentCategory="css1" currentTopic="Height & Width" />
             <PrevNextBtn 
               prevPath="/css_boxmodel" 
-              nextPath="/css_formatting"
+            //   nextPath="/css_formatting"
+              nextPath=""
             />
         </section>
     );
