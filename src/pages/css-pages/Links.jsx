@@ -93,7 +93,8 @@ a:active {
             <QuizBox currentCategory="css1" currentTopic="Links" />
             <PrevNextBtn 
                 prevPath="/css_formatting" 
-                nextPath="/css_lists"
+                // nextPath="/css_lists"
+                nextPath=""
             />
         </section>
     );
