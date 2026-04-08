@@ -32,16 +32,16 @@ export default function NoAccess() {
 
                             <h1>Oops!</h1>
 
-                            <h2>Seems you don't have access to this page</h2>
+                            <h2>Calm down! Study and perfect the available contents. Others will be releaes shortly</h2>
                             
-                            <p>
+                            {/* <p>
                                 This content is reserved for paid members. Upgrade your 
                                 plan to unlock full access to all features.
-                            </p>
+                            </p> */}
 
-                            <div className="premium-label">
+                            {/* <div className="premium-label">
                                 <span>🔒 Paid Content</span>
-                            </div>
+                            </div> */}
 
                             <div className="link-container">
                                 <span><FaHandPointLeft /></span>

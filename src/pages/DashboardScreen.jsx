@@ -167,10 +167,10 @@ const DashboardScreen = () => {
               
               if (title === 'Lessons Completed') {
                 const completed = getCompletedCount();
-                const percentage = getCompletionPercentage(66);
-                // const percentage = getCompletionPercentage(totalLessons);
-                // displayFigure = `${completed}/${totalLessons}`;
-                displayFigure = `${completed}/66`;
+                // const percentage = getCompletionPercentage(66);
+                const percentage = getCompletionPercentage(totalLessons);
+                displayFigure = `${completed}/${totalLessons}`;
+                // displayFigure = `${completed}/66`;
                 displayDescription = `${percentage}% completed`;
               }
 

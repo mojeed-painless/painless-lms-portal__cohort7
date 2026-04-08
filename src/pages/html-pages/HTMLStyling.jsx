@@ -106,8 +106,8 @@ export default function HTMLStyling() {
 
             <PrevNextBtn 
                 prevPath="/html-form" 
-                // nextPath="/css-transition"
-                nextPath=""
+                nextPath="/css-transition"
+                // nextPath=""
             />
         </section>
     );

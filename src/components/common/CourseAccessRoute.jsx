@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getUnlockedHtmlPaths, HTML_RELEASE_DAY_KEY } from '../../utils/htmlCourseUnlockConfig';
 
 /**
  * A wrapper component that checks if the user has access to a specific course.
@@ -44,12 +45,20 @@ const CourseAccessRoute = ({ courseType }) => {
   const accessField = accessFieldMap[courseType];
   const hasAccess = user?.[accessField] === true;
 
-  if (hasAccess) {
-    return <Outlet />;
+  if (!hasAccess) {
+    return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
   }
 
-  // If user doesn't have access to the course, redirect to catalog
-  return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
+  if (courseType === 'html') {
+    const selectedDay = Number(localStorage.getItem(HTML_RELEASE_DAY_KEY)) || 0;
+    const unlockedPaths = getUnlockedHtmlPaths(selectedDay);
+
+    if (!unlockedPaths.includes(location.pathname)) {
+      return <Navigate to="/no-access" state={{ from: location, reason: 'content_locked' }} replace />;
+    }
+  }
+
+  return <Outlet />;
 };
 
 export default CourseAccessRoute;
