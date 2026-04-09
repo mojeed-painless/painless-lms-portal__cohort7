@@ -1,4 +1,5 @@
-export const HTML_RELEASE_DAY_KEY = 'htmlReleaseDay';
+// Server-stored HTML course release configuration
+// Routes are unlocked progressively based on the release day stored on the backend
 
 export const htmlCourseRouteOrder = [
   '/html-transition',
@@ -64,11 +65,7 @@ export const htmlCourseRouteOrder = [
   '/js-boolean-conversion',
 ];
 
-/**
- * Configure the number of content items unlocked per day.
- * Edit this object to customize how many routes are available each day.
- * Example: Day 1 unlocks 5 routes, Day 2 unlocks 4 more, etc.
- */
+// Number of routes unlocked each day
 export const dayContentMap = {
   1: 0,
   2: 5,
@@ -91,7 +88,6 @@ export const dayContentMap = {
   19: 2,
   20: 1,
   21: 1,
-  
   22: 4,
   23: 4,
   24: 4,
@@ -102,42 +98,46 @@ export const dayContentMap = {
   29: 4,
 };
 
-export const getHtmlReleaseCount = (day) => {
-  const normalizedDay = Number(day) || 0;
-  if (normalizedDay <= 0) return 0;
-  
-  let totalCount = 0;
-  for (let d = 2; d <= normalizedDay; d++) {
-    totalCount += dayContentMap[d] || 0;
+// Calculate total unlocked routes up to given day
+export const getTotalUnlockedRoutes = (releaseDay) => {
+  const day = Number(releaseDay) || 0;
+  if (day <= 0) return 0;
+
+  let total = 0;
+  for (let d = 1; d <= day; d++) {
+    total += dayContentMap[d] || 0;
   }
-  
-  return Math.min(totalCount, htmlCourseRouteOrder.length);
+  return Math.min(total, htmlCourseRouteOrder.length);
 };
 
-export const getUnlockedHtmlPaths = (day) => {
-  const count = getHtmlReleaseCount(day);
+// Get list of unlocked paths based on release day
+export const getUnlockedPaths = (releaseDay) => {
+  const count = getTotalUnlockedRoutes(releaseDay);
   return htmlCourseRouteOrder.slice(0, count);
 };
 
-export const getFirstDayRouteIndex = (day) => {
-  const normalizedDay = Number(day) || 0;
-  if (normalizedDay <= 1) return 0;
-  
+// Check if a specific path is unlocked
+export const isPathUnlocked = (path, releaseDay) => {
+  const unlockedPaths = getUnlockedPaths(releaseDay);
+  return unlockedPaths.includes(path);
+};
+
+// Get the first route unlocked on a specific day
+export const getFirstRouteForDay = (day) => {
+  const dayNum = Number(day) || 0;
+  if (dayNum <= 1) return htmlCourseRouteOrder[0];
+
   let startIndex = 0;
-  for (let d = 2; d < normalizedDay; d++) {
+  for (let d = 1; d < dayNum; d++) {
     startIndex += dayContentMap[d] || 0;
   }
-  
-  return startIndex;
+  return htmlCourseRouteOrder[startIndex] || htmlCourseRouteOrder[0];
 };
 
-export const getFirstDayRoute = (day) => {
-  const index = getFirstDayRouteIndex(day);
-  return htmlCourseRouteOrder[index] || htmlCourseRouteOrder[0];
-};
-
-export const getReleaseLabel = (day) => {
-  const count = getHtmlReleaseCount(day);
-  const dayContent = dayContentMap[day] || 0;
-  return `Day ${day} unlocks ${dayContent} more route${dayContent === 1 ? '' : 's'} (${count} total)`;
+// Get display label for a day
+export const getDayLabel = (day) => {
+  const dayNum = Number(day) || 0;
+  const routesToday = dayContentMap[dayNum] || 0;
+  const totalRoutes = getTotalUnlockedRoutes(dayNum);
+  return `Day ${dayNum}: ${routesToday} new routes (${totalRoutes} total)`;
 };

@@ -1,60 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getUnlockedHtmlPaths, HTML_RELEASE_DAY_KEY } from '../../utils/htmlCourseUnlockConfig';
+import { API_BASE_URL } from '../../config/api';
+import { isPathUnlocked } from '../../utils/htmlCourseUnlockConfig';
 
 /**
- * A wrapper component that checks if the user has access to a specific course.
- * Even if a user is authenticated and approved, they need admin permission to access course content.
- * If access is denied, it redirects the user to the catalog page.
- * 
- * @param {string} courseType - The course type to check access for: 'html', 'js', or 'react'
- *   - 'html': Covers all HTML, CSS, and JavaScript content
- *   - 'js': Advanced JavaScript content
- *   - 'react': React content
+ * Route guard for course content access.
+ * - HTML content: Controlled by server-stored release day
+ * - JS/React content: Requires specific access flags
+ * - Admins bypass all restrictions
  */
 const CourseAccessRoute = ({ courseType }) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
+  const [releaseDay, setReleaseDay] = useState(0);
+  const [isReleaseLoading, setIsReleaseLoading] = useState(courseType === 'html');
 
-  if (isLoading) {
+  // Fetch release day from server for HTML content
+  useEffect(() => {
+    if (courseType !== 'html') return;
+
+    const fetchReleaseDay = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/config/html-release-day`);
+        if (!response.ok) throw new Error('Failed to fetch release day');
+        const data = await response.json();
+        setReleaseDay(Number(data.value) || 0);
+      } catch (error) {
+        console.error('Error fetching release day:', error);
+        setReleaseDay(0);
+      } finally {
+        setIsReleaseLoading(false);
+      }
+    };
+
+    fetchReleaseDay();
+  }, [courseType]);
+
+  // Show loading while auth or release day is loading
+  if (isLoading || isReleaseLoading) {
     return (
-      <div className="loading-overlay" aria-live="polite" aria-busy="true">
-        <div className="spinner" role="status" aria-label="Loading">
+      <div className="loading-overlay">
+        <div className="spinner">
           <div className="ring ring1" />
           <div className="ring ring2" />
           <div className="ring ring3" />
-          <div className="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
         </div>
       </div>
     );
   }
 
-  // Map course type to the corresponding access field
-  const accessFieldMap = {
-    html: 'htmlAccess',
-    js: 'jsAccess',
-    react: 'reactAccess'
-  };
-
-  const accessField = accessFieldMap[courseType];
-  const hasAccess = user?.[accessField] === true;
-
-  if (!hasAccess) {
-    return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
+  // Admins have full access to non-HTML content, but HTML content is still restricted by release day
+  if (user?.role === 'admin' && courseType !== 'html') {
+    return <Outlet />;
   }
 
+  // Check course-specific access
   if (courseType === 'html') {
-    const selectedDay = Number(localStorage.getItem(HTML_RELEASE_DAY_KEY)) || 0;
-    const unlockedPaths = getUnlockedHtmlPaths(selectedDay);
-
-    if (!unlockedPaths.includes(location.pathname)) {
+    // HTML access is controlled by release day only
+    if (!isPathUnlocked(location.pathname, releaseDay)) {
       return <Navigate to="/no-access" state={{ from: location, reason: 'content_locked' }} replace />;
+    }
+  } else {
+    // JS and React require specific access flags
+    const accessField = courseType === 'js' ? 'jsAccess' : 'reactAccess';
+    if (!user?.[accessField]) {
+      return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
     }
   }
 

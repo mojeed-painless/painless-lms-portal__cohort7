@@ -17,9 +17,9 @@ const capitalizeUser = (u) => {
     firstName: capitalizeFirst(u.firstName),
     lastName: capitalizeFirst(u.lastName),
     // Course access flags from backend
-    htmlAccess: u.htmlAccess || false,
-    jsAccess: u.jsAccess || false,
-    reactAccess: u.reactAccess || false,
+    htmlAccess: Boolean(u.htmlAccess),
+    jsAccess: Boolean(u.jsAccess),
+    reactAccess: Boolean(u.reactAccess),
   };
 };
 
