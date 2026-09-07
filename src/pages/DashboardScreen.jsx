@@ -70,7 +70,7 @@ const DashboardScreen = () => {
     };
     if (token) load();
     return () => { mounted = false; };
-  }, [API_BASE, user]);
+  }, [user, token]);
 
   useEffect(() => {
     // Initial setup from user object
@@ -81,7 +81,7 @@ const DashboardScreen = () => {
         reactAccess: user.reactAccess || false
       });
     }
-  }, [user?.htmlAccess, user?.jsAccess, user?.reactAccess]);
+  }, [user]);
 
   // Poll for access updates every 3 seconds (only for admins)
   useEffect(() => {
@@ -127,7 +127,7 @@ const DashboardScreen = () => {
     const interval = setInterval(pollAccessUpdates, 3000);
     
     return () => clearInterval(interval);
-  }, [user?.token, user?._id, user?.role]);
+  }, [user]);
 
   // Map stage to access permission
   const getAccessStatus = (stage) => {

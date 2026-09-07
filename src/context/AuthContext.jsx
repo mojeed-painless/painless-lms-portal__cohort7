@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 
 // 1. Create the Context object
@@ -25,7 +26,22 @@ const capitalizeUser = (u) => {
 
 // 2. Custom hook for easy access to the context
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    return {
+      user: null,
+      isLoading: false,
+      error: null,
+      clearError: () => {},
+      login: async () => ({}),
+      register: async () => ({ success: true }),
+      logout: () => {},
+      isAuthenticated: false,
+    };
+  }
+
+  return context;
 };
 
 // 3. The Provider Component

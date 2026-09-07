@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../assets/styles/leaderboard.css';
 import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
@@ -17,7 +18,6 @@ export default function LeaderboardScreen() {
   const [dailyQuizLeaders, setDailyQuizLeaders] = useState([]);
   const [dailyQuizLoading, setDailyQuizLoading] = useState(false);
   const [authRequired, setAuthRequired] = useState(false);
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const { user } = useAuth();
 
   useEffect(() => {

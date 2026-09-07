@@ -1,4 +1,5 @@
 import UnderDevelopment from "../components/common/UnderDevelopment";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 import '../assets/styles/transcript.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -22,15 +23,13 @@ import { TopicQuizData } from '../quizData';
 export default function TranscriptScreen() {
   const { user } = useAuth();
   const token = user?.token;
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-
   const { graded, fetchGradedAssignments } = useAssignments(token);
 
   const [quizAttempts, setQuizAttempts] = useState([]);
 
   useEffect(() => {
     if (token) fetchGradedAssignments();
-  }, [token]);
+  }, [token, fetchGradedAssignments]);
 
   useEffect(() => {
     let mounted = true;
@@ -57,7 +56,7 @@ export default function TranscriptScreen() {
     };
     load();
     return () => { mounted = false; };
-  }, [API_BASE, user]);
+  }, [user]);
 
   const assignmentAverage = graded && graded.length
     ? Math.round(graded.reduce((acc, a) => acc + (parseFloat(a.score || 0) || 0), 0) / graded.length)

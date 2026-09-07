@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import '../assets/styles/admin.css'; 
@@ -24,14 +24,11 @@ const AdminDashboardScreen = () => {
     const [courseAccess, setCourseAccess] = useState({});
 
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${user.token}`,
-        },
-    };
-            
     // --- Data Fetching ---
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${user.token}` },
+    };
     if (!user || user.role !== 'admin') return;
     setLoading(true);
     try {
@@ -65,7 +62,7 @@ const AdminDashboardScreen = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
     // --- Action Handler: Approve/Reject/Change Role ---
   const handleUpdateUser = async (userId, isApproved, newRole) => {
@@ -75,7 +72,7 @@ const AdminDashboardScreen = () => {
       if (newRole) {
         body.role = newRole;
       }
-      
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.put(`${API_URL}/${userId}`, body, config);
       
       // Refresh both lists after update (user moves from pending to all)
@@ -93,7 +90,7 @@ const AdminDashboardScreen = () => {
     if (user && user.role === 'admin') {
       fetchUsers();
     }
-  }, [user]);
+  }, [user, fetchUsers]);
 
 const handleDeleteUser = async (userId) => {
     // IMPORTANT: Replacing window.confirm() with a custom modal is required in production environments.
@@ -103,8 +100,9 @@ const handleDeleteUser = async (userId) => {
     
     setLoading(true);
     try {
-        // Send a DELETE request to /api/users/admin/:id
-        await axios.delete(`${API_URL}/${userId}`, config);
+      // Send a DELETE request to /api/users/admin/:id
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      await axios.delete(`${API_URL}/${userId}`, config);
         
         // Refresh the list immediately to remove the deleted user from the UI
         fetchUsers(); 
@@ -145,6 +143,7 @@ const handleDeleteUser = async (userId) => {
       console.log('Sending update:', { userId, courseName, updateData });
 
       // Send to backend
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
       const response = await axios.put(`${API_URL}/${userId}`, updateData, config);
 
       // Verify the update was successful
