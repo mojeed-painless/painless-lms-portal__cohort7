@@ -15,6 +15,8 @@ import {
   NotebookTabs,
 } from 'lucide-react';
 import '../assets/styles/assignment.css';
+import AdminAssignmentForm from '../components/assignments/AdminAssignmentForm';
+import { Toast } from '../components/common/Toast';
 
 const AssignmentScreen = () => {
   const { user } = useAuth();
@@ -58,7 +60,8 @@ const AssignmentScreen = () => {
   const [assignmentLinks, setAssignmentLinks] = useState({});
   const [scores, setScores] = useState({});
   const [editingGradedId, setEditingGradedId] = useState(null);
-  
+  const [toast, setToast] = useState(null);
+
   // Admin form state
   const [newAssignment, setNewAssignment] = useState({
     title: '',
@@ -71,6 +74,11 @@ const AssignmentScreen = () => {
     courseType: 'html',
     dueDate: '',
   });
+  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+  };
 
   // Fetch data on component mount and when role changes
   useEffect(() => {
@@ -85,7 +93,7 @@ const AssignmentScreen = () => {
       fetchSubmittedAssignmentsAdmin();
       fetchGradedAssignmentsAdmin();
     }
-  }, [isAdmin, token]);
+  }, [isAdmin, token, fetchPendingAssignments, fetchSubmittedAssignments, fetchGradedAssignments, fetchAllAssignments, fetchSubmittedAssignmentsAdmin, fetchGradedAssignmentsAdmin]);
 
   // Helper function to convert courseId to courseType for display
   const getCourseTypeFromId = (courseId) => {
@@ -101,17 +109,17 @@ const AssignmentScreen = () => {
 
   // Handle student assignment submission
   const handleSubmitAssignment = async (assignmentId, link) => {
-    if (!link.trim()) {
-      alert('Please paste a valid assignment link');
+    if (!link?.trim()) {
+      showToast('Please paste a valid assignment link', 'error');
       return;
     }
 
     const success = await submitAssignment(assignmentId, link);
     if (success) {
       setAssignmentLinks((prev) => ({ ...prev, [assignmentId]: '' }));
-      alert('Assignment submitted successfully!');
+      showToast('Assignment submitted successfully!', 'success');
     } else {
-      alert(error || 'Failed to submit assignment');
+      showToast(error || 'Failed to submit assignment', 'error');
     }
   };
 
@@ -122,9 +130,9 @@ const AssignmentScreen = () => {
     const success = await gradeAssignment(assignmentId, score);
     if (success) {
       setScores((prev) => ({ ...prev, [assignmentId]: '' }));
-      alert('Assignment graded successfully!');
+      showToast('Assignment graded successfully!', 'success');
     } else {
-      alert(error || 'Failed to grade assignment');
+      showToast(error || 'Failed to grade assignment', 'error');
     }
   };
 
@@ -143,9 +151,9 @@ const AssignmentScreen = () => {
     if (success) {
       setEditingGradedId(null);
       setScores((prev) => ({ ...prev, [assignmentId]: '' }));
-      alert('Grade updated successfully!');
+      showToast('Grade updated successfully!', 'success');
     } else {
-      alert(error || 'Failed to update grade');
+      showToast(error || 'Failed to update grade', 'error');
     }
   };
 
@@ -169,9 +177,9 @@ const AssignmentScreen = () => {
     );
     if (success) {
       setNewAssignment({ title: '', courseType: 'html', dueDate: '' });
-      alert('Assignment created successfully!');
+      showToast('Assignment created successfully!', 'success');
     } else {
-      alert(error || 'Failed to create assignment');
+      showToast(error || 'Failed to create assignment', 'error');
     }
   };
 
@@ -182,6 +190,7 @@ const AssignmentScreen = () => {
       courseType: getCourseTypeFromId(assignment.courseId),
       dueDate: assignment.dueDate,
     });
+    setShowAssignmentForm(true);
   };
 
   const handleSaveEditAssignment = async () => {
@@ -194,20 +203,47 @@ const AssignmentScreen = () => {
     );
     if (success) {
       setEditingAssignmentId(null);
-      alert('Assignment updated successfully!');
+      showToast('Assignment updated successfully!', 'success');
     } else {
-      alert(error || 'Failed to update assignment');
+      showToast(error || 'Failed to update assignment', 'error');
+    }
+  };
+
+  const handleAdminAssignmentSubmit = async (payload) => {
+    const isEditing = Boolean(editingAssignmentId);
+
+    const success = isEditing
+      ? await updateAssignment(
+          editingAssignmentId,
+          payload.title,
+          payload.description,
+          payload.dueDate,
+          payload.courseType
+        )
+      : await createAssignment(
+          payload.title,
+          payload.description,
+          payload.dueDate,
+          payload.courseType
+        );
+
+    if (success) {
+      setShowAssignmentForm(false);
+      setEditingAssignmentId(null);
+      setEditingAssignment({ title: '', courseType: 'html', dueDate: '' });
+      setNewAssignment({ title: '', courseType: 'html', dueDate: '' });
+      showToast(isEditing ? 'Assignment updated successfully!' : 'Assignment created successfully!', 'success');
+    } else {
+      showToast(error || (isEditing ? 'Failed to update assignment' : 'Failed to create assignment'), 'error');
     }
   };
 
   const handleDeleteAssignment = async (assignmentId) => {
-    if (window.confirm('Are you sure you want to delete this assignment? This will not affect already submitted or graded assignments.')) {
-      const success = await deleteAssignment(assignmentId);
-      if (success) {
-        alert('Assignment deleted successfully!');
-      } else {
-        alert(error || 'Failed to delete assignment');
-      }
+    const success = await deleteAssignment(assignmentId);
+    if (success) {
+      showToast('Assignment deleted successfully!', 'success');
+    } else {
+      showToast(error || 'Failed to delete assignment', 'error');
     }
   };
 
@@ -452,125 +488,39 @@ const AssignmentScreen = () => {
                 </span>
                 Create Assignment
               </h3>
+              {!showAssignmentForm && (
+                <button
+                  type="button"
+                  className="add-assignment-btn"
+                  onClick={() => {
+                    setEditingAssignmentId(null);
+                    setShowAssignmentForm(true);
+                  }}
+                >
+                  <span><Plus size={18} /></span>
+                  New Assignment
+                </button>
+              )}
             </div>
+
             <div className="add-assignment-form">
-              <form onSubmit={handleAddAssignment} className="assignment-form">
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="title">Assignment Title</label>
-                    <input
-                      id="title"
-                      type="text"
-                      placeholder="Enter assignment title..."
-                      className="form-input"
-                      value={newAssignment.title}
-                      onChange={(e) =>
-                        setNewAssignment({ ...newAssignment, title: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="courseType">Course Type</label>
-                    <select
-                      id="courseType"
-                      className="form-select"
-                      value={newAssignment.courseType}
-                      onChange={(e) =>
-                        setNewAssignment({ ...newAssignment, courseType: e.target.value })
-                      }
-                    >
-                      <option value="html">HTML</option>
-                      <option value="css">CSS</option>
-                      <option value="js">JavaScript</option>
-                      <option value="react">React</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="dueDate">Due Date</label>
-                    <input
-                      id="dueDate"
-                      type="date"
-                      className="form-input"
-                      value={newAssignment.dueDate}
-                      onChange={(e) =>
-                        setNewAssignment({ ...newAssignment, dueDate: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-
-                  <button type="submit" className="add-assignment-btn" disabled={loading}>
-                    <span><Plus size={18} /></span>
-                    {loading ? 'Creating...' : 'Create'}
-                  </button>
-                </div>
-              </form>
-
-              {/* Uploaded Assignments List */}
-              {allAssignments.length > 0 && (
-                <div className="uploaded-assignments">
-                  <h4>Uploaded Assignments</h4>
-                  <div className="assignments-list">
-                    {allAssignments.map((assignment) => (
-                      <div key={assignment.id} className="assignment-item">
-                        {editingAssignmentId === assignment.id ? (
-                          <div className="assignment-edit-form">
-                            <input
-                              type="text"
-                              className="form-input"
-                              value={editingAssignment.title}
-                              onChange={(e) =>
-                                setEditingAssignment({
-                                  ...editingAssignment,
-                                  title: e.target.value,
-                                })
-                              }
-                            />
-                            <select
-                              className="form-select"
-                              value={editingAssignment.courseType}
-                              onChange={(e) =>
-                                setEditingAssignment({
-                                  ...editingAssignment,
-                                  courseType: e.target.value,
-                                })
-                              }
-                            >
-                              <option value="html">HTML</option>
-                              <option value="css">CSS</option>
-                              <option value="js">JavaScript</option>
-                              <option value="react">React</option>
-                            </select>
-                            <input
-                              type="date"
-                              className="form-input"
-                              value={editingAssignment.dueDate}
-                              onChange={(e) =>
-                                setEditingAssignment({
-                                  ...editingAssignment,
-                                  dueDate: e.target.value,
-                                })
-                              }
-                            />
-                            <button
-                              className="save-score-btn"
-                              onClick={handleSaveEditAssignment}
-                              disabled={loading}
-                            >
-                              <span><Save size={16} /></span>
-                              Save
-                            </button>
-                            <button
-                              className="cancel-btn"
-                              onClick={() => setEditingAssignmentId(null)}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
+              {showAssignmentForm ? (
+                <AdminAssignmentForm
+                  onSubmit={handleAdminAssignmentSubmit}
+                  onCancel={() => {
+                    setShowAssignmentForm(false);
+                    setEditingAssignmentId(null);
+                  }}
+                  initialData={editingAssignmentId ? editingAssignment : null}
+                  submitLabel={editingAssignmentId ? 'Save Changes' : 'Create Assignment'}
+                />
+              ) : (
+                allAssignments.length > 0 && (
+                  <div className="uploaded-assignments">
+                    <h4>Uploaded Assignments</h4>
+                    <div className="assignments-list">
+                      {allAssignments.map((assignment) => (
+                        <div key={assignment.id} className="assignment-item">
                           <div className="assignment-info">
                             <div className="assignment-details">
                               <h5>{assignment.title}</h5>
@@ -594,11 +544,11 @@ const AssignmentScreen = () => {
                               </button>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )
               )}
             </div>
           </section>
@@ -789,6 +739,14 @@ const AssignmentScreen = () => {
             </div>
           </section>
         </>
+      )}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
     </div>
   );
