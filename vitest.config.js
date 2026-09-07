@@ -7,10 +7,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
-    pool: 'threads',  // Change from 'forks' to 'threads'
+    pool: 'forks',  // Change from 'threads' to 'forks'
     poolOptions: {
-      threads: {
-        singleThread: true,
+      forks: {
+        singleFork: true,
       }
     }
   },
