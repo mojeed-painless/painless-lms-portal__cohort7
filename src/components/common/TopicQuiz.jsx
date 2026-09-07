@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import '../../assets/styles/topicQuiz.css';
 import { TopicQuizData } from '../../quizData';
 import {
@@ -11,7 +11,110 @@ import {
 
 import { useAuth } from '../../context/AuthContext';
 
-export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
+function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [submissionState, setSubmissionState] = useState({ status: 'idle', message: '' });
+  const [result, setResult] = useState(null);
+
+  const currentQuestion = questions[0];
+
+  const submitAttempt = async () => {
+    const total = questions.length;
+    const score = questions.reduce((acc, question) => {
+      const selected = selectedAnswers[question.id];
+      const correctAnswer = question.options[question.correctAnswer];
+      return acc + (selected === correctAnswer ? 1 : 0);
+    }, 0);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/quiz-attempts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, score, total, timeTaken: 0 }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.message || 'Failed to submit quiz');
+      }
+
+      const passed = typeof data.passed === 'boolean' ? data.passed : score === total;
+      const nextResult = { score, total, passed, status: data.status || 'success' };
+      setResult(nextResult);
+      if (onComplete) onComplete(nextResult);
+      setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
+    } catch (error) {
+      const message = error?.message || 'Error submitting quiz';
+      setSubmissionState({ status: 'error', message });
+      setResult(null);
+    }
+  };
+
+  const handleSelect = (selectedOption) => {
+    setSelectedAnswers(prev => ({ ...prev, [currentQuestion.id]: selectedOption }));
+  };
+
+  if (result) {
+    return (
+      <div className="topic-quiz__box">
+        <p>Passed - Score: {result.score} / {result.total}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="topic-quiz__box">
+      <div className="topic-quiz__header">
+        <span>{topic}</span>
+      </div>
+
+      <div className="topic-quiz__questions">
+        <div className="topic-quiz__question active-question" key={currentQuestion.id}>
+          <h4>{currentQuestion.question}</h4>
+          <div className="topic-quiz__options">
+            {currentQuestion.options.map((option, index) => {
+              const optionLetter = String.fromCharCode(65 + index);
+              const optionText = typeof option === 'string' ? option : option.text;
+              const isSelected = selectedAnswers[currentQuestion.id] === optionText;
+
+              return (
+                <button
+                  key={`${currentQuestion.id}-${optionText}`}
+                  type="button"
+                  aria-label={`${optionLetter}. ${optionText}`}
+                  aria-pressed={isSelected}
+                  className={`topic-quiz__option ${isSelected ? 'selected' : ''}`}
+                  onClick={() => handleSelect(optionText)}
+                >
+                  <span>{optionLetter}</span> {optionText}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="topic-quiz__nav">
+        <button type="button" onClick={submitAttempt} aria-label="Submit quiz">
+          Submit
+        </button>
+      </div>
+
+      {submissionState.status === 'error' && (
+        <p role="alert">Error submitting quiz: {submissionState.message}</p>
+      )}
+    </div>
+  );
+}
+
+export default function TopicQuiz({ currentTopic, topic, questions: providedQuestions, onSelect, onComplete }) {
+  const resolvedTopic = currentTopic || topic;
+  const hasCustomQuestions = Array.isArray(providedQuestions) && providedQuestions.length > 0;
+
+  if (hasCustomQuestions) {
+    return <GenericTopicQuiz questions={providedQuestions} topic={resolvedTopic || 'Quiz'} onComplete={onComplete} />;
+  }
 
     const { user } = useAuth();
     const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
@@ -57,7 +160,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
     };
 
     // fetch whether user already attempted this topic and their answers
-    const fetchAttemptData = async () => {
+    const fetchAttemptData = useCallback(async () => {
       try {
         // check attempts
         const attRes = await fetch(`${API_BASE}/api/quiz-attempts`, {
@@ -91,7 +194,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
         // ignore — fallback behavior handled elsewhere
         console.error('Failed to fetch attempt data', err);
       }
-    };
+    }, [API_BASE, user, currentTopic]);
 
     const handleStartConfirm = () => {
       setShowStartConfirm(false);
@@ -199,7 +302,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
     useEffect(() => {
       if (!currentTopic) return;
       fetchAttemptData();
-    }, [currentTopic, user]);
+    }, [fetchAttemptData, currentTopic]);
 
     const formatTime = (secs) => {
       const m = Math.floor(secs / 60);
@@ -209,14 +312,23 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
 
     return (
       <>
-        {TopicQuizData.map(({topic, category, questions}) => (
+        {TopicQuizData.map(({topic, questions}) => (
           topic === currentTopic && 
           <div className="topic-quiz__box" key={topic}>
             <div className="topic-quiz__header">
               <span>Question {quizIsLive ? activeQuestion : 0} of {questions.length}</span>
               <span className='topic-quiz__timer'><TimerReset size={18}/> {formatTime(remainingSeconds)}</span>
-              {!quizIsLive && <div onClick={onSelect} style={{cursor: 'pointer'}}><X size={20}/></div>}
-            </div>
+              {!quizIsLive && (
+                <button
+                  type="button"
+                  aria-label="Close quiz"
+                  onClick={onSelect}
+                  style={{ cursor: 'pointer', background: 'transparent', border: 'none', padding: 0 }}
+                >
+                  <X size={20} />
+                </button>
+              )}
+             </div>
 
             {/* If quiz not started show a start button that triggers confirmation */}
             {!quizIsLive ? (
@@ -231,7 +343,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                         if (next) setActiveQuestion(1);
                         return next;
                       });
-                    }}>{showAttempted ? 'Hide my quiz' : 'Show my quiz'}</button>
+                    }} type="button" aria-label={showAttempted ? 'Hide my quiz' : 'Show my quiz'}>{showAttempted ? 'Hide my quiz' : 'Show my quiz'}</button>
                   </>
                   }
 
@@ -252,18 +364,22 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                                   const corr = record.correctAnswer || correctAnswer;
                                   const isSelected = sel === optionLetter;
                                   const isCorrect = corr === optionLetter;
-                                  return (
-                                    <button
-                                      key={optionId}
-                                      className={`topic-quiz__option disabled ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${(!isCorrect && isSelected) ? 'incorrect' : ''}`}
-                                      disabled
-                                    >
+                                  const optionLabel = `${optionLetter}. ${text}`;
+                                   return (
+                                     <button
+                                       key={optionId}
+                                      type="button"
+                                      aria-label={optionLabel}
+                                      aria-pressed={isSelected}
+                                       className={`topic-quiz__option disabled ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${(!isCorrect && isSelected) ? 'incorrect' : ''}`}
+                                       disabled
+                                     >
                                       <span className={isCorrect ? 'correct' : (isSelected ? 'incorrect' : '')}>
                                         {isCorrect ? <Check size={14}/> : (isSelected ? <X size={14}/> : optionLetter)}
                                       </span>
                                       {text}
                                     </button>
-                                  );
+                                   );
                                 })}
                               </div>
                             </div>
@@ -300,15 +416,19 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                         {options.map(({id: optionId, text}, index) => {
                           const optionLetter = String.fromCharCode(65 + index);
                           const isSelected = answers[String(questionId)] === optionLetter;
-                          return (
-                            <button
-                              key={optionId}
-                              className={`topic-quiz__option ${isSelected ? 'selected' : ''}`}
-                              onClick={() => handleOptionSelect(questionId, optionLetter, question, correctAnswer)}
-                            >
+                          const optionLabel = `${optionLetter}. ${text}`;
+                           return (
+                             <button
+                               key={optionId}
+                              type="button"
+                              aria-label={optionLabel}
+                              aria-pressed={isSelected}
+                               className={`topic-quiz__option ${isSelected ? 'selected' : ''}`}
+                               onClick={() => handleOptionSelect(questionId, optionLetter, question, correctAnswer)}
+                             >
                               <span>{optionLetter}</span> {text}
                             </button>
-                          );
+                           );
                         })}
                       </div>
                     </div>
@@ -336,8 +456,8 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                   <h3>Start Quiz</h3>
                   <p>Are you sure you are ready to take the quiz? Once you start the timer will begin.</p>
                   <div className="modal-actions">
-                    <button className="modal-btn confirm" onClick={handleStartConfirm}>Yes, Start</button>
-                    <button className="modal-btn" onClick={() => setShowStartConfirm(false)}>Cancel</button>
+                    <button type="button" className="modal-btn confirm" onClick={handleStartConfirm}>Yes, Start</button>
+                    <button type="button" className="modal-btn" onClick={() => setShowStartConfirm(false)}>Cancel</button>
                   </div>
                 </div>
               </div>
@@ -350,8 +470,8 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                   <h3>Submit Quiz</h3>
                   <p>Are you sure you want to submit the quiz? You won't be able to change answers after submitting.</p>
                   <div className="modal-actions">
-                    <button className="modal-btn confirm" onClick={handleFinishConfirm}>Yes, Submit</button>
-                    <button className="modal-btn" onClick={() => setShowFinishConfirm(false)}>Cancel</button>
+                    <button type="button" className="modal-btn confirm" onClick={handleFinishConfirm}>Yes, Submit</button>
+                    <button type="button" className="modal-btn" onClick={() => setShowFinishConfirm(false)}>Cancel</button>
                   </div>
                 </div>
               </div>
@@ -368,7 +488,7 @@ export default function TopicQuiz({currentCategory, currentTopic, onSelect}) {
                     <p>Time taken: {formatTime(resultData.timeTaken)}</p>
                   </div>
                   <div className="modal-actions">
-                    <button className="modal-btn confirm" onClick={() => { setShowResult(false); if (onSelect) onSelect(); }}>Close</button>
+                    <button type="button" className="modal-btn confirm" onClick={() => { setShowResult(false); if (onSelect) onSelect(); }}>Close</button>
                   </div>
                 </div>
               </div>
