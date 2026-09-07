@@ -132,6 +132,64 @@ painless-lms-portal/
 - `npm run preview` - Preview production build locally
 - `npm run lint` - Run ESLint for code quality checks
 
+## Environment Variables
+
+Copy `.env.example` to `.env` before running the project locally:
+
+```bash
+cp .env.example .env
+```
+
+Variable | Description | Default
+---|---:|---
+`VITE_API_BASE_URL` | Base URL for the backend REST API | `http://localhost:5000/api`
+
+## Local Development
+
+Follow these steps from a fresh clone to get the app running locally.
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start the development server:
+
+```bash
+npm run dev
+```
+
+3. Run the test suite:
+
+```bash
+npm test
+```
+
+Open your browser at `http://localhost:5173` (Vite default) to view the app during development.
+
+## Running with Docker
+
+You can run the entire application with Docker Compose. This assumes you have Docker and Docker Compose installed.
+
+Build and start the services:
+
+```bash
+docker compose up --build
+```
+
+By default the application will be available at `http://localhost:8080` (see your `docker-compose.yml` for service ports).
+
+### Step 6: Verify Locally Before Committing
+
+Confirm that Docker builds without errors (if Docker is installed on your environment):
+
+```bash
+docker compose build
+```
+
+If you rely on environment variables (recommended), ensure `.env` is present and contains `VITE_API_BASE_URL` pointing at your backend API.
+
 ## 🌐 Deployment
 
 This application is configured for deployment on Vercel with the following setup:
