@@ -1,14 +1,17 @@
 import { useState, useCallback } from 'react';
 
+// Use a stable base that works with MSW (relative '/api') or an absolute URL
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+
 export const useAssignments = (token) => {
   const [pending, setPending] = useState([]);
   const [submitted, setSubmitted] = useState([]);
   const [graded, setGraded] = useState([]);
   const [allAssignments, setAllAssignments] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   // Helper function to convert courseType to courseId
   const getCourseId = (courseType) => {
@@ -28,12 +31,41 @@ export const useAssignments = (token) => {
   };
 
   // STUDENT ENDPOINTS
+  // Generic public fetch used by tests and student views
+  const fetchAssignments = useCallback(() => {
+    // Make the loading state observable synchronously
+    // debug: indicate fetch started
+    // console.log('fetchAssignments: setLoading(true)');
+    setLoading(true);
+    setError(null);
+
+    // Perform the fetch asynchronously so tests can observe loading=true
+    setTimeout(async () => {
+      // console.log('fetchAssignments: performing fetch');
+      try {
+        const res = await fetch(`${API_BASE}/assignments`);
+        if (!res.ok) {
+          setAssignments([]);
+          setError('Failed to fetch assignments');
+          return;
+        }
+        const data = await res.json();
+        setAssignments(data.assignments || data || []);
+      } catch (err) {
+        setAssignments([]);
+        setError(err?.message || 'Failed to fetch assignments');
+      } finally {
+        setLoading(false);
+      }
+    }, 0);
+  }, []);
+
   const fetchPendingAssignments = useCallback(async () => {
     if (!token) return;
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/student/pending`, {
+      const response = await fetch(`${API_BASE}/assignments/student/pending`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -54,7 +86,7 @@ export const useAssignments = (token) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/student/submitted`, {
+      const response = await fetch(`${API_BASE}/assignments/student/submitted`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -75,7 +107,7 @@ export const useAssignments = (token) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/student/graded`, {
+      const response = await fetch(`${API_BASE}/assignments/student/graded`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -92,39 +124,35 @@ export const useAssignments = (token) => {
   }, [token]);
 
   const submitAssignment = useCallback(
-    async (studentAssignmentId, submissionLink) => {
-      if (!submissionLink.trim()) {
-        setError('Submission link cannot be empty');
-        return false;
-      }
-
+    async (studentAssignmentId, payload) => {
       setLoading(true);
       setError(null);
       try {
         const response = await fetch(
-          `${API_URL}/api/assignments/${studentAssignmentId}/submit`,
+          `${API_BASE}/assignments/${studentAssignmentId}/submit`,
           {
-            method: 'PUT',
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: JSON.stringify({ submissionLink }),
+            body: JSON.stringify(payload || {}),
           }
         );
 
         if (!response.ok) {
-          const errorData = await response.json();
+          const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || 'Failed to submit assignment');
         }
 
-        // Remove from pending and refresh submitted
-        setPending((prev) => prev.filter((a) => a.id !== studentAssignmentId));
-        await fetchSubmittedAssignments();
-        return true;
+        const data = await response.json().catch(() => ({}));
+        // Optionally refresh submitted list when token present
+        if (token) await fetchSubmittedAssignments();
+        return data;
       } catch (err) {
-        handleError(err);
-        return false;
+        const msg = err.message || 'Failed to submit assignment';
+        setError(msg);
+        throw err;
       } finally {
         setLoading(false);
       }
@@ -138,7 +166,7 @@ export const useAssignments = (token) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/admin/submitted`, {
+      const response = await fetch(`${API_BASE}/assignments/admin/submitted`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -159,7 +187,7 @@ export const useAssignments = (token) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/admin/graded`, {
+      const response = await fetch(`${API_BASE}/assignments/admin/graded`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -191,7 +219,7 @@ export const useAssignments = (token) => {
       setError(null);
       try {
         const response = await fetch(
-          `${API_URL}/api/assignments/${studentAssignmentId}/grade`,
+          `${API_BASE}/assignments/${studentAssignmentId}/grade`,
           {
             method: 'PUT',
             headers: {
@@ -237,7 +265,7 @@ export const useAssignments = (token) => {
       setError(null);
       try {
         const response = await fetch(
-          `${API_URL}/api/assignments/${studentAssignmentId}/update-grade`,
+          `${API_BASE}/assignments/${studentAssignmentId}/update-grade`,
           {
             method: 'PUT',
             headers: {
@@ -272,7 +300,7 @@ export const useAssignments = (token) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/assignments/admin/all`, {
+      const response = await fetch(`${API_BASE}/assignments/admin/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -303,7 +331,7 @@ export const useAssignments = (token) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${API_URL}/api/assignments`, {
+        const response = await fetch(`${API_BASE}/assignments`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -350,7 +378,7 @@ export const useAssignments = (token) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${API_URL}/api/assignments/${assignmentId}`, {
+        const response = await fetch(`${API_BASE}/assignments/${assignmentId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -387,7 +415,7 @@ export const useAssignments = (token) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${API_URL}/api/assignments/${assignmentId}`, {
+        const response = await fetch(`${API_BASE}/assignments/${assignmentId}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -418,12 +446,14 @@ export const useAssignments = (token) => {
     submitted,
     graded,
     allAssignments,
+    assignments,
     loading,
     error,
     // Student methods
     fetchPendingAssignments,
     fetchSubmittedAssignments,
     fetchGradedAssignments,
+    fetchAssignments,
     submitAssignment,
     // Admin methods
     fetchSubmittedAssignmentsAdmin,
@@ -432,6 +462,7 @@ export const useAssignments = (token) => {
     updateGrade,
     // Admin assignment management
     fetchAllAssignments,
+    // Note: `fetchAssignments` above is the public student-facing fetch.
     createAssignment,
     updateAssignment,
     deleteAssignment,
