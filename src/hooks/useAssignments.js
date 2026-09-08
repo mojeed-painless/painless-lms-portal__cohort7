@@ -1,7 +1,30 @@
 import { useState, useCallback } from 'react';
+import {
+  assignmentSubmissionSchema,
+  assignmentGradeSchema,
+  assignmentCreateSchema,
+  assignmentUpdateSchema,
+} from '../schemas/assignment';
+import { z } from 'zod';
 
 // Use a stable base that works with MSW (relative '/api') or an absolute URL
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+
+/**
+ * Helper function to extract error message from Zod validation errors
+ */
+const getZodErrorMessage = (err) => {
+  if (!(err instanceof z.ZodError)) {
+    return err.message || 'Validation failed';
+  }
+  
+  // Try to get the message from the first error
+  if (err.issues && err.issues.length > 0) {
+    return err.issues[0].message || 'Validation failed';
+  }
+  
+  return 'Validation failed';
+};
 
 export const useAssignments = (token) => {
   const [pending, setPending] = useState([]);
@@ -128,6 +151,9 @@ export const useAssignments = (token) => {
       setLoading(true);
       setError(null);
       try {
+        // Validate payload against schema before API call
+        const validatedPayload = assignmentSubmissionSchema.parse(payload || {});
+
         const response = await fetch(
           `${API_BASE}/assignments/${studentAssignmentId}/submit`,
           {
@@ -136,7 +162,7 @@ export const useAssignments = (token) => {
               'Content-Type': 'application/json',
               ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
-            body: JSON.stringify(payload || {}),
+            body: JSON.stringify(validatedPayload),
           }
         );
 
@@ -150,7 +176,7 @@ export const useAssignments = (token) => {
         if (token) await fetchSubmittedAssignments();
         return data;
       } catch (err) {
-        const msg = err.message || 'Failed to submit assignment';
+        const msg = getZodErrorMessage(err);
         setError(msg);
         throw err;
       } finally {
@@ -205,19 +231,12 @@ export const useAssignments = (token) => {
 
   const gradeAssignment = useCallback(
     async (studentAssignmentId, score, feedback = '') => {
-      if (score === '' || score === null || isNaN(score)) {
-        setError('Score must be a valid number');
-        return false;
-      }
-
-      if (score < 0 || score > 100) {
-        setError('Score must be between 0 and 100');
-        return false;
-      }
-
       setLoading(true);
       setError(null);
       try {
+        // Validate payload against schema before API call
+        const validatedPayload = assignmentGradeSchema.parse({ score, feedback });
+
         const response = await fetch(
           `${API_BASE}/assignments/${studentAssignmentId}/grade`,
           {
@@ -226,7 +245,7 @@ export const useAssignments = (token) => {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ score: parseInt(score), feedback }),
+            body: JSON.stringify(validatedPayload),
           }
         );
 
@@ -240,7 +259,8 @@ export const useAssignments = (token) => {
         await fetchGradedAssignmentsAdmin();
         return true;
       } catch (err) {
-        handleError(err);
+        const msg = getZodErrorMessage(err) || 'Failed to grade assignment';
+        setError(msg);
         return false;
       } finally {
         setLoading(false);
@@ -251,19 +271,12 @@ export const useAssignments = (token) => {
 
   const updateGrade = useCallback(
     async (studentAssignmentId, score, feedback = '') => {
-      if (score === '' || score === null || isNaN(score)) {
-        setError('Score must be a valid number');
-        return false;
-      }
-
-      if (score < 0 || score > 100) {
-        setError('Score must be between 0 and 100');
-        return false;
-      }
-
       setLoading(true);
       setError(null);
       try {
+        // Validate payload against schema before API call
+        const validatedPayload = assignmentGradeSchema.parse({ score, feedback });
+
         const response = await fetch(
           `${API_BASE}/assignments/${studentAssignmentId}/update-grade`,
           {
@@ -272,7 +285,7 @@ export const useAssignments = (token) => {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ score: parseInt(score), feedback }),
+            body: JSON.stringify(validatedPayload),
           }
         );
 
@@ -285,7 +298,8 @@ export const useAssignments = (token) => {
         await fetchGradedAssignmentsAdmin();
         return true;
       } catch (err) {
-        handleError(err);
+        const msg = getZodErrorMessage(err) || 'Failed to update grade';
+        setError(msg);
         return false;
       } finally {
         setLoading(false);
@@ -318,19 +332,17 @@ export const useAssignments = (token) => {
 
   const createAssignment = useCallback(
     async (title, description, dueDate, courseType) => {
-      if (!title.trim()) {
-        setError('Assignment title cannot be empty');
-        return false;
-      }
-
-      if (!dueDate) {
-        setError('Due date is required');
-        return false;
-      }
-
       setLoading(true);
       setError(null);
       try {
+        // Validate payload against schema before API call
+        const validatedPayload = assignmentCreateSchema.parse({
+          title,
+          description,
+          dueDate,
+          courseType,
+        });
+
         const response = await fetch(`${API_BASE}/assignments`, {
           method: 'POST',
           headers: {
@@ -338,10 +350,8 @@ export const useAssignments = (token) => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            title,
-            description,
-            dueDate,
-            courseId: getCourseId(courseType),
+            ...validatedPayload,
+            courseId: getCourseId(validatedPayload.courseType),
           }),
         });
 
@@ -354,7 +364,8 @@ export const useAssignments = (token) => {
         await fetchAllAssignments();
         return true;
       } catch (err) {
-        handleError(err);
+        const msg = getZodErrorMessage(err) || 'Failed to create assignment';
+        setError(msg);
         return false;
       } finally {
         setLoading(false);
@@ -365,19 +376,17 @@ export const useAssignments = (token) => {
 
   const updateAssignment = useCallback(
     async (assignmentId, title, description, dueDate, courseType) => {
-      if (!title.trim()) {
-        setError('Assignment title cannot be empty');
-        return false;
-      }
-
-      if (!dueDate) {
-        setError('Due date is required');
-        return false;
-      }
-
       setLoading(true);
       setError(null);
       try {
+        // Validate payload against schema before API call
+        const validatedPayload = assignmentUpdateSchema.parse({
+          title,
+          description,
+          dueDate,
+          courseType,
+        });
+
         const response = await fetch(`${API_BASE}/assignments/${assignmentId}`, {
           method: 'PUT',
           headers: {
@@ -385,10 +394,8 @@ export const useAssignments = (token) => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            title,
-            description,
-            dueDate,
-            courseId: getCourseId(courseType),
+            ...validatedPayload,
+            courseId: getCourseId(validatedPayload.courseType),
           }),
         });
 
@@ -401,7 +408,8 @@ export const useAssignments = (token) => {
         await fetchAllAssignments();
         return true;
       } catch (err) {
-        handleError(err);
+        const msg = getZodErrorMessage(err) || 'Failed to update assignment';
+        setError(msg);
         return false;
       } finally {
         setLoading(false);
