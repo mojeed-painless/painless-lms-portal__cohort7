@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import '../assets/styles/admin.css'; 
 import { adminStats } from '../data.js';
-import { API_BASE_URL } from '../config/api';
 import {
     History,
     UserRoundCheck,
     Clock,
-} from 'lucide-react'
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
-const API_URL = `${API_BASE}/api/users/admin`;
+} from 'lucide-react';
+import {
+  fetchPendingUsers,
+  fetchAllUsers,
+  updateUser,
+  deleteUser,
+  updateCourseAccess,
+} from '../services/adminApi';
 
 
 
@@ -24,20 +26,17 @@ const AdminDashboardScreen = () => {
     const [courseAccess, setCourseAccess] = useState({});
 
 
-    // --- Data Fetching ---
+  // --- Data Fetching ---
   const fetchUsers = useCallback(async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
-    };
     if (!user || user.role !== 'admin') return;
     setLoading(true);
     try {
       // 1. Fetch Pending Users
-      const { data: pendingData } = await axios.get(`${API_URL}/pending`, config);
+      const pendingData = await fetchPendingUsers(user.token);
       setPendingUsers(Array.isArray(pendingData) ? pendingData : []);
 
       // 2. Fetch ALL Users
-      const { data: allData } = await axios.get(`${API_URL}/all`, config);
+      const allData = await fetchAllUsers(user.token);
       
       // Filter 'all' data to include only approved users (and exclude the logged-in admin)
       const approvedUsers = Array.isArray(allData) 
@@ -49,7 +48,7 @@ const AdminDashboardScreen = () => {
       // Load course access state from users data
       const access = {};
       approvedUsers.forEach(u => {
-        access[`${u._id}-html`] = u.htmlAccess ;
+        access[`${u._id}-html`] = u.htmlAccess;
         access[`${u._id}-js`] = u.jsAccess;
         access[`${u._id}-react`] = u.reactAccess;
       });
@@ -58,13 +57,13 @@ const AdminDashboardScreen = () => {
       setError(null);
     } catch (err) {
       console.error('Error fetching users:', err);
-      setError(err.response?.data?.message || 'Failed to fetch user data.');
+      setError(err.message || 'Failed to fetch user data.');
     } finally {
       setLoading(false);
     }
   }, [user]);
 
-    // --- Action Handler: Approve/Reject/Change Role ---
+  // --- Action Handler: Approve/Reject/Change Role ---
   const handleUpdateUser = async (userId, isApproved, newRole) => {
     setLoading(true);
     try {
@@ -72,15 +71,14 @@ const AdminDashboardScreen = () => {
       if (newRole) {
         body.role = newRole;
       }
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`${API_URL}/${userId}`, body, config);
+      await updateUser(userId, body, user.token);
       
       // Refresh both lists after update (user moves from pending to all)
       fetchUsers();
       
     } catch (err) {
       console.error('Error updating user status:', err);
-      setError(err.response?.data?.message || 'Failed to update user status.');
+      setError(err.message || 'Failed to update user status.');
     } finally {
       setLoading(false);
     }
@@ -92,7 +90,7 @@ const AdminDashboardScreen = () => {
     }
   }, [user, fetchUsers]);
 
-const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async (userId) => {
     // IMPORTANT: Replacing window.confirm() with a custom modal is required in production environments.
     if (!window.confirm("Are you sure you want to permanently delete this user? This action cannot be undone.")) {
         return;
@@ -100,16 +98,14 @@ const handleDeleteUser = async (userId) => {
     
     setLoading(true);
     try {
-      // Send a DELETE request to /api/users/admin/:id
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`${API_URL}/${userId}`, config);
+      await deleteUser(userId, user.token);
         
-        // Refresh the list immediately to remove the deleted user from the UI
-        fetchUsers(); 
+      // Refresh the list immediately to remove the deleted user from the UI
+      fetchUsers(); 
         
     } catch (err) {
         console.error('Error deleting user:', err);
-        setError(err.response?.data?.message || 'Failed to delete user.');
+        setError(err.message || 'Failed to delete user.');
     } finally {
         setLoading(false);
     }
@@ -143,16 +139,15 @@ const handleDeleteUser = async (userId) => {
       console.log('Sending update:', { userId, courseName, updateData });
 
       // Send to backend
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const response = await axios.put(`${API_URL}/${userId}`, updateData, config);
+      const response = await updateCourseAccess(userId, updateData, user.token);
 
       // Verify the update was successful
-      if (response.status === 200) {
+      if (response) {
         console.log(`Successfully updated ${courseName} access for user ${userId}`);
         
         // Silently refresh the user data to sync with backend (no loading state)
         try {
-          const { data: allData } = await axios.get(`${API_URL}/all`, config);
+          const allData = await fetchAllUsers(user.token);
           const approvedUsers = Array.isArray(allData) 
             ? allData.filter(u => u.isApproved && u._id !== user._id)
             : [];
@@ -172,8 +167,7 @@ const handleDeleteUser = async (userId) => {
 
     } catch (err) {
       console.error(`Error updating ${courseName} access:`, err);
-      console.error('Backend error response:', err.response?.data);
-      setError(err.response?.data?.message || `Failed to update ${courseName} access.`);
+      setError(err.message || `Failed to update ${courseName} access.`);
       // Revert on error
       setCourseAccess(prev => ({
         ...prev,
