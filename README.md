@@ -125,6 +125,70 @@ painless-lms-portal/
 - **Assignments**: Code submission and project-based tasks
 - **Grading System**: Automated and manual grading capabilities
 
+## 🏗️ Architecture & Refactoring
+
+### Service Layer Implementation
+
+A dedicated service layer has been implemented for admin-related API calls with the following functions:
+
+- `fetchPendingUsers(token)` - Fetch all pending (unapproved) users
+- `fetchAllUsers(token)` - Fetch all approved users
+- `updateUser(userId, updateData, token)` - Update user information (approval, role, course access)
+- `deleteUser(userId, token)` - Delete a user
+- `updateCourseAccess(userId, courseAccessData, token)` - Update course access for a user
+
+**Location**: `src/services/adminApi.js`
+
+**Benefits:**
+- Centralized API logic eliminates code duplication
+- Consistent error handling across components
+- Automatic token passing (no more config headers in components)
+- Improved testability with 20 comprehensive unit tests in `src/services/adminApi.test.js`
+- Easy to maintain and extend for other service layers
+
+**Refactored Components:**
+- ✅ `AdminDashboardScreen.jsx` - Now uses service layer functions instead of direct axios calls
+
+### Input Validation with Zod
+
+Strict input validation is implemented using Zod to ensure data integrity before API calls.
+
+**Validation Schemas** (`src/schemas/assignment.js`):
+
+1. **assignmentSubmissionSchema** - Validates student assignment submissions
+   - `submissionUrl`: Required valid URL
+   - `notes`: Optional, max 500 characters
+
+2. **assignmentGradeSchema** - Validates assignment grading
+   - `score`: 0-100 range validation (accepts string or number)
+   - `feedback`: Optional, max 1000 characters
+
+3. **assignmentCreateSchema** - Validates assignment creation
+   - `title`: Required, non-empty, max 255 characters
+   - `description`: Optional, max 2000 characters
+   - `dueDate`: Required, non-empty string
+   - `courseType`: Required enum validation (html, css, js, react)
+
+4. **assignmentUpdateSchema** - Validates assignment updates (same as create schema)
+
+5. **assignmentPayloadSchema** - Generic schema for test payloads
+
+**Integration**: All validation occurs **before** API calls in `src/hooks/useAssignments.js`
+
+**Integrated Functions:**
+- ✅ `submitAssignment()` - Validates submission URL and notes
+- ✅ `gradeAssignment()` - Validates score range and feedback length
+- ✅ `updateGrade()` - Validates grade updates
+- ✅ `createAssignment()` - Validates all required fields
+- ✅ `updateAssignment()` - Validates all update fields
+
+**Benefits:**
+- Prevents invalid payloads from reaching the backend
+- Reduces server load from malformed requests
+- Provides user-friendly validation error messages
+- Automatic data transformation (string trimming, type coercion)
+- Single source of truth for validation rules
+
 ## 🔧 Available Scripts
 
 - `npm run dev` - Start development server with hot reload
