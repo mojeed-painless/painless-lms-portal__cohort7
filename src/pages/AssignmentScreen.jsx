@@ -2,6 +2,7 @@ import UnderDevelopment from "../components/common/UnderDevelopment";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useAssignments } from '../hooks/useAssignments';
+import { useAdminAssignments } from '../hooks/useAdminAssignments';
 import {
   History,
   NotepadText,
@@ -62,20 +63,6 @@ const AssignmentScreen = () => {
   const [editingGradedId, setEditingGradedId] = useState(null);
   const [toast, setToast] = useState(null);
 
-  // Admin form state
-  const [newAssignment, setNewAssignment] = useState({
-    title: '',
-    courseType: 'html',
-    dueDate: '',
-  });
-  const [editingAssignmentId, setEditingAssignmentId] = useState(null);
-  const [editingAssignment, setEditingAssignment] = useState({
-    title: '',
-    courseType: 'html',
-    dueDate: '',
-  });
-  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
-
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
   };
@@ -106,6 +93,25 @@ const AssignmentScreen = () => {
     };
     return courseMap[courseId] || courseId;
   };
+
+  // Admin assignment create/edit/delete workflow, extracted to its own hook
+  const {
+    editingAssignmentId,
+    editingAssignment,
+    showAssignmentForm,
+    openCreateForm,
+    closeForm,
+    handleEditAssignment,
+    handleAdminAssignmentSubmit,
+    handleDeleteAssignment,
+  } = useAdminAssignments({
+    createAssignment,
+    updateAssignment,
+    deleteAssignment,
+    getCourseTypeFromId,
+    showToast,
+    error,
+  });
 
   // Handle student assignment submission
   const handleSubmitAssignment = async (assignmentId, link) => {
@@ -164,87 +170,6 @@ const AssignmentScreen = () => {
 
   const handleScoreChange = (assignmentId, value) => {
     setScores((prev) => ({ ...prev, [assignmentId]: value }));
-  };
-
-  // Admin assignment handlers
-  const handleAddAssignment = async (e) => {
-    e.preventDefault();
-    const success = await createAssignment(
-      newAssignment.title,
-      '',
-      newAssignment.dueDate,
-      newAssignment.courseType
-    );
-    if (success) {
-      setNewAssignment({ title: '', courseType: 'html', dueDate: '' });
-      showToast('Assignment created successfully!', 'success');
-    } else {
-      showToast(error || 'Failed to create assignment', 'error');
-    }
-  };
-
-  const handleEditAssignment = (assignment) => {
-    setEditingAssignmentId(assignment.id);
-    setEditingAssignment({
-      title: assignment.title,
-      courseType: getCourseTypeFromId(assignment.courseId),
-      dueDate: assignment.dueDate,
-    });
-    setShowAssignmentForm(true);
-  };
-
-  const handleSaveEditAssignment = async () => {
-    const success = await updateAssignment(
-      editingAssignmentId,
-      editingAssignment.title,
-      '',
-      editingAssignment.dueDate,
-      editingAssignment.courseType
-    );
-    if (success) {
-      setEditingAssignmentId(null);
-      showToast('Assignment updated successfully!', 'success');
-    } else {
-      showToast(error || 'Failed to update assignment', 'error');
-    }
-  };
-
-  const handleAdminAssignmentSubmit = async (payload) => {
-    const isEditing = Boolean(editingAssignmentId);
-
-    const success = isEditing
-      ? await updateAssignment(
-          editingAssignmentId,
-          payload.title,
-          payload.description,
-          payload.dueDate,
-          payload.courseType
-        )
-      : await createAssignment(
-          payload.title,
-          payload.description,
-          payload.dueDate,
-          payload.courseType
-        );
-
-    if (success) {
-      setShowAssignmentForm(false);
-      setEditingAssignmentId(null);
-      setEditingAssignment({ title: '', courseType: 'html', dueDate: '' });
-      setNewAssignment({ title: '', courseType: 'html', dueDate: '' });
-      showToast(isEditing ? 'Assignment updated successfully!' : 'Assignment created successfully!', 'success');
-    } else {
-      showToast(error || (isEditing ? 'Failed to update assignment' : 'Failed to create assignment'), 'error');
-    }
-  };
-
-  const handleDeleteAssignment = async (assignmentId) => {
-    const success = await deleteAssignment(assignmentId);
-    if (success) {
-      showToast('Assignment deleted successfully!', 'success');
-    } else {
-      showToast(error || 'Failed to delete assignment', 'error');
-    }
   };
 
   // Show error if any
@@ -492,10 +417,7 @@ const AssignmentScreen = () => {
                 <button
                   type="button"
                   className="add-assignment-btn"
-                  onClick={() => {
-                    setEditingAssignmentId(null);
-                    setShowAssignmentForm(true);
-                  }}
+                  onClick={openCreateForm}
                 >
                   <span><Plus size={18} /></span>
                   New Assignment
@@ -507,10 +429,7 @@ const AssignmentScreen = () => {
               {showAssignmentForm ? (
                 <AdminAssignmentForm
                   onSubmit={handleAdminAssignmentSubmit}
-                  onCancel={() => {
-                    setShowAssignmentForm(false);
-                    setEditingAssignmentId(null);
-                  }}
+                  onCancel={closeForm}
                   initialData={editingAssignmentId ? editingAssignment : null}
                   submitLabel={editingAssignmentId ? 'Save Changes' : 'Create Assignment'}
                 />
