@@ -297,5 +297,192 @@ describe('useAssignments Hook', () => {
       expect(createResult).toBe(true);
       expect(result.current.error).toBeNull();
     });
+    it('surfaces a server error when the create request fails', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      server.use(
+        http.post('*/api/assignments', () => {
+          return HttpResponse.json({ message: 'Course is archived' }, { status: 400 });
+        })
+      );
+
+      const createResult = await act(async () => {
+        return await result.current.createAssignment('Valid Title', 'Description', '2026-12-31', 'react');
+      });
+
+      expect(createResult).toBe(false);
+      expect(result.current.error).toBe('Course is archived');
+      expect(result.current.loading).toBe(false);
+    });
+  });
+
+  describe('Validation - updateAssignment', () => {
+    const TOKEN = 'test-token';
+
+    it('rejects update with empty title before API call', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      const updateResult = await act(async () => {
+        return await result.current.updateAssignment('1', '', 'Description', '2026-12-31', 'html');
+      });
+
+      expect(updateResult).toBe(false);
+      expect(result.current.error).toBe('Assignment title cannot be empty');
+    });
+
+    it('rejects update with missing dueDate before API call', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      const updateResult = await act(async () => {
+        return await result.current.updateAssignment('1', 'Updated title', 'Description', '', 'html');
+      });
+
+      expect(updateResult).toBe(false);
+      expect(result.current.error).toBe('Due date is required');
+    });
+
+    it('rejects update with invalid courseType before API call', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      const updateResult = await act(async () => {
+        return await result.current.updateAssignment('1', 'Updated title', '', '2026-12-31', 'invalidcourse');
+      });
+
+      expect(updateResult).toBe(false);
+      expect(result.current.error).toBe('Invalid course type');
+    });
+
+    it('accepts a valid assignment update and refreshes the list', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      server.use(
+        http.put('*/api/assignments/1', () => {
+          return HttpResponse.json({ success: true });
+        }),
+        http.get('*/api/assignments/admin/all', () => {
+          return HttpResponse.json({
+            assignments: [{ id: '1', title: 'Updated title', courseId: 'html' }],
+          });
+        })
+      );
+
+      const updateResult = await act(async () => {
+        return await result.current.updateAssignment('1', 'Updated title', 'Description', '2026-12-31', 'html');
+      });
+
+      expect(updateResult).toBe(true);
+      expect(result.current.error).toBeNull();
+      await waitFor(() => {
+        expect(result.current.allAssignments).toHaveLength(1);
+      });
+      expect(result.current.allAssignments[0].title).toBe('Updated title');
+    });
+
+    it('surfaces a server error when the update request fails', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      server.use(
+        http.put('*/api/assignments/1', () => {
+          return HttpResponse.json({ message: 'Assignment locked' }, { status: 409 });
+        })
+      );
+
+      const updateResult = await act(async () => {
+        return await result.current.updateAssignment('1', 'Updated title', 'Description', '2026-12-31', 'html');
+      });
+
+      expect(updateResult).toBe(false);
+      expect(result.current.error).toBe('Assignment locked');
+      expect(result.current.loading).toBe(false);
+    });
+  });
+
+  describe('deleteAssignment', () => {
+    const TOKEN = 'test-token';
+
+    it('deletes an assignment and removes it from allAssignments', async () => {
+      server.use(
+        http.get('*/api/assignments/admin/all', () => {
+          return HttpResponse.json({
+            assignments: [
+              { id: '1', title: 'To be deleted', courseId: 'html' },
+              { id: '2', title: 'Stays around', courseId: 'react' },
+            ],
+          });
+        }),
+        http.delete('*/api/assignments/1', () => {
+          return new HttpResponse(null, { status: 204 });
+        })
+      );
+
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      // Seed state via the admin "fetch all" path before deleting
+      await act(async () => {
+        await result.current.fetchAllAssignments();
+      });
+      expect(result.current.allAssignments).toHaveLength(2);
+
+      let deleteResult;
+      await act(async () => {
+        deleteResult = await result.current.deleteAssignment('1');
+      });
+
+      expect(deleteResult).toBe(true);
+      expect(result.current.allAssignments).toHaveLength(1);
+      expect(result.current.allAssignments[0].id).toBe('2');
+      expect(result.current.error).toBeNull();
+    });
+
+    it('surfaces a server error when the delete request fails and keeps state unchanged', async () => {
+      server.use(
+        http.get('*/api/assignments/admin/all', () => {
+          return HttpResponse.json({
+            assignments: [{ id: '1', title: 'Protected', courseId: 'html' }],
+          });
+        }),
+        http.delete('*/api/assignments/1', () => {
+          return HttpResponse.json({ message: 'Cannot delete a graded assignment' }, { status: 403 });
+        })
+      );
+
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      await act(async () => {
+        await result.current.fetchAllAssignments();
+      });
+
+      let deleteResult;
+      await act(async () => {
+        deleteResult = await result.current.deleteAssignment('1');
+      });
+
+      expect(deleteResult).toBe(false);
+      expect(result.current.error).toBe('Cannot delete a graded assignment');
+      // State is untouched because the delete failed
+      expect(result.current.allAssignments).toHaveLength(1);
+    });
+  });
+
+  describe('gradeAssignment - server error path', () => {
+    const TOKEN = 'test-token';
+
+    it('surfaces a server error when the grade request fails', async () => {
+      server.use(
+        http.put('*/api/assignments/1/grade', () => {
+          return HttpResponse.json({ message: 'Grading window closed' }, { status: 400 });
+        })
+      );
+
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      const gradeResult = await act(async () => {
+        return await result.current.gradeAssignment('1', 85, 'Great job');
+      });
+
+      expect(gradeResult).toBe(false);
+      expect(result.current.error).toBe('Grading window closed');
+      expect(result.current.loading).toBe(false);
+    });
   });
 });
