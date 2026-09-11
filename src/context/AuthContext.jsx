@@ -87,7 +87,9 @@ export const AuthProvider = ({ children }) => {
       
       setError(errorMessage);
       setIsLoading(false);
-      throw new Error(errorMessage, { cause: err });
+      const wrappedError = new Error(errorMessage);
+      wrappedError.cause = err;
+      throw wrappedError;
     }
   };
 
@@ -117,7 +119,9 @@ export const AuthProvider = ({ children }) => {
       
       setError(errorMessage);
       setIsLoading(false);
-      throw new Error(errorMessage, { cause: err });
+      const wrappedError = new Error(errorMessage);
+      wrappedError.cause = err;
+      throw wrappedError;
     }
   };
 
