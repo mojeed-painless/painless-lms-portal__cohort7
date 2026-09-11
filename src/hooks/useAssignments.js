@@ -6,6 +6,7 @@ import {
   assignmentUpdateSchema,
 } from '../schemas/assignment';
 import { z } from 'zod';
+import { logError } from '../utils/logger';
 
 // Use a stable base that works with MSW (relative '/api') or an absolute URL
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
@@ -50,21 +51,18 @@ export const useAssignments = (token) => {
   const handleError = (err) => {
     const message = err.response?.data?.message || err.message;
     setError(message);
-    console.error('Assignment Error:', message);
+    logError('Assignment error', { message });
   };
 
   // STUDENT ENDPOINTS
   // Generic public fetch used by tests and student views
   const fetchAssignments = useCallback(() => {
     // Make the loading state observable synchronously
-    // debug: indicate fetch started
-    // console.log('fetchAssignments: setLoading(true)');
     setLoading(true);
     setError(null);
 
     // Perform the fetch asynchronously so tests can observe loading=true
     setTimeout(async () => {
-      // console.log('fetchAssignments: performing fetch');
       try {
         const res = await fetch(`${API_BASE}/assignments`);
         if (!res.ok) {

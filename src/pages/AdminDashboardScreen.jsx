@@ -14,6 +14,7 @@ import {
   deleteUser,
   updateCourseAccess,
 } from '../services/adminApi';
+import { logError, logInfo } from '../utils/logger';
 
 
 
@@ -56,7 +57,7 @@ const AdminDashboardScreen = () => {
 
       setError(null);
     } catch (err) {
-      console.error('Error fetching users:', err);
+      logError('Error fetching users', { error: err.message });
       setError(err.message || 'Failed to fetch user data.');
     } finally {
       setLoading(false);
@@ -77,7 +78,7 @@ const AdminDashboardScreen = () => {
       fetchUsers();
       
     } catch (err) {
-      console.error('Error updating user status:', err);
+      logError('Error updating user status', { userId, error: err.message });
       setError(err.message || 'Failed to update user status.');
     } finally {
       setLoading(false);
@@ -104,7 +105,7 @@ const AdminDashboardScreen = () => {
       fetchUsers(); 
         
     } catch (err) {
-        console.error('Error deleting user:', err);
+        logError('Error deleting user', { userId, error: err.message });
         setError(err.message || 'Failed to delete user.');
     } finally {
         setLoading(false);
@@ -136,14 +137,14 @@ const AdminDashboardScreen = () => {
         [fieldMap[courseName]]: isChecked
       };
 
-      console.log('Sending update:', { userId, courseName, updateData });
+      logInfo('Sending course access update', { userId, courseName, updateData });
 
       // Send to backend
       const response = await updateCourseAccess(userId, updateData, user.token);
 
       // Verify the update was successful
       if (response) {
-        console.log(`Successfully updated ${courseName} access for user ${userId}`);
+        logInfo('Course access updated', { userId, courseName });
         
         // Silently refresh the user data to sync with backend (no loading state)
         try {
@@ -161,12 +162,12 @@ const AdminDashboardScreen = () => {
           });
           setCourseAccess(access);
         } catch (refreshErr) {
-          console.error('Error refreshing user data:', refreshErr);
+          logError('Error refreshing user data', { userId, error: refreshErr.message });
         }
       }
 
     } catch (err) {
-      console.error(`Error updating ${courseName} access:`, err);
+      logError('Error updating course access', { userId, courseName, error: err.message });
       setError(err.message || `Failed to update ${courseName} access.`);
       // Revert on error
       setCourseAccess(prev => ({
