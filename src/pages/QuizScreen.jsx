@@ -1,8 +1,9 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
+import { useQuizSession } from '../hooks/useQuizSession';
 import { AttemptedTopicQuiz } from '../components/common/TopicQuiz'
 import { API_BASE_URL } from '../config/api';
 import { TbPointFilled } from "react-icons/tb";
@@ -31,31 +32,19 @@ export default function QuizScreen() {
   
   const { user } = useAuth();
   const [isActive, setIsActive] = useState('daily quiz');
-  
-  const [quizIsLive, setQuizIsLive] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
+
+  const { quizIsLive, quizStarted, setQuizStarted, timeLeft } = useQuizSession(user);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isCorrect] = useState(true);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [submissionInProgress, setSubmissionInProgress] = useState(false);
   const [submissionDone, setSubmissionDone] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
-  const [timeLeft, setTimeLeft] = useState({ 
-    beforeQuiz: { hours: 0, minutes: 0, seconds: 0 },
-    duringQuiz: { minutes: 0, seconds: 0 }
-  });
   const [dailyTop, setDailyTop] = useState([]);
   const [leaderLoading, setLeaderLoading] = useState(false);
   const [myDailyAttempt, setMyDailyAttempt] = useState(null);
   const [myDailyLoading, setMyDailyLoading] = useState(true);
-  // previousAttempts UI and fetching removed per request
-  const timerCompletedRef = useRef(false);
-  const restTimerRef = useRef(null); // Track when rest period started
-  const targetDateRef = useRef(null); // Persistent next-target date
-  const sessionStartRef = useRef(null);
-  const sessionEndRef = useRef(null);
-  const [dailySession, setDailySession] = useState(null);
-  const [sessionLoading, setSessionLoading] = useState(true);
   const handleSubmitQuiz = async () => {
     // compute timeTaken in seconds (120 - remaining)
     const totalSeconds = 120;
@@ -118,97 +107,6 @@ export default function QuizScreen() {
       setSubmissionInProgress(false);
     }
   };
-
-  useEffect(() => {
-    let poll = null;
-    const fetchSession = async () => {
-      setSessionLoading(true);
-      try {
-        const iso = new Date().toISOString().slice(0, 10);
-        const headers = {};
-        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
-
-        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/session?date=${iso}`, { headers });
-        const data = await res.json().catch(() => null);
-        // If server returned a session use it, otherwise fall back to a client-default session at 20:30 local time
-        let session = data && data.session ? data.session : null;
-        if (!session) {
-          // build local default: today at 20:30 local time, 2-minute window
-          const nowLocal = new Date();
-          const startLocal = new Date(nowLocal);
-          startLocal.setHours(21, 0, 0, 0);
-          const endLocal = new Date(startLocal.getTime() + 2 * 60 * 1000);
-          // if the window already passed for today, move to tomorrow
-          if (nowLocal > endLocal) {
-            startLocal.setDate(startLocal.getDate() + 1);
-          }
-          const finalStart = startLocal;
-          const finalEnd = new Date(finalStart.getTime() + 2 * 60 * 1000);
-          session = {
-            date: finalStart.toISOString().slice(0, 10),
-            startAt: finalStart.toISOString(),
-            endAt: finalEnd.toISOString(),
-            _clientFallback: true,
-          };
-        }
-
-        setDailySession(session);
-        sessionStartRef.current = session && session.startAt ? new Date(session.startAt) : null;
-        sessionEndRef.current = session && session.endAt ? new Date(session.endAt) : null;
-
-        const now = new Date();
-        if (sessionStartRef.current && now < sessionStartRef.current) {
-          const secs = Math.max(0, Math.round((sessionStartRef.current - now) / 1000));
-          const hours = Math.floor(secs / 3600);
-          const minutes = Math.floor((secs % 3600) / 60);
-          const seconds = secs % 60;
-          setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
-          setQuizIsLive(false);
-        } else if (sessionStartRef.current && sessionEndRef.current && now >= sessionStartRef.current && now < sessionEndRef.current) {
-          const remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
-          setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: Math.floor(remaining / 60), seconds: remaining % 60 } }));
-          setQuizIsLive(true);
-        } else {
-          setQuizIsLive(false);
-        }
-      } catch (err) {
-        console.error('Error fetching session', err);
-        setDailySession(null);
-      } finally {
-        setSessionLoading(false);
-      }
-    };
-
-    fetchSession();
-    poll = setInterval(fetchSession, 3000);
-    return () => clearInterval(poll);
-  }, [user]);
-
-  // Update the "before quiz" countdown every second so it ticks smoothly
-  useEffect(() => {
-    let t = null;
-    const tick = () => {
-      const now = new Date();
-      if (sessionStartRef.current && now < sessionStartRef.current) {
-        const secs = Math.max(0, Math.round((sessionStartRef.current - now) / 1000));
-        const hours = Math.floor(secs / 3600);
-        const minutes = Math.floor((secs % 3600) / 60);
-        const seconds = secs % 60;
-        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
-      } else if (sessionStartRef.current && sessionEndRef.current && now >= sessionStartRef.current && now < sessionEndRef.current) {
-        // if live, ensure beforeQuiz is zeroed
-        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
-      } else {
-        // no session yet or passed — keep zeros
-        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
-      }
-    };
-
-    // start ticking only while not live
-    tick();
-    t = setInterval(tick, 1000);
-    return () => clearInterval(t);
-  }, [dailySession, quizIsLive]);
 
   // Fetch today's top 3 leaderboard for daily quiz
   useEffect(() => {
@@ -283,46 +181,6 @@ export default function QuizScreen() {
 
   // previousAttempts fetching removed
 
-
-  // When the quiz starts, run a 2-minute during-quiz timer and then trigger rest
-  useEffect(() => {
-    let interval = null;
-    if (quizIsLive && !timerCompletedRef.current && quizStarted) {
-      // Use server session end time if available so late joiners get correct remaining
-      const now = new Date();
-      let remaining = 120; // default seconds
-      if (sessionEndRef.current) {
-        remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
-      }
-
-      // initial UI update
-      setTimeout(() => {
-        const mins0 = Math.floor(remaining / 60);
-        const secs0 = remaining % 60;
-        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins0, seconds: secs0 } }));
-      }, 0);
-
-      interval = setInterval(() => {
-        remaining -= 1;
-        const mins = Math.floor(Math.max(0, remaining) / 60);
-        const secs = Math.max(0, remaining) % 60;
-        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins, seconds: secs } }));
-
-        if (remaining <= 0) {
-          clearInterval(interval);
-          timerCompletedRef.current = true; // mark that this cycle's live window completed
-          setQuizIsLive(false); // close live window
-          // start rest period now
-          restTimerRef.current = Date.now();
-          // After the live window ends, we rely on the session poll to update next day's session
-        }
-      }, 1000);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [quizIsLive, quizStarted]);
 
   return (
     <div className="quiz__container">
