@@ -1,22 +1,12 @@
-import UnderDevelopment from "../components/common/UnderDevelopment";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useAssignments } from '../hooks/useAssignments';
 import { useAdminAssignments } from '../hooks/useAdminAssignments';
-import {
-  History,
-  NotepadText,
-  Award,
-  Send,
-  BadgeCheck,
-  Edit,
-  Save,
-  Trash2,
-  Plus,
-  NotebookTabs,
-} from 'lucide-react';
+import { Plus, NotebookTabs, Edit, Trash2 } from 'lucide-react';
 import '../assets/styles/assignment.css';
 import AdminAssignmentForm from '../components/assignments/AdminAssignmentForm';
+import StudentAssignmentList from '../components/assignments/StudentAssignmentList';
+import AdminGradingPanel from '../components/assignments/AdminGradingPanel';
 import { Toast } from '../components/common/Toast';
 
 const AssignmentScreen = () => {
@@ -204,201 +194,16 @@ const AssignmentScreen = () => {
       {loading && <p className="loading-message">Loading assignments...</p>}
 
       {!isAdmin && (
-        <>
-          {/* 1. STUDENT - Pending Assignments */}
-          <section className="assignment-card pending-section">
-            <div className="card-header">
-              <h3>
-                <span className="orange">
-                  <History size={19} />
-                </span>
-                Pending Assignments
-              </h3>
-              <span className="count-badge orange">{pending.length} {`assignment${pending.length <= 1 ? '' : 's'}`}</span>
-            </div>
-            <div className="table-responsive">
-              <table className="assignment__table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Due Date</th>
-                    <th>Assignment Link</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                {pending.length > 0 && (
-                  <tbody>
-                    {pending.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td className="bold">{item.title}</td>
-                        <td className="assignment__date">
-                          {new Date(item.dueDate).toLocaleDateString()}
-                        </td>
-                        <td className="first-inputs">
-                          <input
-                            type="text"
-                            placeholder="Paste your assignment link here..."
-                            className="link-input first-input"
-                            value={assignmentLinks[item.id] || ''}
-                            onChange={(e) =>
-                              handleLinkChange(item.id, e.target.value)
-                            }
-                          />
-                        </td>
-                        <td className="assignment__action">
-                          <button
-                            className="submit-btn"
-                            onClick={() =>
-                              handleSubmitAssignment(
-                                item.id,
-                                assignmentLinks[item.id]
-                              )
-                            }
-                            disabled={loading}
-                          >
-                            <span>
-                              <Send size={18} />
-                            </span>
-                            {loading ? 'Submitting...' : 'Submit'}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {pending.length === 0 && (
-                <p className="empty__assignment">No Pending Assignment</p>
-              )}
-            </div>
-          </section>
-
-          {/* 2. STUDENT - Submitted Assignments */}
-          <section className="assignment-card submitted-section">
-            <div className="card-header">
-              <h3>
-                <span className="blue">
-                  <NotepadText size={19} />
-                </span>
-                Submitted Assignments
-              </h3>
-              <span className="count-badge blue">{submitted.length} {`assignment${submitted.length <= 1 ? '' : 's'}`}</span>
-            </div>
-            <div className="table-responsive">
-              <table className="assignment__table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Due Date</th>
-                    <th>Submitted Date</th>
-                    <th>Assignment Link</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                {submitted.length > 0 && (
-                  <tbody>
-                    {submitted.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td className="bold">{item.title}</td>
-                        <td>
-                          {new Date(item.dueDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          {new Date(item.submittedDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            readOnly
-                            value={item.submissionLink}
-                            className="link-input gray"
-                          />
-                        </td>
-                        <td className="assignment__action">
-                          <span className="status-badge pending">
-                            <span>
-                              <History size={18} />
-                            </span>
-                            {item.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {submitted.length === 0 && (
-                <p className="empty__assignment">No Assignment Submitted</p>
-              )}
-            </div>
-          </section>
-
-          {/* 3. STUDENT - Graded Assignments */}
-          <section className="assignment-card graded-section">
-            <div className="card-header">
-              <h3>
-                <span className="green">
-                  <Award size={19} />
-                </span>
-                Graded Assignments
-              </h3>
-              <span className="count-badge green">{graded.length} {`assignment${graded.length <= 1 ? '' : 's'}`}</span>
-            </div>
-            <div className="table-responsive">
-              <table className="assignment__table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Due Date</th>
-                    <th>Submitted Date</th>
-                    <th>Assignment Link</th>
-                    <th>Score</th>
-                  </tr>
-                </thead>
-                {graded.length > 0 && (
-                  <tbody>
-                    {graded.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td className="bold">{item.title}</td>
-                        <td>
-                          {new Date(item.dueDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          {new Date(item.submittedDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            readOnly
-                            value={item.submissionLink}
-                            className="link-input gray"
-                          />
-                        </td>
-                        <td className="assignment__action">
-                          <span className="score-badge">
-                            <span>
-                              <BadgeCheck size={18} />
-                            </span>
-                            {item.score}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {graded.length === 0 && (
-                <p className="empty__assignment">No Assignment Graded</p>
-              )}
-            </div>
-          </section>
-        </>
+        <StudentAssignmentList
+          pending={pending}
+          submitted={submitted}
+          graded={graded}
+          assignmentLinks={assignmentLinks}
+          loading={loading}
+          averageScore={averageScore}
+          onLinkChange={handleLinkChange}
+          onSubmitAssignment={handleSubmitAssignment}
+        />
       )}
 
       {/* ADMIN VIEW */}
@@ -472,191 +277,18 @@ const AssignmentScreen = () => {
             </div>
           </section>
 
-          {/* 1. ADMIN - Submitted Assignments */}
-          <section className="assignment-card submitted-section">
-            <div className="card-header">
-              <h3>
-                <span className="blue">
-                  <NotepadText size={19} />
-                </span>
-                Submitted Assignments
-              </h3>
-              <span className="count-badge blue">{submitted.length} assignments</span>
-            </div>
-            <div className="table-responsive">
-              <table className="assignment__table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Student Name</th>
-                    <th>Due Date</th>
-                    <th>Submitted Date</th>
-                    <th>Assignment Link</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                {submitted.length > 0 && (
-                  <tbody>
-                    {submitted.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td className="bold">{item.title}</td>
-                        <td className="bold">{item.studentName}</td>
-                        <td>
-                          {new Date(item.dueDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          {new Date(item.submittedDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            readOnly
-                            value={item.submissionLink}
-                            className="link-input gray"
-                          />
-                        </td>
-                        <td className="score-input-cell">
-                          <input
-                            type="number"
-                            placeholder="Enter score..."
-                            className="score-input"
-                            value={scores[item.id] || ''}
-                            onChange={(e) =>
-                              handleScoreChange(item.id, e.target.value)
-                            }
-                            min="0"
-                            max="100"
-                          />
-                        </td>
-                        <td className="assignment__action">
-                          <button
-                            className="save-score-btn"
-                            onClick={() => handleSaveScore(item.id)}
-                            disabled={loading}
-                          >
-                            <span>
-                              <Save size={18} />
-                            </span>
-                            {loading ? 'Saving...' : 'Save'}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {submitted.length === 0 && (
-                <p className="empty__assignment">No Assignment Submitted</p>
-              )}
-            </div>
-          </section>
-
-          {/* 2. ADMIN - Graded Assignments */}
-          <section className="assignment-card graded-section">
-            <div className="card-header">
-              <h3>
-                <span className="green">
-                  <Award size={19} />
-                </span>
-                Graded Assignments
-              </h3>
-              <span className="count-badge green">{graded.length} assignments</span>
-            </div>
-            <div className="table-responsive">
-              <table className="assignment__table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Student Name</th>
-                    <th>Due Date</th>
-                    <th>Submitted Date</th>
-                    <th>Assignment Link</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                {graded.length > 0 && (
-                  <tbody>
-                    {graded.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td className="bold">{item.title}</td>
-                        <td className="bold">{item.studentName}</td>
-                        <td>
-                          {new Date(item.dueDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          {new Date(item.submittedDate).toLocaleDateString()}
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            readOnly
-                            value={item.submissionLink}
-                            className="link-input gray"
-                          />
-                        </td>
-                        <td>
-                          {editingGradedId === item.id ? (
-                            <input
-                              type="number"
-                              className="score-input"
-                              value={scores[item.id] || ''}
-                              onChange={(e) =>
-                                handleScoreChange(item.id, e.target.value)
-                              }
-                              min="0"
-                              max="100"
-                            />
-                          ) : (
-                            <span className="score-badge">
-                              <span>
-                                <BadgeCheck size={18} />
-                              </span>
-                              {item.score}
-                            </span>
-                          )}
-                        </td>
-                        <td className="assignment__action">
-                          {editingGradedId === item.id ? (
-                            <button
-                              className="save-score-btn"
-                              onClick={() => handleSaveEditedScore(item.id)}
-                              disabled={loading}
-                            >
-                              <span>
-                                <Save size={18} />
-                              </span>
-                              {loading ? 'Saving...' : 'Save'}
-                            </button>
-                          ) : (
-                            <button
-                              className="edit-btn"
-                              onClick={() =>
-                                handleEditScore(item.id, item.score)
-                              }
-                            >
-                              <span>
-                                <Edit size={18} />
-                              </span>
-                              Edit
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
-              </table>
-              {graded.length === 0 && (
-                <p className="empty__assignment">No Assignment Graded</p>
-              )}
-            </div>
-          </section>
+          {/* 1. ADMIN - Submitted & Graded Assignments */}
+          <AdminGradingPanel
+            submitted={submitted}
+            graded={graded}
+            scores={scores}
+            editingGradedId={editingGradedId}
+            loading={loading}
+            onScoreChange={handleScoreChange}
+            onSaveScore={handleSaveScore}
+            onEditScore={handleEditScore}
+            onSaveEditedScore={handleSaveEditedScore}
+          />
         </>
       )}
 
