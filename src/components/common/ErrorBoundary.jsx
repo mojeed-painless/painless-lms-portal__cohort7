@@ -1,45 +1,24 @@
 import React from 'react';
+import { logError } from '../../utils/logger';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+export class ErrorBoundary extends React.Component {
+  state = { hasError: false };
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Error caught:', error, errorInfo);
+    logError('Uncaught React Render Error', {
+      error: error.message,
+      componentStack: errorInfo.componentStack,
+    });
   }
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div style={{ padding: '20px', textAlign: 'center', marginTop: '40px' }}>
-          <h2>Something went wrong</h2>
-          <p>{this.state.error?.message}</p>
-          <button 
-            onClick={() => this.setState({ hasError: false })}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '1rem'
-            }}
-          >
-            Try again
-          </button>
-        </div>
-      );
+      return <div className="p-4 text-red-600">Something went wrong.</div>;
     }
-
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;
