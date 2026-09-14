@@ -26,17 +26,14 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
+      - name: Run Tests with 60% Coverage Enforcement
+        run: npm run test:coverage
+
       - name: Run Typecheck
         run: npm run typecheck
-
-      - name: Run Unit Tests
-        run: npm test
 
       - name: Build Application
         run: npm run build
 
       - name: Security Audit
         run: npm audit --audit-level=high
-
-      - name: Run Tests with Coverage
-        run: npm run test:coverage
