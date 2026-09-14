@@ -20,11 +20,11 @@ export default defineConfig({
         'src/mocks/**'
       ],
       thresholds: {
-        // Lowered to match current measured coverage; adjust upward after adding more tests
-        lines: 24,
-        functions: 12,
-        branches: 16,
-        statements: 23
+        // Enforce 60% minimum coverage across all metrics
+        lines: 60,
+        functions: 60,
+        branches: 60,
+        statements: 60
       }
     }
   },
