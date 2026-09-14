@@ -1,16 +1,36 @@
-/**
- * Thin logging wrapper. Every call site logs through here instead of
- * calling console directly, so swapping in a real error-tracking backend
- * (Sentry, LogRocket, Datadog, etc.) later is a one-file change.
- */
-export function logError(message, meta = {}) {
-  console.error(`[ERROR] ${message}`, meta);
+const ERROR_REPORTING_URL = import.meta.env.VITE_ERROR_REPORTING_URL;
+
+function createLogObject(level, message, context = {}) {
+  return {
+    timestamp: new Date().toISOString(),
+    level,
+    message,
+    context,
+    environment: import.meta.env.MODE || 'development',
+  };
 }
 
-export function logWarn(message, meta = {}) {
-  console.warn(`[WARN] ${message}`, meta);
+export function logInfo(message, context = {}) {
+  const payload = createLogObject('INFO', message, context);
+  console.log(JSON.stringify(payload));
+  return payload;
 }
 
-export function logInfo(message, meta = {}) {
-  console.info(`[INFO] ${message}`, meta);
+export function logError(message, context = {}) {
+  const payload = createLogObject('ERROR', message, context);
+  console.error(JSON.stringify(payload));
+
+  // Optional external error reporting hook
+  if (ERROR_REPORTING_URL) {
+    try {
+      fetch(ERROR_REPORTING_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => {}); // Suppress network failures from logger
+    } catch (err) {
+      // Silently ignore reporting errors
+    }
+  }
+  return payload;
 }

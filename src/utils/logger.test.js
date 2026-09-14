@@ -1,36 +1,25 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { logError, logWarn, logInfo } from './logger';
+import { describe, it, expect, vi } from 'vitest';
+import { logInfo, logError } from './logger';
 
-describe('logger', () => {
-  let errorSpy, warnSpy, infoSpy;
+describe('Structured Logger Utility', () => {
+  it('formats info logs as structured JSON objects', () => {
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const result = logInfo('User logged in', { userId: '123' });
 
-  beforeEach(() => {
-    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    expect(result.level).toBe('INFO');
+    expect(result.message).toBe('User logged in');
+    expect(result.context.userId).toBe('123');
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
+  it('formats error logs as structured JSON objects', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = logError('API Request failed', { status: 500 });
 
-  it('logError writes to console.error with an [ERROR] prefix and meta', () => {
-    logError('save failed', { userId: '123' });
-    expect(errorSpy).toHaveBeenCalledWith('[ERROR] save failed', { userId: '123' });
-  });
-
-  it('logWarn writes to console.warn with a [WARN] prefix', () => {
-    logWarn('deprecated call');
-    expect(warnSpy).toHaveBeenCalledWith('[WARN] deprecated call', {});
-  });
-
-  it('logInfo writes to console.info with an [INFO] prefix', () => {
-    logInfo('assignment created', { id: 'a1' });
-    expect(infoSpy).toHaveBeenCalledWith('[INFO] assignment created', { id: 'a1' });
-  });
-
-  it('defaults meta to an empty object when omitted', () => {
-    logError('no meta provided');
-    expect(errorSpy).toHaveBeenCalledWith('[ERROR] no meta provided', {});
+    expect(result.level).toBe('ERROR');
+    expect(result.context.status).toBe(500);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 });
