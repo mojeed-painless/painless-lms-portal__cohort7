@@ -9,6 +9,8 @@ import './App.css'
 
 import MainLayout from './pages/MainLayout';
 import HomeScreen from './pages/HomeScreen';
+import { cssRoutes } from './routes/cssRoutes';
+import { jsRoutes } from './routes/jsRoutes';
 import LoginScreen from './pages/LoginScreen'; 
 import RegisterScreen from './pages/RegisterScreen';
 import RoleBasedDashboard from './components/common/RoleBasedDashboard';
@@ -148,61 +150,15 @@ function App() {
                 <Route path="/html-form" element={<Forms />} />
                 <Route path="/html-style" element={<HTMLStyling />} />
 
-                {/* CSS Content */}
-                <Route path="/css-transition" element={<CSSTransition />} />
-                <Route path="/css_animation" element={<Animation />} />
-                <Route path="/css_attribute" element={<AttributesSelector />} />
-                <Route path="/css_background" element={<Background />} />
-                <Route path="/css_border" element={<Borders />} />
-                <Route path="/css_boxmodel" element={<BoxModel />} />
-                <Route path="/css_boxshadow" element={<BoxShadow />} />
-                <Route path="/css_color" element={<Colors />} />
-                <Route path="/css_conbinator" element={<Combinators />} />
-                <Route path="/css_introduction" element={<CSSIntroduction />} />
-                <Route path="/css_syntax" element={<CSSSyntax />} />
-                <Route path="/css_display" element={<DisplayLayout />} />
-                <Route path="/css_flexbox" element={<FlexboxLayout />} />
-                <Route path="/css_grid" element={<GridLayout />} />
-                <Route path="/css_width" element={<HeightWidth />} />
-                <Route path="/css_icon" element={<Icons />} />
-                <Route path="/css_insert" element={<InsertingCSS />} />
-                <Route path="/css_links" element={<Links />} />
-                <Route path="/css_lists" element={<Lists />} />
-                <Route path="/css_mediaquery" element={<MediaQuery />} />
-                <Route path="/css_navbar" element={<NavigationBar />} />
-                <Route path="/css_opacity" element={<Opacity />} />
-                <Route path="/css_overflow" element={<OverflowLayout />} />
-                <Route path="/css_portfolio" element={<PortfolioProject />} />
-                <Route path="/css_position" element={<PositionLayout />} />
-                <Route path="/css_pseudoclass" element={<PseudoClasses />} />
-                <Route path="/css_pseudoelement" element={<PseudoElements />} />
-                <Route path="/css_selectors" element={<Selectors />} />
-                <Route path="/css_form" element={<StylingForms />} />
-                <Route path="/css_table" element={<Tables />} />
-                <Route path="/css_formatting" element={<TextFormatting />} />
-                <Route path="/css_transform" element={<Transform />} />
-                <Route path="/css_transition" element={<Transition />} />
+                {/* CSS Content - grouped via route config */}
+                {cssRoutes.map(({ path, component: Component }) => (
+                  <Route key={path} path={path} element={<Component />} />
+                ))}
 
-                {/* JavaScript Content */}
-                <Route path="/js-transition" element={<JSTransition />} />
-                <Route path="/js-intro" element={<JavascriptIntro />} />
-                <Route path="/js-linking" element={<LinkingJavascript />} />
-                <Route path="/js-alert" element={<Alert />} />
-                <Route path="/js-statements" element={<Statements />} />
-                <Route path="/js-variables" element={<Variables />} />
-                <Route path="/js-naming-variables" element={<NamingVariables />} />
-                <Route path="/js-constant" element={<Constant />} />
-                <Route path="/js-data-types" element={<DataTypes />} />
-                <Route path="/js-strings" element={<Strings />} />
-                <Route path="/js-numbers" element={<Numbers />} />
-                <Route path="/js-bigInt" element={<BigInt />} />
-                <Route path="/js-boolean" element={<Boolean />} />
-                <Route path="/js-null" element={<Null />} />
-                <Route path="/js-typeOf" element={<TypeOf />} />
-                <Route path="/js-browser-user-interaction" element={<BrowserUserInteraction />} />
-                <Route path="/js-string-conversion" element={<StringConversion />} />
-                <Route path="/js-number-conversion" element={<NumberConversion />} />
-                <Route path="/js-boolean-conversion" element={<BooleanConversion />} />
+                {/* JavaScript Content - grouped via route config */}
+                {jsRoutes.map(({ path, component: Component }) => (
+                  <Route key={path} path={path} element={<Component />} />
+                ))}
               </Route>
             </Route>
 
