@@ -279,6 +279,10 @@ We welcome contributions! Please follow these steps:
 - Test your changes thoroughly
 - Update documentation as needed
 
+## Maintenance & Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for a detailed history of updates, refactors, and feature additions.
+
 <!-- ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. -->
