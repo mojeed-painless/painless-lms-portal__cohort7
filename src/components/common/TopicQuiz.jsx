@@ -10,11 +10,13 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../context/AuthContext';
+import { quizAttemptSchema } from '../../schemas/quiz';
 
 function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [submissionState, setSubmissionState] = useState({ status: 'idle', message: '' });
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
 
   const currentQuestion = questions[0];
 
@@ -25,6 +27,33 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       const correctAnswer = question.options[question.correctAnswer];
       return acc + (selected === correctAnswer ? 1 : 0);
     }, 0);
+
+    const payload = {
+      quizId: String(topic || 'quiz'),
+      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
+      answers: questions
+        .filter(question => selectedAnswers[question.id] !== undefined)
+        .map(question => {
+          const selectedValue = selectedAnswers[question.id];
+          const selectedOption = question.options.findIndex(option => {
+            const optionValue = typeof option === 'string' ? option : option.text;
+            return optionValue === selectedValue;
+          });
+
+          return {
+            questionId: Number(question.id),
+            selectedOption,
+          };
+        })
+        .filter(answer => answer.selectedOption >= 0),
+    };
+
+    const validation = quizAttemptSchema.safeParse(payload);
+    if (!validation.success) {
+      setError('Invalid submission payload format');
+      return;
+    }
+    setError('');
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/quiz-attempts`, {
@@ -101,6 +130,7 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
         </button>
       </div>
 
+      {error && <p role="alert">{error}</p>}
       {submissionState.status === 'error' && (
         <p role="alert">Error submitting quiz: {submissionState.message}</p>
       )}
@@ -121,6 +151,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
   const [showAttempted, setShowAttempted] = useState(false);
   const [attemptedAnswers, setAttemptedAnswers] = useState({});
   const [remainingSeconds, setRemainingSeconds] = useState(180);
+  const [error, setError] = useState('');
   const timerRef = useRef(null);
   const [showResult, setShowResult] = useState(false);
   const [resultData, setResultData] = useState({ score: 0, total: 0, timeTaken: 0 });
@@ -217,6 +248,32 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
     });
     const timeTaken = 180 - (remainingSeconds || 0);
     setResultData({ score, total, timeTaken });
+
+    const validationPayload = {
+      quizId: String(currentTopic || 'quiz'),
+      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
+      answers: Object.entries(answers).map(([questionId, selectedValue]) => {
+        const topicObj = TopicQuizData.find(t => t.topic === currentTopic);
+        const matchingQuestion = topicObj?.questions?.find(question => String(question.id) === String(questionId));
+        const selectedOption = matchingQuestion?.options?.findIndex(option => {
+          const optionValue = typeof option === 'string' ? option : option.text;
+          return optionValue === selectedValue;
+        }) ?? 0;
+
+        return {
+          questionId: Number(questionId),
+          selectedOption,
+        };
+      }),
+    };
+
+    const validation = quizAttemptSchema.safeParse(validationPayload);
+    if (!validation.success) {
+      setError('Invalid submission payload format');
+      return;
+    }
+    setError('');
+
     try {
       const payload = { topic: currentTopic, score, total, timeTaken };
       await fetch(`${API_BASE}/api/quiz-attempts`, {
@@ -399,6 +456,8 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
               <button onClick={() => setShowFinishConfirm(true)}>Finish Quiz</button>
             }
           </div>}
+
+          {error && <p role="alert" style={{ marginTop: '8px' }}>{error}</p>}
 
           {showStartConfirm && (
             <div className="modal-backdrop">
