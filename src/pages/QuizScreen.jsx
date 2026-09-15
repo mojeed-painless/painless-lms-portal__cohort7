@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useQuizSession } from '../hooks/useQuizSession';
 import { AttemptedTopicQuiz } from '../components/common/TopicQuiz'
 import { API_BASE_URL } from '../config/api';
+import { logError } from '../utils/logger';
 import { TbPointFilled } from "react-icons/tb";
 import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
 import {
@@ -101,7 +102,7 @@ export default function QuizScreen() {
       setQuizStarted(false);
       setTimeout(() => setSubmissionDone(false), 3500);
     } catch (err) {
-      console.error('Error submitting quiz', err);
+      logError('Failed to submit quiz session', { error: err.message });
       setSubmissionError(err.message || 'Network error');
       setSubmissionInProgress(false);
     }
@@ -159,7 +160,7 @@ export default function QuizScreen() {
           }
         }
       } catch (err) {
-        console.error('Error fetching leaderboard', err);
+        logError('Failed to fetch leaderboard data', { error: err.message });
         // Keep previous data on error
       } finally {
         setLeaderLoading(false);
@@ -189,7 +190,7 @@ export default function QuizScreen() {
           setMyDailyAttempt(null);
         }
       } catch (err) {
-        console.error('Error fetching my daily attempt', err);
+        logError('Error fetching my daily attempt', { error: err.message });
         setMyDailyAttempt(null);
       } finally {
         setMyDailyLoading(false);

@@ -22,4 +22,20 @@ describe('Structured Logger Utility', () => {
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
+
+  it('formats network rejection errors with context and message shape', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const networkError = new Error('Failed to fetch leaderboard data');
+
+    const result = logError('QuizScreen Leaderboard Fetch Failure', {
+      error: networkError.message,
+    });
+
+    expect(result.level).toBe('ERROR');
+    expect(result.message).toBe('QuizScreen Leaderboard Fetch Failure');
+    expect(result.context.error).toBe('Failed to fetch leaderboard data');
+    expect(spy).toHaveBeenCalled();
+
+    spy.mockRestore();
+  });
 });
