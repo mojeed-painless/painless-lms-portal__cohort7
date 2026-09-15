@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import '../assets/styles/quiz.css';
@@ -113,10 +112,31 @@ export default function QuizScreen() {
     const fetchLeaderboard = async () => {
       setLeaderLoading(true);
       try {
-        const today = new Date();
-        const iso = today.toISOString().slice(0, 10);
         const headers = {};
         if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+
+        const genericRes = await fetch(`${API_BASE_URL}/api/quiz/leaderboard`, { headers });
+        if (genericRes.ok) {
+          const genericData = await genericRes.json();
+          const normalized = Array.isArray(genericData) ? genericData : genericData.top || [];
+          const mapped = normalized.map((item, index) => ({
+            rank: index + 1,
+            studentId: item.studentId || item.id || item._id,
+            name: item.studentName || item.name || item.username || 'Unknown',
+            score: item.score ?? 0,
+            total: item.total ?? 0,
+            timeTaken: item.timeTaken ?? 0,
+          }));
+
+          if (mapped.length > 0) {
+            setDailyTop(mapped);
+            setLeaderLoading(false);
+            return;
+          }
+        }
+
+        const today = new Date();
+        const iso = today.toISOString().slice(0, 10);
 
         // Try fetching today's leaderboard
         const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${iso}`, { headers });
@@ -425,7 +445,7 @@ export default function QuizScreen() {
                   </span>
                   <div className="quiz__leader-info">
                     <h5>{item.name || item.username || 'Unknown'}</h5>
-                    <small>Score: {item.score}/{item.total}</small>
+                    <small>Score: <span>{item.score}</span> / {item.total}</small>
                   </div>
                   <small className="quiz__time"><span><TimerReset size={15}/></span> {Math.floor((item.timeTaken||0)/60)}:{String((item.timeTaken||0)%60).padStart(2,'0')}</small>
                 </div>
