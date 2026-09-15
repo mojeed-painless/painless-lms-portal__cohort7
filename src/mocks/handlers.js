@@ -46,4 +46,12 @@ export const handlers = [
       { status: 200 }
     );
   }),
+
+  // Mock Quiz Leaderboard
+  http.get('*/api/quiz/leaderboard', () => {
+    return HttpResponse.json([
+      { id: '1', studentName: 'Hanna', score: 98 },
+      { id: '2', studentName: 'Raheem', score: 92 },
+    ]);
+  }),
 ];
