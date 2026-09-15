@@ -95,11 +95,44 @@ describe('TopicQuiz Component', () => {
 
     await waitFor(() => {
       expect(logErrorSpy).toHaveBeenCalledWith(
-        'Failed to submit quiz attempt',
+        'Quiz Attempt Validation Failure',
         expect.objectContaining({ error: expect.any(String) })
       );
     });
 
     logErrorSpy.mockRestore();
+  });
+});
+
+describe('TopicQuiz Boundary Validation Integration', () => {
+  it('logs error and prevents network request on invalid quiz answer schema', async () => {
+    const logErrorSpy = vi.spyOn(loggerModule, 'logError');
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+
+    // Render with malformed question data to force invalid payload schema
+    render(
+      <TopicQuiz
+        questions={[{ id: -1, question: 'Invalid ID?', options: ['A'], correctAnswer: 0 }]}
+      />
+    );
+
+    const optionBtn = screen.getByRole('button', { name: /A\. A/i });
+    fireEvent.click(optionBtn);
+
+    const submitBtn = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        'Quiz Attempt Validation Failure',
+        expect.objectContaining({ error: expect.any(String) })
+      );
+    });
+
+    // Verify network fetch was never triggered due to validation block
+    expect(fetchSpy).not.toHaveBeenCalled();
+
+    logErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
   });
 });

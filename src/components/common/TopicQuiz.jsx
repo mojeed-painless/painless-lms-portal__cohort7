@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../context/AuthContext';
-import { quizAttemptSchema } from '../../schemas/quiz';
+import { quizAttemptSchema, quizAnswerSchema } from '../../schemas/quiz';
 
 function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -29,38 +29,39 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       return acc + (selected === correctAnswer ? 1 : 0);
     }, 0);
 
-    const payload = {
-      quizId: String(topic || 'quiz'),
-      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
-      answers: questions
-        .filter(question => selectedAnswers[question.id] !== undefined)
-        .map(question => {
-          const selectedValue = selectedAnswers[question.id];
-          const selectedOption = question.options.findIndex(option => {
-            const optionValue = typeof option === 'string' ? option : option.text;
-            return optionValue === selectedValue;
-          });
+    const answers = questions
+      .filter(question => selectedAnswers[question.id] !== undefined)
+      .map(question => {
+        const selectedValue = selectedAnswers[question.id];
+        const selectedOption = question.options.findIndex(option => {
+          const optionValue = typeof option === 'string' ? option : option.text;
+          return optionValue === selectedValue;
+        });
 
-          return {
-            questionId: Number(question.id),
-            selectedOption,
-          };
-        })
-        .filter(answer => answer.selectedOption >= 0),
+        return {
+          questionId: Number(question.id),
+          selectedOption,
+          correctAnswer: question.correctAnswer,
+        };
+      })
+      .filter(answer => answer.selectedOption >= 0);
+
+    const payload = {
+      topic: String(topic || 'quiz'),
+      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
+      total,
+      timeTaken: 0,
+      answers,
     };
 
-    const validation = quizAttemptSchema.safeParse(payload);
-    if (!validation.success) {
-      setError('Invalid submission payload format');
-      return;
-    }
-    setError('');
-
     try {
+      const validatedData = quizAttemptSchema.parse(payload);
+      setError('');
+
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/quiz-attempts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, score, total, timeTaken: 0 }),
+        body: JSON.stringify(validatedData),
       });
 
       const data = await response.json().catch(() => ({}));
@@ -76,7 +77,7 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
     } catch (error) {
       const message = error?.message || 'Error submitting quiz';
-      logError('Failed to submit quiz attempt', { error: message });
+      logError('Quiz Attempt Validation Failure', { error: message });
       setSubmissionState({ status: 'error', message });
       setResult(null);
     }
@@ -161,18 +162,19 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
   const resolvedTopic = currentTopic || topic;
   const hasCustomQuestions = Array.isArray(providedQuestions) && providedQuestions.length > 0;
 
-  const postAnswer = async (payload) => {
+  const postAnswer = async (answerData) => {
     try {
+      const validatedData = quizAnswerSchema.parse(answerData);
       await fetch(`${API_BASE}/api/quiz-answers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(user && user._id ? { 'x-user-id': user._id } : {}),
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(validatedData),
       });
     } catch (err) {
-      logError('Failed to submit answer', { error: err.message });
+      logError('Quiz Answer Validation Failure', { error: err.message });
     }
   };
 
@@ -180,11 +182,9 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
     setAnswers(prev => ({ ...prev, [questionId]: selectedOption }));
 
     await postAnswer({
-      topic: currentTopic,
-      questionId: String(questionId),
-      questionText: questionText || '',
-      selectedOption,
-      correctAnswer: correctAnswer || null,
+      questionId: Number(questionId),
+      selectedOption: Number(selectedOption),
+      correctAnswer: Number(correctAnswer || 0),
     });
   };
 
