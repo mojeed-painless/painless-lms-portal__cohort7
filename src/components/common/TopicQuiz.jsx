@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import '../../assets/styles/topicQuiz.css';
 import { TopicQuizData } from '../../quizData';
+import { logError } from '../../utils/logger';
 import {
   TimerReset,
   MoveRight,
@@ -75,6 +76,7 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
     } catch (error) {
       const message = error?.message || 'Error submitting quiz';
+      logError('Failed to submit quiz attempt', { error: message });
       setSubmissionState({ status: 'error', message });
       setResult(null);
     }
@@ -170,7 +172,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      console.error('Failed to submit answer', err);
+      logError('Failed to submit answer', { error: err.message });
     }
   };
 
@@ -215,7 +217,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
         setAttemptedAnswers(map);
       }
     } catch (err) {
-      console.error('Failed to fetch attempt data', err);
+      logError('Failed to fetch attempt data', { error: err.message });
     }
   }, [API_BASE, user, currentTopic]);
 
@@ -300,9 +302,9 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
         attempts.unshift(attempt);
         localStorage.setItem(key, JSON.stringify(attempts.slice(0, 100)));
       } catch (e) {
-        console.error('Failed to save quiz attempt', e);
+        logError('Failed to save quiz attempt', { error: e.message });
       }
-      console.error('Failed to save quiz attempt to backend', err);
+      logError('Failed to save quiz attempt to backend', { error: err.message });
     }
     setShowResult(true);
   };
@@ -529,9 +531,9 @@ export function AttemptedTopicQuiz() {
           const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
           if (mounted) setAttempts(stored);
         } catch (e) {
-          console.error('Failed to load attempts', e);
+          logError('Failed to load attempts', { error: e.message });
         }
-        console.error('Failed to load attempts from backend', err);
+        logError('Failed to load attempts from backend', { error: err.message });
       }
     };
     load();

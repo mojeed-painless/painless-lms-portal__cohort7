@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../mocks/server';
+import * as loggerModule from '../../utils/logger';
 import TopicQuiz from './TopicQuiz';
 
 const mockQuestions = [
@@ -76,5 +77,29 @@ describe('TopicQuiz Component', () => {
         screen.getByText(/error submitting quiz|failed/i)
       ).toBeInTheDocument();
     });
+  });
+
+  it('calls logError when submission fails', async () => {
+    const logErrorSpy = vi.spyOn(loggerModule, 'logError');
+
+    server.use(
+      http.post('*/api/quiz-attempts', () => {
+        return new HttpResponse(null, { status: 500 });
+      })
+    );
+
+    render(<TopicQuiz questions={mockQuestions} topic="React Basics" />);
+
+    fireEvent.click(screen.getByText('A JavaScript Library'));
+    fireEvent.click(screen.getByRole('button', { name: /submit|next/i }));
+
+    await waitFor(() => {
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        'Failed to submit quiz attempt',
+        expect.objectContaining({ error: expect.any(String) })
+      );
+    });
+
+    logErrorSpy.mockRestore();
   });
 });
