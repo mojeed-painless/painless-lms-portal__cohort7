@@ -1,37 +1,35 @@
 import { describe, it, expect } from 'vitest';
-import { quizAttemptSchema } from './quiz';
+import { quizAttemptSchema, quizAnswerSchema } from './quiz';
 
-describe('Quiz Attempt Schema Validation', () => {
-  it('passes for a valid quiz submission payload', () => {
-    const validPayload = {
-      quizId: 'react-basics',
-      score: 85,
-      answers: [{ questionId: 1, selectedOption: 0 }],
-    };
+describe('Quiz Zod Validation Schemas', () => {
+  describe('quizAnswerSchema', () => {
+    it('validates correct answer payload', () => {
+      const valid = { questionId: 101, selectedOption: 2, correctAnswer: 2 };
+      expect(quizAnswerSchema.safeParse(valid).success).toBe(true);
+    });
 
-    const result = quizAttemptSchema.safeParse(validPayload);
-    expect(result.success).toBe(true);
+    it('rejects negative indices', () => {
+      const invalid = { questionId: -1, selectedOption: 0, correctAnswer: 0 };
+      expect(quizAnswerSchema.safeParse(invalid).success).toBe(false);
+    });
   });
 
-  it('fails when score is out of bounds', () => {
-    const invalidPayload = {
-      quizId: 'react-basics',
-      score: 150,
-      answers: [{ questionId: 1, selectedOption: 0 }],
-    };
+  describe('quizAttemptSchema', () => {
+    it('validates correct attempt payload', () => {
+      const valid = {
+        topic: 'React Fundamentals',
+        score: 85,
+        total: 10,
+        timeTaken: 120,
+        answers: [{ questionId: 1, selectedOption: 0, correctAnswer: 0 }],
+      };
+      expect(quizAttemptSchema.safeParse(valid).success).toBe(true);
+    });
 
-    const result = quizAttemptSchema.safeParse(invalidPayload);
-    expect(result.success).toBe(false);
-  });
-
-  it('fails when answers array is empty', () => {
-    const invalidPayload = {
-      quizId: 'react-basics',
-      score: 90,
-      answers: [],
-    };
-
-    const result = quizAttemptSchema.safeParse(invalidPayload);
-    expect(result.success).toBe(false);
+    it('rejects missing topic or invalid score bounds', () => {
+      const invalid = { topic: '', score: 105, total: 10, timeTaken: -5 };
+      const result = quizAttemptSchema.safeParse(invalid);
+      expect(result.success).toBe(false);
+    });
   });
 });

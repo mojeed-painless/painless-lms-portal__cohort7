@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../mocks/server';
+import * as loggerModule from '../../utils/logger';
 import TopicQuiz from './TopicQuiz';
 
 const mockQuestions = [
@@ -76,5 +77,62 @@ describe('TopicQuiz Component', () => {
         screen.getByText(/error submitting quiz|failed/i)
       ).toBeInTheDocument();
     });
+  });
+
+  it('calls logError when submission fails', async () => {
+    const logErrorSpy = vi.spyOn(loggerModule, 'logError');
+
+    server.use(
+      http.post('*/api/quiz-attempts', () => {
+        return new HttpResponse(null, { status: 500 });
+      })
+    );
+
+    render(<TopicQuiz questions={mockQuestions} topic="React Basics" />);
+
+    fireEvent.click(screen.getByText('A JavaScript Library'));
+    fireEvent.click(screen.getByRole('button', { name: /submit|next/i }));
+
+    await waitFor(() => {
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        'Quiz Attempt Validation Failure',
+        expect.objectContaining({ error: expect.any(String) })
+      );
+    });
+
+    logErrorSpy.mockRestore();
+  });
+});
+
+describe('TopicQuiz Boundary Validation Integration', () => {
+  it('logs error and prevents network request on invalid quiz answer schema', async () => {
+    const logErrorSpy = vi.spyOn(loggerModule, 'logError');
+    const fetchSpy = vi.spyOn(globalThis, 'fetch');
+
+    // Render with malformed question data to force invalid payload schema
+    render(
+      <TopicQuiz
+        questions={[{ id: -1, question: 'Invalid ID?', options: ['A'], correctAnswer: 0 }]}
+      />
+    );
+
+    const optionBtn = screen.getByRole('button', { name: /A\. A/i });
+    fireEvent.click(optionBtn);
+
+    const submitBtn = screen.getByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        'Quiz Attempt Validation Failure',
+        expect.objectContaining({ error: expect.any(String) })
+      );
+    });
+
+    // Verify network fetch was never triggered due to validation block
+    expect(fetchSpy).not.toHaveBeenCalled();
+
+    logErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
   });
 });
