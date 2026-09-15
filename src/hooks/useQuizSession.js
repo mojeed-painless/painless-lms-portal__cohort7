@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { API_BASE_URL } from '../config/api';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { fetchJson } from '../services/apiClient';
 
 /**
  * Encapsulates the daily-quiz session lifecycle that previously lived
@@ -10,13 +10,20 @@ import { API_BASE_URL } from '../config/api';
  *  - a "during quiz" 2-minute countdown once the window is live and the
  *    student has started
  *
- * @param {{ token?: string } | null} user
+ * @param {{ token?: string } | null | string} userOrQuizId
  */
-export function useQuizSession(user) {
+export function useQuizSession(userOrQuizId) {
+  const isQuizIdMode = typeof userOrQuizId === 'string';
+  const user = !isQuizIdMode ? userOrQuizId : null;
+  const quizId = isQuizIdMode ? userOrQuizId : null;
+
   const [quizIsLive, setQuizIsLive] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
   const [dailySession, setDailySession] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [timeLeft, setTimeLeft] = useState({
     beforeQuiz: { hours: 0, minutes: 0, seconds: 0 },
     duringQuiz: { minutes: 0, seconds: 0 },
@@ -26,22 +33,38 @@ export function useQuizSession(user) {
   const sessionStartRef = useRef(null);
   const sessionEndRef = useRef(null);
 
-  // Fetch (and poll) today's session window from the server, falling back to
-  // a client-side default (21:00 local, 2-minute window) when the server has
-  // no session configured.
+  const startSession = useCallback(async () => {
+    if (!quizId) return;
+
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchJson(`/quiz/session/${quizId}`, { method: 'POST' });
+      setSession(data);
+    } catch (err) {
+      setError(err.message || 'Failed to start session');
+    } finally {
+      setLoading(false);
+    }
+  }, [quizId]);
+
   useEffect(() => {
+    if (quizId && !user) return undefined;
+
     let poll = null;
     const fetchSession = async () => {
       setSessionLoading(true);
       try {
         const iso = new Date().toISOString().slice(0, 10);
         const headers = {};
-        if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+        if (user && user.token) {
+          headers.Authorization = `Bearer ${user.token}`;
+        }
 
-        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/session?date=${iso}`, { headers });
-        const data = await res.json().catch(() => null);
-        let session = data && data.session ? data.session : null;
-        if (!session) {
+        const data = await fetchJson(`/api/quiz-attempts/session?date=${iso}`, { headers });
+        let sessionData = data && data.session ? data.session : null;
+
+        if (!sessionData) {
           const nowLocal = new Date();
           const startLocal = new Date(nowLocal);
           startLocal.setHours(21, 0, 0, 0);
@@ -51,7 +74,7 @@ export function useQuizSession(user) {
           }
           const finalStart = startLocal;
           const finalEnd = new Date(finalStart.getTime() + 2 * 60 * 1000);
-          session = {
+          sessionData = {
             date: finalStart.toISOString().slice(0, 10),
             startAt: finalStart.toISOString(),
             endAt: finalEnd.toISOString(),
@@ -59,9 +82,9 @@ export function useQuizSession(user) {
           };
         }
 
-        setDailySession(session);
-        sessionStartRef.current = session && session.startAt ? new Date(session.startAt) : null;
-        sessionEndRef.current = session && session.endAt ? new Date(session.endAt) : null;
+        setDailySession(sessionData);
+        sessionStartRef.current = sessionData && sessionData.startAt ? new Date(sessionData.startAt) : null;
+        sessionEndRef.current = sessionData && sessionData.endAt ? new Date(sessionData.endAt) : null;
 
         const now = new Date();
         if (sessionStartRef.current && now < sessionStartRef.current) {
@@ -71,9 +94,17 @@ export function useQuizSession(user) {
           const seconds = secs % 60;
           setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
           setQuizIsLive(false);
-        } else if (sessionStartRef.current && sessionEndRef.current && now >= sessionStartRef.current && now < sessionEndRef.current) {
+        } else if (
+          sessionStartRef.current &&
+          sessionEndRef.current &&
+          now >= sessionStartRef.current &&
+          now < sessionEndRef.current
+        ) {
           const remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
-          setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: Math.floor(remaining / 60), seconds: remaining % 60 } }));
+          setTimeLeft(prev => ({
+            ...prev,
+            duringQuiz: { minutes: Math.floor(remaining / 60), seconds: remaining % 60 },
+          }));
           setQuizIsLive(true);
         } else {
           setQuizIsLive(false);
@@ -89,10 +120,11 @@ export function useQuizSession(user) {
     fetchSession();
     poll = setInterval(fetchSession, 3000);
     return () => clearInterval(poll);
-  }, [user]);
+  }, [user, quizId]);
 
-  // Update the "before quiz" countdown every second so it ticks smoothly
   useEffect(() => {
+    if (quizId && !user) return undefined;
+
     let t = null;
     const tick = () => {
       const now = new Date();
@@ -103,7 +135,6 @@ export function useQuizSession(user) {
         const seconds = secs % 60;
         setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
       } else {
-        // live, or no session / window passed - keep zeros
         setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
       }
     };
@@ -111,15 +142,15 @@ export function useQuizSession(user) {
     tick();
     t = setInterval(tick, 1000);
     return () => clearInterval(t);
-  }, [dailySession, quizIsLive]);
+  }, [dailySession, quizIsLive, user, quizId]);
 
-  // When the quiz starts, run a 2-minute during-quiz timer, then close the
-  // live window
   useEffect(() => {
+    if (quizId && !user) return undefined;
+
     let interval = null;
     if (quizIsLive && !timerCompletedRef.current && quizStarted) {
       const now = new Date();
-      let remaining = 120; // default seconds
+      let remaining = 120;
       if (sessionEndRef.current) {
         remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
       }
@@ -147,7 +178,7 @@ export function useQuizSession(user) {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [quizIsLive, quizStarted]);
+  }, [quizIsLive, quizStarted, user, quizId]);
 
   return {
     quizIsLive,
@@ -156,5 +187,9 @@ export function useQuizSession(user) {
     dailySession,
     sessionLoading,
     timeLeft,
+    session,
+    loading,
+    error,
+    startSession,
   };
 }
