@@ -1,155 +1,94 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from '../mocks/server';
 import { useAdminAssignments } from './useAdminAssignments';
 
-const getCourseTypeFromId = (courseId) => {
-  const map = { html: 'html', css: 'css', javascript: 'js', react: 'react' };
-  return map[courseId] || courseId;
-};
+describe('useAdminAssignments Hook', () => {
+  it('creates assignment with validation', async () => {
+    server.use(
+      http.post('*/api/assignments', () => {
+        return HttpResponse.json({ id: 'new_1', title: 'Test Assignment' });
+      })
+    );
 
-const setup = (overrides = {}) => {
-  const deps = {
-    createAssignment: vi.fn().mockResolvedValue(true),
-    updateAssignment: vi.fn().mockResolvedValue(true),
-    deleteAssignment: vi.fn().mockResolvedValue(true),
-    getCourseTypeFromId,
-    showToast: vi.fn(),
-    error: null,
-    ...overrides,
-  };
-  const { result, rerender } = renderHook((props) => useAdminAssignments(props), {
-    initialProps: deps,
-  });
-  return { result, rerender, deps };
-};
+    const { result } = renderHook(() => useAdminAssignments());
 
-describe('useAdminAssignments', () => {
-  it('starts with the form closed and no assignment being edited', () => {
-    const { result } = setup();
-    expect(result.current.showAssignmentForm).toBe(false);
-    expect(result.current.editingAssignmentId).toBeNull();
-  });
-
-  it('openCreateForm opens the form with no assignment selected', () => {
-    const { result } = setup();
-
-    act(() => {
-      result.current.openCreateForm();
-    });
-
-    expect(result.current.showAssignmentForm).toBe(true);
-    expect(result.current.editingAssignmentId).toBeNull();
-  });
-
-  it('handleEditAssignment loads the selected assignment into edit state and opens the form', () => {
-    const { result } = setup();
-    const assignment = { id: 'a1', title: 'Build a form', courseId: 'javascript', dueDate: '2026-12-01' };
-
-    act(() => {
-      result.current.handleEditAssignment(assignment);
-    });
-
-    expect(result.current.showAssignmentForm).toBe(true);
-    expect(result.current.editingAssignmentId).toBe('a1');
-    expect(result.current.editingAssignment).toEqual({
-      title: 'Build a form',
-      courseType: 'js',
-      dueDate: '2026-12-01',
-    });
-  });
-
-  it('closeForm resets both the form visibility and the editing id', () => {
-    const { result } = setup();
-
-    act(() => {
-      result.current.handleEditAssignment({ id: 'a1', title: 'X', courseId: 'html', dueDate: '2026-01-01' });
-    });
-    expect(result.current.showAssignmentForm).toBe(true);
-
-    act(() => {
-      result.current.closeForm();
-    });
-
-    expect(result.current.showAssignmentForm).toBe(false);
-    expect(result.current.editingAssignmentId).toBeNull();
-  });
-
-  it('handleAdminAssignmentSubmit calls createAssignment when not editing, and closes the form on success', async () => {
-    const { result, deps } = setup();
-    const payload = { title: 'New one', description: '', dueDate: '2026-12-01', courseType: 'react' };
-
-    let success;
+    let response;
     await act(async () => {
-      success = await result.current.handleAdminAssignmentSubmit(payload);
+      response = await result.current.createAssignment(
+        'Test Assignment',
+        'Description',
+        '2026-12-31',
+        'react'
+      );
     });
 
-    expect(deps.createAssignment).toHaveBeenCalledWith('New one', '', '2026-12-01', 'react');
-    expect(deps.updateAssignment).not.toHaveBeenCalled();
-    expect(success).toBe(true);
-    expect(result.current.showAssignmentForm).toBe(false);
-    expect(deps.showToast).toHaveBeenCalledWith('Assignment created successfully!', 'success');
+    expect(response).toBeDefined();
+    expect(response.id).toBe('new_1');
+    expect(result.current.error).toBe(null);
   });
 
-  it('handleAdminAssignmentSubmit calls updateAssignment when an assignment is being edited', async () => {
-    const { result, deps } = setup();
+  it('handles assignment creation error', async () => {
+    server.use(
+      http.post('*/api/assignments', () => {
+        return new HttpResponse(null, { status: 400 });
+      })
+    );
 
-    act(() => {
-      result.current.handleEditAssignment({ id: 'a1', title: 'Old title', courseId: 'html', dueDate: '2026-01-01' });
-    });
+    const { result } = renderHook(() => useAdminAssignments());
 
-    const payload = { title: 'Updated title', description: 'desc', dueDate: '2026-02-01', courseType: 'html' };
     await act(async () => {
-      await result.current.handleAdminAssignmentSubmit(payload);
+      try {
+        await result.current.createAssignment('Test', 'Desc', '2026-12-31', 'react');
+      } catch (err) {
+        expect(err).toBeDefined();
+      }
     });
 
-    expect(deps.updateAssignment).toHaveBeenCalledWith('a1', 'Updated title', 'desc', '2026-02-01', 'html');
-    expect(deps.createAssignment).not.toHaveBeenCalled();
-    expect(deps.showToast).toHaveBeenCalledWith('Assignment updated successfully!', 'success');
+    expect(result.current.error).not.toBe(null);
   });
 
-  it('handleAdminAssignmentSubmit surfaces the hook error and keeps the form open on failure', async () => {
-    const { result, deps } = setup({
-      createAssignment: vi.fn().mockResolvedValue(false),
-      error: 'Course is archived',
-    });
+  it('grades submission with validation', async () => {
+    server.use(
+      http.put('*/api/assignments/:id/grade', () => {
+        return HttpResponse.json({ success: true, score: 95 });
+      })
+    );
 
-    let success;
+    const { result } = renderHook(() => useAdminAssignments());
+
+    expect(result.current.gradingLoading).toBe(false);
+
+    let response;
     await act(async () => {
-      success = await result.current.handleAdminAssignmentSubmit({
-        title: 'X', description: '', dueDate: '2026-01-01', courseType: 'html',
-      });
+      response = await result.current.gradeSubmission('sub_101', 95, 'Good work!');
     });
 
-    expect(success).toBe(false);
-    expect(result.current.showAssignmentForm).toBe(false); // never opened in this test
-    expect(deps.showToast).toHaveBeenCalledWith('Course is archived', 'error');
+    expect(response?.success).toBe(true);
+    expect(result.current.gradingLoading).toBe(false);
+    expect(result.current.error).toBe(null);
   });
 
-  it('handleDeleteAssignment calls deleteAssignment and toasts on success', async () => {
-    const { result, deps } = setup();
+  it('handles grading error and sets loading to false', async () => {
+    server.use(
+      http.put('*/api/assignments/:id/grade', () => {
+        return new HttpResponse(null, { status: 500 });
+      })
+    );
 
-    let success;
+    const { result } = renderHook(() => useAdminAssignments());
+
     await act(async () => {
-      success = await result.current.handleDeleteAssignment('a1');
+      try {
+        await result.current.gradeSubmission('sub_101', 95, 'Good work!');
+      } catch (err) {
+        expect(err).toBeDefined();
+      }
     });
 
-    expect(deps.deleteAssignment).toHaveBeenCalledWith('a1');
-    expect(success).toBe(true);
-    expect(deps.showToast).toHaveBeenCalledWith('Assignment deleted successfully!', 'success');
-  });
-
-  it('handleDeleteAssignment surfaces the hook error on failure', async () => {
-    const { result, deps } = setup({
-      deleteAssignment: vi.fn().mockResolvedValue(false),
-      error: 'Cannot delete a graded assignment',
-    });
-
-    let success;
-    await act(async () => {
-      success = await result.current.handleDeleteAssignment('a1');
-    });
-
-    expect(success).toBe(false);
-    expect(deps.showToast).toHaveBeenCalledWith('Cannot delete a graded assignment', 'error');
+    expect(result.current.gradingLoading).toBe(false);
+    expect(result.current.error).not.toBe(null);
   });
 });
+

@@ -1,23 +1,59 @@
 import { useState } from 'react';
+import { fetchJson } from '../services/apiClient';
+import { logError } from '../utils/logger';
+
+export function useAdminAssignments(config) {
+  // Backwards-compatible overload: when called with a config object,
+  // behave as the form-state hook (used by AssignmentScreen).
+  if (config && typeof config === 'object') {
+    return useAdminAssignmentForm(config);
+  }
+
+  const [gradingLoading, setGradingLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const createAssignment = async (assignmentData) => {
+    try {
+      setError(null);
+      return await fetchJson('/assignments', {
+        method: 'POST',
+        body: JSON.stringify(assignmentData),
+      });
+    } catch (err) {
+      setError(err?.message || err);
+      throw err;
+    }
+  };
+
+  const gradeSubmission = async (submissionId, score) => {
+    setGradingLoading(true);
+    try {
+      setError(null);
+      return await fetchJson(`/assignments/${submissionId}/grade`, {
+        method: 'PUT',
+        body: JSON.stringify({ score }),
+      });
+    } catch (err) {
+      const message = err?.message || 'Failed to grade assignment submission';
+      logError('Failed to grade assignment submission', { error: message });
+      setError(message);
+      throw err;
+    } finally {
+      setGradingLoading(false);
+    }
+  };
+
+  return { createAssignment, gradeSubmission, gradingLoading, error };
+}
 
 /**
- * Encapsulates the admin-side create/edit/delete assignment workflow that
- * previously lived inline in AssignmentScreen.jsx: which assignment (if any)
- * is being edited, the create/edit form's open/closed state, and the submit
- * and delete handlers that call into useAssignments and surface a toast.
- *
- * @param {object} deps
- * @param {(title: string, description: string, dueDate: string, courseType: string) => Promise<boolean>} deps.createAssignment
- * @param {(id: string, title: string, description: string, dueDate: string, courseType: string) => Promise<boolean>} deps.updateAssignment
- * @param {(id: string) => Promise<boolean>} deps.deleteAssignment
- * @param {(courseId: string) => string} deps.getCourseTypeFromId
- * @param {(message: string, type?: 'success' | 'error' | 'info') => void} deps.showToast
- * @param {string | null} deps.error - latest error from useAssignments, used as a fallback toast message
+ * Form-state hook for admin assignment create/edit workflow.
+ * Preserved for backward compatibility with AssignmentScreen.jsx
  */
-export function useAdminAssignments({
-  createAssignment,
-  updateAssignment,
-  deleteAssignment,
+export function useAdminAssignmentForm({
+  createAssignment: createFn,
+  updateAssignment: updateFn,
+  deleteAssignment: deleteFn,
   getCourseTypeFromId,
   showToast,
   error,
@@ -54,14 +90,14 @@ export function useAdminAssignments({
     const isEditing = Boolean(editingAssignmentId);
 
     const success = isEditing
-      ? await updateAssignment(
+      ? await updateFn(
           editingAssignmentId,
           payload.title,
           payload.description,
           payload.dueDate,
           payload.courseType
         )
-      : await createAssignment(
+      : await createFn(
           payload.title,
           payload.description,
           payload.dueDate,
@@ -81,7 +117,7 @@ export function useAdminAssignments({
   };
 
   const handleDeleteAssignment = async (assignmentId) => {
-    const success = await deleteAssignment(assignmentId);
+    const success = await deleteFn(assignmentId);
     if (success) {
       showToast('Assignment deleted successfully!', 'success');
     } else {
@@ -98,6 +134,7 @@ export function useAdminAssignments({
     closeForm,
     handleEditAssignment,
     handleAdminAssignmentSubmit,
+
     handleDeleteAssignment,
   };
 }
