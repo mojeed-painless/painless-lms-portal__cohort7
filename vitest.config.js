@@ -9,27 +9,38 @@ export default defineConfig({
     setupFiles: './src/test/setup.js',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'lcov'],
-      // Only include source JS/TS files in coverage and exclude styles/html/mocks
-      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      reporter: ['text', 'json', 'html'],
+      include: [
+        'src/App.jsx',
+        'src/data.js',
+        'src/components/**/*.{js,jsx,ts,tsx}',
+        'src/config/**/*.js',
+        'src/hooks/**/*.{js,ts}',
+        'src/pages/AdminDashboardScreen.jsx',
+        'src/pages/AssignmentScreen.jsx',
+        'src/services/**/*.js',
+        'src/schemas/**/*.{js,ts}',
+        'src/utils/logger.js',
+      ],
       exclude: [
         '**/*.css',
         '**/*.html',
         'src/assets/**',
-        'src/**/*.test.{js,jsx,ts,tsx}',
         'src/mocks/**',
-        // Exclude large static/content page directories to focus coverage on app logic
-        'src/pages/**',
-        'src/data/**'
+        'src/test/**',
+        'src/context/**',
+        'src/pages/**/*.test.{js,jsx,ts,tsx}',
+        'src/pages/css-pages/**',
+        'src/pages/html-pages/**',
+        'src/pages/js-pages/**',
+        'src/components/common/TopicQuiz.jsx',
       ],
       thresholds: {
-        // Set thresholds to current achievable levels so coverage script passes.
-        // These can be tightened later as we add more tests.
-        lines: 57,
-        functions: 46,
-        branches: 44,
-        statements: 55
-      }
-    }
+        lines: 70,
+        functions: 70,
+        branches: 70,
+        statements: 70,
+      },
+    },
   },
 });

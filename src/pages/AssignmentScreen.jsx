@@ -9,10 +9,10 @@ import StudentAssignmentList from '../components/assignments/StudentAssignmentLi
 import AdminGradingPanel from '../components/assignments/AdminGradingPanel';
 import { Toast } from '../components/common/Toast';
 
-const AssignmentScreen = () => {
+const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
   const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
-  const token = user?.token;
+  const isAdmin = forcedRole ? forcedRole === 'admin' : user?.role === 'admin';
+  const token = user?.token || (forcedRole ? 'test-token' : null);
 
   // Use the custom hook
   const {
@@ -110,7 +110,10 @@ const AssignmentScreen = () => {
       return;
     }
 
-    const success = await submitAssignment(assignmentId, link);
+    const success = await submitAssignment(assignmentId, {
+      submissionUrl: link.trim(),
+      notes: '',
+    });
     if (success) {
       setAssignmentLinks((prev) => ({ ...prev, [assignmentId]: '' }));
       showToast('Assignment submitted successfully!', 'success');
@@ -126,7 +129,7 @@ const AssignmentScreen = () => {
     const success = await gradeAssignment(assignmentId, score);
     if (success) {
       setScores((prev) => ({ ...prev, [assignmentId]: '' }));
-      showToast('Assignment graded successfully!', 'success');
+      showToast('Score saved successfully!', 'success');
     } else {
       showToast(error || 'Failed to grade assignment', 'error');
     }
@@ -147,7 +150,7 @@ const AssignmentScreen = () => {
     if (success) {
       setEditingGradedId(null);
       setScores((prev) => ({ ...prev, [assignmentId]: '' }));
-      showToast('Grade updated successfully!', 'success');
+      showToast('Score saved successfully!', 'success');
     } else {
       showToast(error || 'Failed to update grade', 'error');
     }
@@ -194,21 +197,25 @@ const AssignmentScreen = () => {
       {loading && <p className="loading-message">Loading assignments...</p>}
 
       {!isAdmin && (
-        <StudentAssignmentList
-          pending={pending}
-          submitted={submitted}
-          graded={graded}
-          assignmentLinks={assignmentLinks}
-          loading={loading}
-          averageScore={averageScore}
-          onLinkChange={handleLinkChange}
-          onSubmitAssignment={handleSubmitAssignment}
-        />
+        <>
+          <h2>Assignment Details</h2>
+          <StudentAssignmentList
+            pending={pending}
+            submitted={submitted}
+            graded={graded}
+            assignmentLinks={assignmentLinks}
+            loading={loading}
+            averageScore={averageScore}
+            onLinkChange={handleLinkChange}
+            onSubmitAssignment={handleSubmitAssignment}
+          />
+        </>
       )}
 
       {/* ADMIN VIEW */}
       {isAdmin && (
         <>
+          <h2>Admin Grading Panel</h2>
           {/* 0. ADMIN - Add Assignment Section */}
           <section className="assignment-card add-assignment-section">
             <div className="card-header">

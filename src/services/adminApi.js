@@ -26,8 +26,9 @@ export async function fetchPendingUsers(token) {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || 'Failed to fetch pending users');
   }
-
-  return await response.json();
+  const body = await response.json();
+  // Normalize responses that may return { users: [...] } or an array directly
+  return Array.isArray(body) ? body : body.users || [];
 }
 
 /**
@@ -50,8 +51,9 @@ export async function fetchAllUsers(token) {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || 'Failed to fetch all users');
   }
-
-  return await response.json();
+  const body = await response.json();
+  // Normalize responses that may return { users: [...] } or an array directly
+  return Array.isArray(body) ? body : body.users || [];
 }
 
 /**
