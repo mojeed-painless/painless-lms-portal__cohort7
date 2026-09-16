@@ -1,35 +1,31 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-
+import { describe, it, expect, vi } from 'vitest';
 import { ErrorBoundary } from './ErrorBoundary';
+import * as logger from '../../utils/logger';
 
-describe('ErrorBoundary', () => {
-  it('renders children when there is no error', () => {
-    render(
-      <ErrorBoundary>
-        <div>Safe content</div>
-      </ErrorBoundary>
-    );
+const ProblemChild = () => {
+  throw new Error('Test render crash');
+};
 
-    expect(screen.getByText(/Safe content/i)).toBeInTheDocument();
-  });
-
-  it('renders error message when child throws error', () => {
-    const ThrowError = () => {
-      throw new Error('Test error');
-    };
-
-    // suppress console.error for this test
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+describe('ErrorBoundary Component', () => {
+  it('catches render errors, logs via logError, and renders fallback UI', () => {
+    const logErrorSpy = vi.spyOn(logger, 'logError').mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
-        <ThrowError />
+        <ProblemChild />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      'Uncaught React Render Error',
+      expect.objectContaining({ errorMessage: 'Test render crash' })
+    );
 
-    console.error.mockRestore();
+    logErrorSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 });
