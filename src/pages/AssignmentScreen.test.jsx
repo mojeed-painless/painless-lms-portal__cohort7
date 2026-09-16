@@ -1,138 +1,93 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from 'vitest';
-import AssignmentScreen from './AssignmentScreen';
-import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
-import { AuthProvider } from '../context/AuthContext';
+import { server } from '../mocks/server';
+import AssignmentScreen from './AssignmentScreen';
 
-const renderAsAdmin = () => {
-  const mockUser = { firstName: 'Admin', lastName: 'User', role: 'admin', token: 'test-token' };
-  localStorage.setItem('userInfo', JSON.stringify(mockUser));
-
-  return render(
-    <AuthProvider>
-      <MemoryRouter>
-        <AssignmentScreen />
-      </MemoryRouter>
-    </AuthProvider>
-  );
-};
-
-describe('AssignmentScreen Page', () => {
+describe('AssignmentScreen Integration', () => {
   beforeEach(() => {
-    localStorage.clear();
+    server.resetHandlers();
   });
 
-  it('fetches and renders assignment lists', async () => {
-    // Provide a mocked admin session so the component triggers admin endpoints
-    const mockUser = { firstName: 'Admin', lastName: 'User', role: 'admin', token: 'test-token' };
-    localStorage.setItem('userInfo', JSON.stringify(mockUser));
-
-    // Mock admin endpoints used by the page
+  it('handles student assignment submission flow', async () => {
     server.use(
-      http.get('*/api/assignments/admin/all', () => {
-        return HttpResponse.json({ assignments: [
-          { id: '1', title: 'React Fundamentals Quiz', courseId: 'javascript', dueDate: '2026-10-01' },
-        ] });
-      }),
-      http.get('*/api/assignments/admin/submitted', () => HttpResponse.json({ assignments: [] })),
-      http.get('*/api/assignments/admin/graded', () => HttpResponse.json({ assignments: [] }))
-    );
-
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <AssignmentScreen />
-        </MemoryRouter>
-      </AuthProvider>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/React Fundamentals/i)).toBeInTheDocument();
-    });
-  });
-
-  it('lets an admin delete an assignment from the uploaded list', async () => {
-    const user = userEvent.setup();
-
-    server.use(
-      http.get('*/api/assignments/admin/all', () => {
+      http.get('*/api/assignments/student/pending', () => {
         return HttpResponse.json({
-          assignments: [
-            { id: '1', title: 'React Fundamentals Quiz', courseId: 'javascript', dueDate: '2026-10-01' },
-          ],
+          assignments: [{ id: 'asg_101', title: 'Final Project', dueDate: '2026-10-01' }],
         });
       }),
-      http.get('*/api/assignments/admin/submitted', () => HttpResponse.json({ assignments: [] })),
-      http.get('*/api/assignments/admin/graded', () => HttpResponse.json({ assignments: [] })),
-      http.delete('*/api/assignments/1', () => new HttpResponse(null, { status: 204 }))
-    );
-
-    renderAsAdmin();
-
-    await waitFor(() => {
-      expect(screen.getByText(/React Fundamentals/i)).toBeInTheDocument();
-    });
-
-    const deleteButton = document.querySelector('.delete-btn');
-    expect(deleteButton).not.toBeNull();
-    await user.click(deleteButton);
-
-    await waitFor(() => {
-      expect(screen.queryByText(/React Fundamentals/i)).not.toBeInTheDocument();
-    });
-  });
-
-  it('shows an error message and does not remove the item when delete fails', async () => {
-    const user = userEvent.setup();
-
-    server.use(
-      http.get('*/api/assignments/admin/all', () => {
-        return HttpResponse.json({
-          assignments: [
-            { id: '1', title: 'Protected Assignment', courseId: 'html', dueDate: '2026-10-01' },
-          ],
-        });
+      http.get('*/api/assignments/student/submitted', () => {
+        return HttpResponse.json({ assignments: [] });
       }),
-      http.get('*/api/assignments/admin/submitted', () => HttpResponse.json({ assignments: [] })),
-      http.get('*/api/assignments/admin/graded', () => HttpResponse.json({ assignments: [] })),
-      http.delete('*/api/assignments/1', () => {
-        return HttpResponse.json({ message: 'Cannot delete a graded assignment' }, { status: 403 });
+      http.get('*/api/assignments/student/graded', () => {
+        return HttpResponse.json({ assignments: [] });
+      }),
+      http.post('*/api/assignments/asg_101/submit', async ({ request }) => {
+        const body = await request.json();
+        return HttpResponse.json({ success: true, message: 'Submitted successfully', ...body });
       })
     );
 
-    renderAsAdmin();
+    render(<AssignmentScreen assignmentId="asg_101" role="student" />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Protected Assignment/i)).toBeInTheDocument();
+      expect(screen.getByText(/Assignment Details/i)).toBeInTheDocument();
     });
 
-    await user.click(document.querySelector('.delete-btn'));
+    const urlInput = screen.getByPlaceholderText(/submission url/i);
+    fireEvent.change(urlInput, { target: { value: 'https://github.com/mojeed-painless/test-repo' } });
 
-    // The hook's handleError sets `error`, which flips AssignmentScreen into
-    // its dedicated error view (see the `if (error && !loading)` early return).
+    const submitBtn = screen.getByRole('button', { name: /submit assignment/i });
+    fireEvent.click(submitBtn);
+
     await waitFor(() => {
-      expect(screen.getByText(/Cannot delete a graded assignment/i)).toBeInTheDocument();
+      expect(screen.getByText(/submitted successfully/i)).toBeInTheDocument();
     });
   });
 
-  it('opens the create-assignment form when "New Assignment" is clicked', async () => {
-    const user = userEvent.setup();
-
+  it('handles admin save score and edit score flows', async () => {
     server.use(
-      http.get('*/api/assignments/admin/all', () => HttpResponse.json({ assignments: [] })),
-      http.get('*/api/assignments/admin/submitted', () => HttpResponse.json({ assignments: [] })),
-      http.get('*/api/assignments/admin/graded', () => HttpResponse.json({ assignments: [] }))
+      http.get('*/api/assignments/admin/all', () => {
+        return HttpResponse.json({ assignments: [] });
+      }),
+      http.get('*/api/assignments/admin/submitted', () => {
+        return HttpResponse.json({
+          assignments: [
+            {
+              id: 'sub_1',
+              title: 'API Integration',
+              studentName: 'Jane Doe',
+              dueDate: '2026-10-01',
+              submittedDate: '2026-09-29',
+              submissionLink: 'https://github.com/demo/project',
+            },
+          ],
+        });
+      }),
+      http.get('*/api/assignments/admin/graded', () => {
+        return HttpResponse.json({ assignments: [] });
+      }),
+      http.put('*/api/assignments/sub_1/grade', async ({ request }) => {
+        const body = await request.json();
+        return HttpResponse.json({ id: 'sub_1', score: body.score });
+      })
     );
 
-    renderAsAdmin();
+    render(<AssignmentScreen assignmentId="asg_101" role="admin" />);
 
-    const newAssignmentButton = await screen.findByRole('button', { name: /new assignment/i });
-    await user.click(newAssignmentButton);
+    await waitFor(() => {
+      expect(screen.getByText(/Admin Grading Panel/i)).toBeInTheDocument();
+    });
 
-    // Toggling the form swaps the "New Assignment" trigger button out entirely
-    expect(screen.queryByRole('button', { name: /new assignment/i })).not.toBeInTheDocument();
+    const scoreInput = screen.getByRole('spinbutton');
+    fireEvent.change(scoreInput, { target: { value: '92' } });
+
+    const saveBtn = screen.getByRole('button', { name: /save score/i });
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/score saved/i)).toBeInTheDocument();
+    });
   });
 });

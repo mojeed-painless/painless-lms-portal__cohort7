@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'build', '.vite']),
+  globalIgnores(['dist', 'node_modules', 'build', '.vite', 'coverage']),
   {
     // Only lint project source files to avoid scanning generated/vendor code
     files: ['src/**/*.{js,jsx}'],
@@ -27,6 +27,27 @@ export default defineConfig([
       // Project is a mix of patterns; relax unused-vars and set-state-in-effect
       'no-unused-vars': 'off',
       'react-hooks/set-state-in-effect': 'off',
+    },
+  },
+  {
+    // Vitest test files
+    files: ['src/**/*.test.{js,jsx}', 'src/test/**/*.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': 'off',
     },
   },
 ])

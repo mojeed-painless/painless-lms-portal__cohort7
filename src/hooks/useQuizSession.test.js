@@ -25,4 +25,24 @@ describe('useQuizSession Hook', () => {
     expect(result.current.session.sessionId).toBe('sess_123');
     expect(result.current.error).toBeNull();
   });
+
+  it('falls back to client session when server returns no session', async () => {
+    server.use(
+      http.get('*/api/quiz-attempts/session*', () => {
+        return HttpResponse.json({});
+      })
+    );
+
+    const user = { token: 't' };
+    const { result } = renderHook(() => useQuizSession(user));
+
+    // Wait for effect to finish
+    await waitFor(() => {
+      expect(result.current.sessionLoading).toBe(false);
+    });
+
+    expect(result.current.dailySession).toBeTruthy();
+    expect(result.current.dailySession._clientFallback).toBe(true);
+    expect(result.current.timeLeft.beforeQuiz).toHaveProperty('seconds');
+  });
 });

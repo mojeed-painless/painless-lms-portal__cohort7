@@ -53,7 +53,8 @@ const StudentAssignmentList = ({
                     <td className="first-inputs">
                       <input
                         type="text"
-                        placeholder="Paste your assignment link here..."
+                        placeholder="Submission URL"
+                        aria-label="Submission URL"
                         className="link-input first-input"
                         value={assignmentLinks[item.id] || ''}
                         onChange={(e) =>
@@ -64,6 +65,7 @@ const StudentAssignmentList = ({
                     <td className="assignment__action">
                       <button
                         className="submit-btn"
+                        aria-label="Submit Assignment"
                         onClick={() =>
                           onSubmitAssignment(
                             item.id,

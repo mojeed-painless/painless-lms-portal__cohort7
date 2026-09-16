@@ -82,6 +82,7 @@ const AdminGradingPanel = ({
                     <td className="assignment__action">
                       <button
                         className="save-score-btn"
+                        aria-label={loading ? 'Saving score' : 'Save score'}
                         onClick={() => onSaveScore(item.id)}
                         disabled={loading}
                       >
@@ -173,6 +174,7 @@ const AdminGradingPanel = ({
                       {editingGradedId === item.id ? (
                         <button
                           className="save-score-btn"
+                          aria-label={loading ? 'Saving score' : 'Save score'}
                           onClick={() => onSaveEditedScore(item.id)}
                           disabled={loading}
                         >
@@ -184,6 +186,7 @@ const AdminGradingPanel = ({
                       ) : (
                         <button
                           className="edit-btn"
+                          aria-label="Edit score"
                           onClick={() =>
                             onEditScore(item.id, item.score)
                           }
