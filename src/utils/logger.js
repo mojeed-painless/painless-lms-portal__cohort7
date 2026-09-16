@@ -6,19 +6,37 @@ function createLogObject(level, message, context = {}) {
     level,
     message,
     context,
-    environment: import.meta.env.MODE || 'development',
+    environment:
+      (typeof process !== 'undefined' && process.env && (process.env.NODE_ENV || process.env.MODE)) ||
+      'development',
   };
 }
 
+/**
+ * Formats log parameters into a structured JSON payload
+ */
+function formatLog(level, message, context = {}) {
+  return JSON.stringify({
+    timestamp: new Date().toISOString(),
+    level,
+    message,
+    context: typeof context === 'object' && context !== null ? context : { detail: context },
+    environment:
+      (typeof process !== 'undefined' && process.env && (process.env.NODE_ENV || process.env.MODE)) ||
+      'development',
+  });
+}
+
 export function logInfo(message, context = {}) {
-  const payload = createLogObject('INFO', message, context);
-  console.log(JSON.stringify(payload));
-  return payload;
+  const formatted = formatLog('INFO', message, context);
+  console.log(formatted);
+  return formatted;
 }
 
 export function logError(message, context = {}) {
   const payload = createLogObject('ERROR', message, context);
-  console.error(JSON.stringify(payload));
+  const formatted = JSON.stringify(payload);
+  console.error(formatted);
 
   // Optional external error reporting hook
   if (ERROR_REPORTING_URL) {
@@ -26,11 +44,11 @@ export function logError(message, context = {}) {
       fetch(ERROR_REPORTING_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: formatted,
       }).catch(() => {}); // Suppress network failures from logger
     } catch (err) {
       // Silently ignore reporting errors
     }
   }
-  return payload;
+  return formatted;
 }
