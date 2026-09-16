@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useAssignments } from '../hooks/useAssignments';
+import { useStudentAssignments } from '../hooks/useStudentAssignments';
+import { useAdminAssignmentsApi } from '../hooks/useAdminAssignmentsApi';
 import { useAdminAssignments } from '../hooks/useAdminAssignments';
 import { Plus, NotebookTabs, Edit, Trash2 } from 'lucide-react';
 import '../assets/styles/assignment.css';
@@ -13,6 +15,16 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
   const { user } = useAuth();
   const isAdmin = forcedRole ? forcedRole === 'admin' : user?.role === 'admin';
   const token = user?.token || (forcedRole ? 'test-token' : null);
+
+  const studentAssignments = useStudentAssignments(token);
+  const adminAssignmentsApi = useAdminAssignmentsApi();
+  const assignmentData = useAssignments(token);
+
+  const mergedAssignmentData = {
+    ...studentAssignments,
+    ...assignmentData,
+    ...adminAssignmentsApi,
+  };
 
   // Use the custom hook
   const {
@@ -34,7 +46,7 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
     createAssignment,
     updateAssignment,
     deleteAssignment,
-  } = useAssignments(token);
+  } = mergedAssignmentData;
 
   // compute average score from graded assignments
   const averageScore = (graded && graded.length)

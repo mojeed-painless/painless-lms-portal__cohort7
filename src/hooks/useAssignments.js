@@ -474,3 +474,6 @@ export const useAssignments = (token) => {
     deleteAssignment,
   };
 };
+
+export { useStudentAssignments } from './useStudentAssignments';
+export { useAdminAssignmentsApi } from './useAdminAssignmentsApi';

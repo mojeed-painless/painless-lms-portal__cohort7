@@ -25,6 +25,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import { DailyQuizData } from '../quizData.js';
+import { useStudentAssignments } from '../hooks/useStudentAssignments';
 
 
 
@@ -199,6 +200,14 @@ export default function QuizScreen() {
 
     fetchMyAttempt();
   }, [user, submissionDone]);
+
+  const { refresh } = useStudentAssignments();
+
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+
 
   // previousAttempts fetching removed
 
