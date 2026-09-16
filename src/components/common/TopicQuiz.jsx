@@ -9,6 +9,7 @@ import {
   X,
   Check,
 } from 'lucide-react';
+import useTopicQuizSubmission from '../../hooks/useTopicQuizSubmission';
 
 import { useAuth } from '../../context/AuthContext';
 import { quizAttemptSchema, quizAnswerSchema } from '../../schemas/quiz';
@@ -20,6 +21,8 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   const [error, setError] = useState('');
 
   const currentQuestion = questions[0];
+
+  const { submitAttempt: submitAttemptHook, submitAnswer: submitAnswerHook } = useTopicQuizSubmission();
 
   const submitAttempt = async () => {
     const total = questions.length;
@@ -55,23 +58,11 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
     };
 
     try {
-      const validatedData = quizAttemptSchema.parse(payload);
       setError('');
+      const data = await submitAttemptHook(payload);
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/quiz-attempts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validatedData),
-      });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(data?.message || 'Failed to submit quiz');
-      }
-
-      const passed = typeof data.passed === 'boolean' ? data.passed : score === total;
-      const nextResult = { score, total, passed, status: data.status || 'success' };
+      const passed = typeof data?.passed === 'boolean' ? data.passed : score === total;
+      const nextResult = { score, total, passed, status: data?.status || 'success' };
       setResult(nextResult);
       if (onComplete) onComplete(nextResult);
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
@@ -164,17 +155,9 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
 
   const postAnswer = async (answerData) => {
     try {
-      const validatedData = quizAnswerSchema.parse(answerData);
-      await fetch(`${API_BASE}/api/quiz-answers`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(user && user._id ? { 'x-user-id': user._id } : {}),
-        },
-        body: JSON.stringify(validatedData),
-      });
+      await submitAnswerHook(answerData);
     } catch (err) {
-      logError('Quiz Answer Validation Failure', { error: err.message });
+      logError('Quiz Answer Validation Failure', { error: err?.message || String(err) });
     }
   };
 
