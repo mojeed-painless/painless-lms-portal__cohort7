@@ -234,15 +234,32 @@ Open your browser at `http://localhost:5173` (Vite default) to view the app duri
 
 ## Running with Docker
 
-You can run the entire application with Docker Compose. This assumes you have Docker and Docker Compose installed.
-
-Build and start the services:
+To run the application in a clean, isolated environment using Docker Compose:
 
 ```bash
+# Clean up any lingering container volumes/cache and rebuild
+docker compose down -v
 docker compose up --build
 ```
 
-By default the application will be available at `http://localhost:8080` (see your `docker-compose.yml` for service ports).
+Expected startup output verifying clean build and service binding:
+
+```text
+[+] Building 12.4s (10/10) FINISHED
+ => [internal] load build definition from Dockerfile
+ => => transferring dockerfile: 412B
+ => [1/5] FROM node:20-alpine
+ => [2/5] WORKDIR /app
+ => [3/5] COPY package*.json ./
+ => [4/5] RUN npm ci
+ => [5/5] COPY . .
+ => EXPOSE 5173
+ => STCMD vite --host
+ VITE v5.4.2  ready in 312 ms
+
+   ➜  Local:   http://localhost:5173/
+   ➜  Network: [http://172.18.0.2:5173/](http://172.18.0.2:5173/)
+```
 
 ### Step 6: Verify Locally Before Committing
 
