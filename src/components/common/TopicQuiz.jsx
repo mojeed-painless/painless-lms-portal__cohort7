@@ -10,48 +10,33 @@ import {
   Check,
 } from 'lucide-react';
 import useTopicQuizSubmission from '../../hooks/useTopicQuizSubmission';
+import { useTopicQuizState } from '../../hooks/useTopicQuizState';
+import TopicQuizView from './TopicQuizView';
 
 import { useAuth } from '../../context/AuthContext';
 import { quizAttemptSchema, quizAnswerSchema } from '../../schemas/quiz';
 
 function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
-  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const { currentQuestion, selectedAnswers, score, isFinished, selectOption, nextQuestion } = useTopicQuizState(questions);
+
   const [submissionState, setSubmissionState] = useState({ status: 'idle', message: '' });
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
-  const currentQuestion = questions[0];
-
-  const { submitAttempt: submitAttemptHook, submitAnswer: submitAnswerHook } = useTopicQuizSubmission();
+  const { submitAttempt: submitAttemptHook } = useTopicQuizSubmission();
 
   const submitAttempt = async () => {
     const total = questions.length;
-    const score = questions.reduce((acc, question) => {
-      const selected = selectedAnswers[question.id];
-      const correctAnswer = question.options[question.correctAnswer];
-      return acc + (selected === correctAnswer ? 1 : 0);
-    }, 0);
+    const calculatedScore = score || 0;
 
-    const answers = questions
-      .filter(question => selectedAnswers[question.id] !== undefined)
-      .map(question => {
-        const selectedValue = selectedAnswers[question.id];
-        const selectedOption = question.options.findIndex(option => {
-          const optionValue = typeof option === 'string' ? option : option.text;
-          return optionValue === selectedValue;
-        });
-
-        return {
-          questionId: Number(question.id),
-          selectedOption,
-          correctAnswer: question.correctAnswer,
-        };
-      })
-      .filter(answer => answer.selectedOption >= 0);
+    const answers = Object.keys(selectedAnswers).map((qid) => ({
+      questionId: Number(qid),
+      selectedOption: selectedAnswers[qid],
+    }));
 
     const payload = {
       topic: String(topic || 'quiz'),
-      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
+      score: Math.min(100, Math.round((calculatedScore / Math.max(total, 1)) * 100)),
       total,
       timeTaken: 0,
       answers,
@@ -60,75 +45,30 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
     try {
       setError('');
       const data = await submitAttemptHook(payload);
-
-      const passed = typeof data?.passed === 'boolean' ? data.passed : score === total;
-      const nextResult = { score, total, passed, status: data?.status || 'success' };
+      const passed = typeof data?.passed === 'boolean' ? data.passed : calculatedScore === total;
+      const nextResult = { score: calculatedScore, total, passed, status: data?.status || 'success' };
       setResult(nextResult);
       if (onComplete) onComplete(nextResult);
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
-    } catch (error) {
-      const message = error?.message || 'Error submitting quiz';
+    } catch (err) {
+      const message = err?.message || 'Error submitting quiz';
       logError('Quiz Attempt Validation Failure', { error: message });
       setSubmissionState({ status: 'error', message });
       setResult(null);
     }
   };
 
-  const handleSelect = (selectedOption) => {
-    setSelectedAnswers(prev => ({ ...prev, [currentQuestion.id]: selectedOption }));
-  };
-
-  if (result) {
-    return (
-      <div className="topic-quiz__box">
-        <p>Passed - Score: {result.score} / {result.total}</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="topic-quiz__box">
-      <div className="topic-quiz__header">
-        <span>{topic}</span>
-      </div>
-
-      <div className="topic-quiz__questions">
-        <div className="topic-quiz__question active-question" key={currentQuestion.id}>
-          <h4>{currentQuestion.question}</h4>
-          <div className="topic-quiz__options">
-            {currentQuestion.options.map((option, index) => {
-              const optionLetter = String.fromCharCode(65 + index);
-              const optionText = typeof option === 'string' ? option : option.text;
-              const isSelected = selectedAnswers[currentQuestion.id] === optionText;
-
-              return (
-                <button
-                  key={`${currentQuestion.id}-${optionText}`}
-                  type="button"
-                  aria-label={`${optionLetter}. ${optionText}`}
-                  aria-pressed={isSelected}
-                  className={`topic-quiz__option ${isSelected ? 'selected' : ''}`}
-                  onClick={() => handleSelect(optionText)}
-                >
-                  <span>{optionLetter}</span> {optionText}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="topic-quiz__nav">
-        <button type="button" onClick={submitAttempt} aria-label="Submit quiz">
-          Submit
-        </button>
-      </div>
-
-      {error && <p role="alert">{error}</p>}
-      {submissionState.status === 'error' && (
-        <p role="alert">Error submitting quiz: {submissionState.message}</p>
-      )}
-    </div>
+    <TopicQuizView
+      topic={topic}
+      currentQuestion={currentQuestion}
+      selectedAnswers={selectedAnswers}
+      onSelect={selectOption}
+      onSubmit={submitAttempt}
+      result={result}
+      submissionState={submissionState}
+      error={error}
+    />
   );
 }
 
