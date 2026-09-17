@@ -1,3 +1,38 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { logError, setErrorSink } from './logger';
+
+describe('Logger Error Tracking Integration', () => {
+  let consoleSpy;
+
+  beforeEach(() => {
+    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
+    setErrorSink(null);
+  });
+
+  it('calls registered error sink when logError is invoked', () => {
+    const mockSink = vi.fn();
+    setErrorSink(mockSink);
+
+    logError('Database connection lost', { retries: 3 });
+
+    expect(mockSink).toHaveBeenCalledTimes(1);
+    expect(mockSink).toHaveBeenCalledWith('Database connection lost', { retries: 3 });
+  });
+
+  it('safely no-ops and logs to console when no error sink is configured', () => {
+    setErrorSink(null);
+
+    expect(() => {
+      logError('Unhandled API Exception', { status: 500 });
+    }).not.toThrow();
+
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
+});
 import { describe, it, expect, vi } from 'vitest';
 import { logInfo, logError } from './logger';
 
