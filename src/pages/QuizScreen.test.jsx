@@ -103,7 +103,19 @@ describe('QuizScreen Offline Execution via MSW', () => {
       const startBtn = await screen.findByRole('button', { name: /start quiz/i });
       fireEvent.click(startBtn);
 
-      const submitBtn = await screen.findByRole('button', { name: /finish|submit/i });
+      let submitBtn = null;
+      for (let i = 0; i < 10; i++) {
+        try {
+          submitBtn = await screen.findByRole('button', { name: /finish|submit/i, timeout: 200 });
+          break;
+        } catch (e) {
+          const next = screen.queryByRole('button', { name: /next/i });
+          if (next) fireEvent.click(next);
+          else break;
+        }
+      }
+
+      if (!submitBtn) submitBtn = await screen.findByRole('button', { name: /submit/i });
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
@@ -129,7 +141,19 @@ describe('QuizScreen Offline Execution via MSW', () => {
       const startBtn = await screen.findByRole('button', { name: /start quiz/i });
       fireEvent.click(startBtn);
 
-      const submitBtn = await screen.findByRole('button', { name: /finish|submit/i });
+      let submitBtn = null;
+      for (let i = 0; i < 10; i++) {
+        try {
+          submitBtn = await screen.findByRole('button', { name: /finish|submit/i, timeout: 200 });
+          break;
+        } catch (e) {
+          const next = screen.queryByRole('button', { name: /next/i });
+          if (next) fireEvent.click(next);
+          else break;
+        }
+      }
+
+      if (!submitBtn) submitBtn = await screen.findByRole('button', { name: /submit/i });
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
