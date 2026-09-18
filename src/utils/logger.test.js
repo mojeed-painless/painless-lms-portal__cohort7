@@ -39,7 +39,7 @@ import { logInfo, logError } from './logger';
 describe('Structured JSON Logger', () => {
   it('emits logInfo as valid structured JSON with required fields', () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    
+
     logInfo('User session started', { userId: 'usr_101' });
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
@@ -55,7 +55,7 @@ describe('Structured JSON Logger', () => {
 
   it('emits logError as valid structured JSON with error context', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     logError('Network request failed', { status: 500 });
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);

@@ -3,13 +3,19 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 
 // Mock TakeQuizButton and TopicQuiz to keep test focused
-vi.mock('./TakeQuizButton', () => ({ __esModule: true, default: ({ onSelect }) => <button onClick={onSelect}>Take</button> }));
-vi.mock('./TopicQuiz', () => ({ __esModule: true, default: ({ onSelect, currentCategory, currentTopic }) => (
-  <div>
-    TopicQuiz - Category: {currentCategory?.name}, Topic: {currentTopic?.name}
-    <button onClick={onSelect}>Close Quiz</button>
-  </div>
-) }));
+vi.mock('./TakeQuizButton', () => ({
+  __esModule: true,
+  default: ({ onSelect }) => <button onClick={onSelect}>Take</button>,
+}));
+vi.mock('./TopicQuiz', () => ({
+  __esModule: true,
+  default: ({ onSelect, currentCategory, currentTopic }) => (
+    <div>
+      TopicQuiz - Category: {currentCategory?.name}, Topic: {currentTopic?.name}
+      <button onClick={onSelect}>Close Quiz</button>
+    </div>
+  ),
+}));
 
 import QuizBox from './QuizBox';
 
@@ -35,7 +41,7 @@ describe('QuizBox', () => {
 
     const article = container.querySelector('article.topic-quiz__container');
     const takeBtn = screen.getByText(/Take/i);
-    
+
     fireEvent.click(takeBtn);
     expect(article.className).toContain('active-quiz');
 
@@ -54,9 +60,7 @@ describe('QuizBox', () => {
   });
 
   it('has active-quiz class in article initially false', () => {
-    const { container } = render(
-      <QuizBox currentCategory={{}} currentTopic={{}} />
-    );
+    const { container } = render(<QuizBox currentCategory={{}} currentTopic={{}} />);
 
     const article = container.querySelector('article.topic-quiz__container');
     expect(article.className).not.toContain('active-quiz');

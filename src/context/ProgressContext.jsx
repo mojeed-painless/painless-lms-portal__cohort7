@@ -48,12 +48,14 @@ export const ProgressProvider = ({ children }) => {
 
         const { data } = await axios.get(`${API_URL}/progress`, config);
         const serverProgress = data.completedLessons || [];
-        
+
         // Use server data and update localStorage
         setCompletedLessons(serverProgress);
         localStorage.setItem(`progress_${user._id}`, JSON.stringify(serverProgress));
       } catch (err) {
-        logInfo('Could not fetch progress from server', { error: err && err.message ? err.message : err });
+        logInfo('Could not fetch progress from server', {
+          error: err && err.message ? err.message : err,
+        });
         // If server fails, keep localStorage data (already loaded above)
       } finally {
         setIsLoading(false);
@@ -73,8 +75,8 @@ export const ProgressProvider = ({ children }) => {
   // Mark a lesson as complete and sync with backend
   const markLessonComplete = async (lessonPath) => {
     // Create updated array immediately
-    const updatedLessons = completedLessons.includes(lessonPath) 
-      ? completedLessons 
+    const updatedLessons = completedLessons.includes(lessonPath)
+      ? completedLessons
       : [...completedLessons, lessonPath];
 
     // Update UI immediately (optimistic update)
@@ -93,13 +95,11 @@ export const ProgressProvider = ({ children }) => {
         },
       };
 
-      await axios.put(
-        `${API_URL}/progress`,
-        { completedLessons: updatedLessons },
-        config
-      );
+      await axios.put(`${API_URL}/progress`, { completedLessons: updatedLessons }, config);
     } catch (err) {
-      logError('Error syncing progress to backend', { error: err && err.message ? err.message : err });
+      logError('Error syncing progress to backend', {
+        error: err && err.message ? err.message : err,
+      });
       // Progress is still saved locally, will sync on next login
     }
   };
@@ -128,9 +128,5 @@ export const ProgressProvider = ({ children }) => {
     isLoading,
   };
 
-  return (
-    <ProgressContext.Provider value={value}>
-      {children}
-    </ProgressContext.Provider>
-  );
+  return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
 };

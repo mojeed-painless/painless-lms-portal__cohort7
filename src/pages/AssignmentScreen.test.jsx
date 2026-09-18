@@ -36,7 +36,9 @@ describe('AssignmentScreen Integration', () => {
     });
 
     const urlInput = screen.getByPlaceholderText(/submission url/i);
-    fireEvent.change(urlInput, { target: { value: 'https://github.com/mojeed-painless/test-repo' } });
+    fireEvent.change(urlInput, {
+      target: { value: 'https://github.com/mojeed-painless/test-repo' },
+    });
 
     const submitBtn = screen.getByRole('button', { name: /submit assignment/i });
     fireEvent.click(submitBtn);

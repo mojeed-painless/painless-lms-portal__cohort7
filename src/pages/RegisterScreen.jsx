@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { logError } from '../utils/logger';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc';
 import pcalogo from '../assets/pcalogo.png';
 import codeIllustration from '../assets/code-illustration.png';
 
@@ -18,7 +18,7 @@ const RegisterScreen = () => {
   const [success, setSuccess] = useState(null);
   const [displayError, setDisplayError] = useState('');
   const [displaySuccess, setDisplaySuccess] = useState('');
-  
+
   // Auth context for registration logic and state
   const { register, isLoading, error, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -30,27 +30,27 @@ const RegisterScreen = () => {
     }
   }, [isAuthenticated, navigate]);
 
-    useEffect(() => {
-      if (error || message) {
-        setDisplayError(error || message);
-        const timer = setTimeout(() => {
-          setDisplayError('');
-        }, 5000);
-  
-        return () => clearTimeout(timer);
-      }
-    }, [error, message]);
+  useEffect(() => {
+    if (error || message) {
+      setDisplayError(error || message);
+      const timer = setTimeout(() => {
+        setDisplayError('');
+      }, 5000);
 
-    useEffect(() => {
-      if (success) {
-        setDisplaySuccess(success);
-        const timer = setTimeout(() => {
-          setDisplaySuccess('');
-        }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, message]);
 
-        return () => clearTimeout(timer);
-      }
-    }, [success]);
+  useEffect(() => {
+    if (success) {
+      setDisplaySuccess(success);
+      const timer = setTimeout(() => {
+        setDisplaySuccess('');
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   // --- Form Submission Handler ---
   const submitHandler = async (e) => {
@@ -67,7 +67,9 @@ const RegisterScreen = () => {
     try {
       await register(firstName, lastName, username, email, password, role);
 
-      setSuccess('Registration successful! Please wait while your account status is being approved by an admin.');
+      setSuccess(
+        'Registration successful! Please wait while your account status is being approved by an admin.'
+      );
 
       setFirstName('');
       setLastName('');
@@ -78,9 +80,8 @@ const RegisterScreen = () => {
       setRole('student');
 
       setTimeout(() => {
-          navigate('/login'); 
+        navigate('/login');
       }, 5000);
-
     } catch (err) {
       logError('Registration error', { error: err && err.message ? err.message : err });
     }
@@ -89,37 +90,33 @@ const RegisterScreen = () => {
   return (
     <div className="auth-container register-container">
       <div className="right-info">
-              <div className="info-logo">
-                <img src={pcalogo} alt="academy logo" />
-              </div>
-      
-              <div className="register-image">
-                <img src={codeIllustration} alt="code illustration" />
-              </div>
+        <div className="info-logo">
+          <img src={pcalogo} alt="academy logo" />
+        </div>
+
+        <div className="register-image">
+          <img src={codeIllustration} alt="code illustration" />
+        </div>
       </div>
 
       <div className="auth-card">
-        <h2 className="auth-title">
-          Create your account
-        </h2>
-        
+        <h2 className="auth-title">Create your account</h2>
 
-        <div className={ displaySuccess ? "success-message" : ".auth-error-top"} role="alert">
-            {displaySuccess}
+        <div className={displaySuccess ? 'success-message' : '.auth-error-top'} role="alert">
+          {displaySuccess}
         </div>
 
-        <div className={ displayError ? "auth-error" : ".auth-error-top"} role="alert">
-            {displayError}
+        <div className={displayError ? 'auth-error' : '.auth-error-top'} role="alert">
+          {displayError}
         </div>
-
 
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="auth-with-google register-auth">
-            <button type="button" className="google-btn" >
+            <button type="button" className="google-btn">
               <FcGoogle size={20} style={{ marginRight: '8px' }} />
               Continue with Google
             </button>
-            
+
             <div className="separator">
               <hr />
               <span>or</span>
@@ -162,7 +159,7 @@ const RegisterScreen = () => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-          
+
             <div>
               <label htmlFor="email">Email address</label>
               <input
@@ -176,7 +173,9 @@ const RegisterScreen = () => {
             </div>
 
             <div>
-              <label htmlFor="role" className="auth-label">Joining as:</label>
+              <label htmlFor="role" className="auth-label">
+                Joining as:
+              </label>
               <select
                 id="role"
                 value={role}
@@ -199,7 +198,7 @@ const RegisterScreen = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-          
+
             <div>
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
@@ -219,11 +218,7 @@ const RegisterScreen = () => {
               disabled={isLoading}
               className={`auth-submit-btn ${isLoading ? 'disabled' : ''}`}
             >
-              {isLoading ? (
-                <div className="auth-spinner"></div>
-              ) : (
-                'Register'
-              )}
+              {isLoading ? <div className="auth-spinner"></div> : 'Register'}
             </button>
           </div>
         </form>

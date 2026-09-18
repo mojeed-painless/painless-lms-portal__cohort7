@@ -21,10 +21,7 @@ export function Toast({ message, type = 'info', onClose, duration = 3000 }) {
     >
       <div className="flex items-center space-x-2">
         <span>{message}</span>
-        <button
-          onClick={onClose}
-          className="ml-2 font-bold opacity-75 hover:opacity-100"
-        >
+        <button onClick={onClose} className="ml-2 font-bold opacity-75 hover:opacity-100">
           ×
         </button>
       </div>

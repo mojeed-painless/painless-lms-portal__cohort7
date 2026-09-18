@@ -33,9 +33,11 @@ export function useLeaderboard() {
         }
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
         const data = await response.json();
-        setLeaders(Array.isArray(data) ? data : (data.users || []));
+        setLeaders(Array.isArray(data) ? data : data.users || []);
       } catch (err) {
-        logError('Failed to fetch general leaderboard', { error: err && err.message ? err.message : err });
+        logError('Failed to fetch general leaderboard', {
+          error: err && err.message ? err.message : err,
+        });
       }
     }
 
@@ -68,7 +70,9 @@ export function useLeaderboard() {
           count: parseResult.data.length,
         });
       } catch (err) {
-        logError('Failed to fetch daily quiz leaderboard', { error: err && err.message ? err.message : err });
+        logError('Failed to fetch daily quiz leaderboard', {
+          error: err && err.message ? err.message : err,
+        });
       } finally {
         setDailyQuizLoading(false);
       }

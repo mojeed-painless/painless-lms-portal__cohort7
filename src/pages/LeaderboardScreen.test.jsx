@@ -10,9 +10,7 @@ const mockLeaderboardData = [
   { id: '2', name: 'Bob', points: 88, rank: 2 },
 ];
 
-const mockGradesData = [
-  { courseId: 'react-101', grade: 'A' },
-];
+const mockGradesData = [{ courseId: 'react-101', grade: 'A' }];
 
 const server = setupServer();
 

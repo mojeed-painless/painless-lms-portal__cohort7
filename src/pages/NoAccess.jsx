@@ -1,57 +1,59 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../assets/styles/layout.css';
 import '../assets/styles/no-access.css';
 import pcalogo from '../assets/pcalogo.png';
-import { FaHandPointLeft } from "react-icons/fa";
-import {
-    ShieldX,
-    Sparkles,
-} from 'lucide-react';
-
+import { FaHandPointLeft } from 'react-icons/fa';
+import { ShieldX, Sparkles } from 'lucide-react';
 
 export default function NoAccess() {
-    return (
-            <div className="no-access">
-                <nav>
-                    <div className="nav__left">
-                      <div className="nav-logo">
-                        <img src={pcalogo} alt="academy logo" />
-                      </div>
-                    </div>
-                        
-                    <div className="nav__right"></div>
-                </nav>
+  return (
+    <div className="no-access">
+      <nav>
+        <div className="nav__left">
+          <div className="nav-logo">
+            <img src={pcalogo} alt="academy logo" />
+          </div>
+        </div>
 
-                <div className="upgrade-wrapper">
-                    
-                    <div className="error-column">
-                        <div className="error-content">
-                            <div className="icon-shield">
-                                <span className="shield-x"><ShieldX size={55}/></span>
-                            </div>
+        <div className="nav__right"></div>
+      </nav>
 
-                            <h1>Oops!</h1>
+      <div className="upgrade-wrapper">
+        <div className="error-column">
+          <div className="error-content">
+            <div className="icon-shield">
+              <span className="shield-x">
+                <ShieldX size={55} />
+              </span>
+            </div>
 
-                            <h2>Calm down! Study and perfect the available contents. Others will be releaes shortly</h2>
-                            
-                            {/* <p>
+            <h1>Oops!</h1>
+
+            <h2>
+              Calm down! Study and perfect the available contents. Others will be releaes shortly
+            </h2>
+
+            {/* <p>
                                 This content is reserved for paid members. Upgrade your 
                                 plan to unlock full access to all features.
                             </p> */}
 
-                            {/* <div className="premium-label">
+            {/* <div className="premium-label">
                                 <span>🔒 Paid Content</span>
                             </div> */}
 
-                            <div className="link-container">
-                                <span><FaHandPointLeft /></span>
-                                <Link to="/" className='not-found-link'>Go back to Home page</Link> 
-                            </div>
-                        </div>
-                    </div>
+            <div className="link-container">
+              <span>
+                <FaHandPointLeft />
+              </span>
+              <Link to="/" className="not-found-link">
+                Go back to Home page
+              </Link>
+            </div>
+          </div>
+        </div>
 
-                    
-                    {/* <div className="pricing-column">
+        {/* <div className="pricing-column">
                         <div className="pricing-header">
                             <span className="badge-sparkle">
                                 <span><Sparkles size={15}/></span> 
@@ -81,8 +83,7 @@ export default function NoAccess() {
                             </button>
                         </div>
                     </div> */}
-                    </div>
-                </div>
-                
-    )
+      </div>
+    </div>
+  );
 }

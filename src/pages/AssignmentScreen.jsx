@@ -50,15 +50,16 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
   } = mergedAssignmentData;
 
   // compute average score from graded assignments
-  const averageScore = (graded && graded.length)
-    ? Math.round(
-        graded.reduce((acc, a) => {
-          const raw = typeof a.score === 'string' ? a.score.replace('%', '') : a.score;
-          const num = parseFloat(raw);
-          return acc + (isNaN(num) ? 0 : num);
-        }, 0) / graded.length
-      )
-    : 0;
+  const averageScore =
+    graded && graded.length
+      ? Math.round(
+          graded.reduce((acc, a) => {
+            const raw = typeof a.score === 'string' ? a.score.replace('%', '') : a.score;
+            const num = parseFloat(raw);
+            return acc + (isNaN(num) ? 0 : num);
+          }, 0) / graded.length
+        )
+      : 0;
 
   // Local state for form inputs
   const [assignmentLinks, setAssignmentLinks] = useState({});
@@ -85,16 +86,25 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
       fetchSubmittedAssignmentsAdmin();
       fetchGradedAssignmentsAdmin();
     }
-  }, [isAdmin, token, fetchPendingAssignments, fetchSubmittedAssignments, fetchGradedAssignments, fetchAllAssignments, fetchSubmittedAssignmentsAdmin, fetchGradedAssignmentsAdmin]);
+  }, [
+    isAdmin,
+    token,
+    fetchPendingAssignments,
+    fetchSubmittedAssignments,
+    fetchGradedAssignments,
+    fetchAllAssignments,
+    fetchSubmittedAssignmentsAdmin,
+    fetchGradedAssignmentsAdmin,
+  ]);
 
   // Helper function to convert courseId to courseType for display
   const getCourseTypeFromId = (courseId) => {
     if (!courseId) return 'Unknown';
     const courseMap = {
-      'html': 'html',
-      'css': 'css',
-      'javascript': 'js',
-      'react': 'react',
+      html: 'html',
+      css: 'css',
+      javascript: 'js',
+      react: 'react',
     };
     return courseMap[courseId] || courseId;
   };
@@ -219,7 +229,13 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
     <div className="assignments-container">
       <div className="transcript__header">
         <div className="transcript__header-title">
-          <h1> <span><NotebookTabs size={25}/></span> Assignments </h1>
+          <h1>
+            {' '}
+            <span>
+              <NotebookTabs size={25} />
+            </span>{' '}
+            Assignments{' '}
+          </h1>
           <p className="transcript__header-subtitle">
             Submit all pending assignments before due date
           </p>
@@ -232,7 +248,14 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
       </div>
 
       {adminMessage && (
-        <div ref={containerRef} className="admin-inline-message" role="status" aria-live="polite" style={{ margin: '8px 0' }} data-testid="admin-save-message">
+        <div
+          ref={containerRef}
+          className="admin-inline-message"
+          role="status"
+          aria-live="polite"
+          style={{ margin: '8px 0' }}
+          data-testid="admin-save-message"
+        >
           {adminMessage}
         </div>
       )}
@@ -269,12 +292,10 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
                 Create Assignment
               </h3>
               {!showAssignmentForm && (
-                <button
-                  type="button"
-                  className="add-assignment-btn"
-                  onClick={openCreateForm}
-                >
-                  <span><Plus size={18} /></span>
+                <button type="button" className="add-assignment-btn" onClick={openCreateForm}>
+                  <span>
+                    <Plus size={18} />
+                  </span>
                   New Assignment
                 </button>
               )}
@@ -298,7 +319,9 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
                           <div className="assignment-info">
                             <div className="assignment-details">
                               <h5>{assignment.title}</h5>
-                              <span className="course-badge">{getCourseTypeFromId(assignment.courseId).toUpperCase()}</span>
+                              <span className="course-badge">
+                                {getCourseTypeFromId(assignment.courseId).toUpperCase()}
+                              </span>
                               <p className="due-date">
                                 Due: {new Date(assignment.dueDate).toLocaleDateString()}
                               </p>
@@ -308,13 +331,17 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
                                 className="edit-btn"
                                 onClick={() => handleEditAssignment(assignment)}
                               >
-                                <span><Edit size={16} /></span>
+                                <span>
+                                  <Edit size={16} />
+                                </span>
                               </button>
                               <button
                                 className="delete-btn"
                                 onClick={() => handleDeleteAssignment(assignment.id)}
                               >
-                                <span><Trash2 size={16} /></span>
+                                <span>
+                                  <Trash2 size={16} />
+                                </span>
                               </button>
                             </div>
                           </div>
@@ -343,13 +370,7 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
         </>
       )}
 
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   );
 };

@@ -24,8 +24,6 @@ describe('useAssignmentMutations Hook', () => {
   it('rejects invalid payload via Zod validation', async () => {
     const { result } = renderHook(() => useAssignmentMutations());
 
-    await expect(
-      result.current.submitAssignment({ assignmentId: '' })
-    ).rejects.toThrow();
+    await expect(result.current.submitAssignment({ assignmentId: '' })).rejects.toThrow();
   });
 });

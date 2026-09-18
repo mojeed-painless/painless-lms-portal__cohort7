@@ -48,7 +48,12 @@ export const javascriptQuizzes = [
       {
         id: 3,
         question: 'What does addEventListener do?',
-        options: ['Creates a new element', 'Registers a callback for an event', 'Stops page loading', 'Executes CSS'],
+        options: [
+          'Creates a new element',
+          'Registers a callback for an event',
+          'Stops page loading',
+          'Executes CSS',
+        ],
         correctAnswer: 1,
       },
       {

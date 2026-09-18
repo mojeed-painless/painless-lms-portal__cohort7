@@ -84,8 +84,10 @@ export function useQuizSession(userOrQuizId) {
         }
 
         setDailySession(sessionData);
-        sessionStartRef.current = sessionData && sessionData.startAt ? new Date(sessionData.startAt) : null;
-        sessionEndRef.current = sessionData && sessionData.endAt ? new Date(sessionData.endAt) : null;
+        sessionStartRef.current =
+          sessionData && sessionData.startAt ? new Date(sessionData.startAt) : null;
+        sessionEndRef.current =
+          sessionData && sessionData.endAt ? new Date(sessionData.endAt) : null;
 
         const now = new Date();
         if (sessionStartRef.current && now < sessionStartRef.current) {
@@ -93,7 +95,7 @@ export function useQuizSession(userOrQuizId) {
           const hours = Math.floor(secs / 3600);
           const minutes = Math.floor((secs % 3600) / 60);
           const seconds = secs % 60;
-          setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
+          setTimeLeft((prev) => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
           setQuizIsLive(false);
         } else if (
           sessionStartRef.current &&
@@ -102,7 +104,7 @@ export function useQuizSession(userOrQuizId) {
           now < sessionEndRef.current
         ) {
           const remaining = Math.max(0, Math.round((sessionEndRef.current - now) / 1000));
-          setTimeLeft(prev => ({
+          setTimeLeft((prev) => ({
             ...prev,
             duringQuiz: { minutes: Math.floor(remaining / 60), seconds: remaining % 60 },
           }));
@@ -134,9 +136,9 @@ export function useQuizSession(userOrQuizId) {
         const hours = Math.floor(secs / 3600);
         const minutes = Math.floor((secs % 3600) / 60);
         const seconds = secs % 60;
-        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
+        setTimeLeft((prev) => ({ ...prev, beforeQuiz: { hours, minutes, seconds } }));
       } else {
-        setTimeLeft(prev => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
+        setTimeLeft((prev) => ({ ...prev, beforeQuiz: { hours: 0, minutes: 0, seconds: 0 } }));
       }
     };
 
@@ -159,14 +161,14 @@ export function useQuizSession(userOrQuizId) {
       setTimeout(() => {
         const mins0 = Math.floor(remaining / 60);
         const secs0 = remaining % 60;
-        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins0, seconds: secs0 } }));
+        setTimeLeft((prev) => ({ ...prev, duringQuiz: { minutes: mins0, seconds: secs0 } }));
       }, 0);
 
       interval = setInterval(() => {
         remaining -= 1;
         const mins = Math.floor(Math.max(0, remaining) / 60);
         const secs = Math.max(0, remaining) % 60;
-        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins, seconds: secs } }));
+        setTimeLeft((prev) => ({ ...prev, duringQuiz: { minutes: mins, seconds: secs } }));
 
         if (remaining <= 0) {
           clearInterval(interval);

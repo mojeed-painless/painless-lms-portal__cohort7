@@ -33,6 +33,10 @@ describe('logger utilities', () => {
     expect(typeof formatted).toBe('string');
     expect(errorSpy).toHaveBeenCalled();
     // ensure sink exception was caught and logged
-    expect(errorSpy.mock.calls.some(call => String(call[0]).includes('Failed to dispatch error to tracking sink'))).toBe(true);
+    expect(
+      errorSpy.mock.calls.some((call) =>
+        String(call[0]).includes('Failed to dispatch error to tracking sink')
+      )
+    ).toBe(true);
   });
 });

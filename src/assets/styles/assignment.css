@@ -43,7 +43,6 @@
   background: var(--card-bg);
 }
 
-
 .card-header {
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -62,12 +61,12 @@
 }
 
 .card-header h3 span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.3rem;
-    height: 2.3rem;
-    border-radius: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 0.6rem;
 }
 
 .count-badge {
@@ -77,9 +76,18 @@
   font-weight: 500;
 }
 
-.orange { background: #fff7ed; color: #c2410c; }
-.blue { background: #eff6ff; color: #1d4ed8; }
-.green { background: #ecfdf5; color: #047857; }
+.orange {
+  background: #fff7ed;
+  color: #c2410c;
+}
+.blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.green {
+  background: #ecfdf5;
+  color: #047857;
+}
 
 /* Table Styling */
 .table-responsive {
@@ -104,8 +112,8 @@
 }
 
 .assignment__table th:last-child {
-    text-align: center;
-    width: 8rem;
+  text-align: center;
+  width: 8rem;
 }
 
 .assignment__table td {
@@ -116,7 +124,9 @@
   color: var(--text-main);
 }
 
-.bold { font-weight: 600; }
+.bold {
+  font-weight: 600;
+}
 
 .link-input {
   width: 90%;
@@ -128,28 +138,31 @@
 }
 
 .link-input::placeholder {
-    font-size: 0.75rem;
-    font-family: "Quicksand", sans-serif;
+  font-size: 0.75rem;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .link-input.first-input {
-    width: 100%;
+  width: 100%;
 }
 
 .assignment__date {
-    width: 12rem;
+  width: 12rem;
 }
 
 .first-inputs {
-    width: 30rem;
+  width: 30rem;
 }
 
 .assignment__action {
-    text-align: right;
-    width: 8rem;
+  text-align: right;
+  width: 8rem;
 }
 
-.link-input.gray { background: #f1f5f9; color: #64748b; }
+.link-input.gray {
+  background: #f1f5f9;
+  color: #64748b;
+}
 
 /* Score Input Field - Admin View */
 .score-input {
@@ -199,7 +212,7 @@
 }
 
 .submit-btn:hover,
-.save-score-btn:hover { 
+.save-score-btn:hover {
   background: #2563eb;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
@@ -215,8 +228,12 @@
   box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
 }
 
-.submit-btn span, .status-badge span, .score-badge span, .save-score-btn span, .edit-btn span {
-    display: flex;
+.submit-btn span,
+.status-badge span,
+.score-badge span,
+.save-score-btn span,
+.edit-btn span {
+  display: flex;
 }
 
 .status-badge {
@@ -248,19 +265,30 @@
   gap: 0.3rem;
 }
 
-
 .empty__assignment {
-    text-align: center;
-    padding: 2rem;
-    font-size: 1rem;
-    color: #64748b;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+  color: #64748b;
 }
 
 /* COLOR VARIANTS */
-.orange { background: #fff7ed; color: #c2410c; }
-.blue { background: #eff6ff; color: #1d4ed8; }
-.green { background: #ecfdf5; color: #047857; }
-.purple { background: #f3e8ff; color: #7c3aed; }
+.orange {
+  background: #fff7ed;
+  color: #c2410c;
+}
+.blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.green {
+  background: #ecfdf5;
+  color: #047857;
+}
+.purple {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
 
 /* ADD ASSIGNMENT SECTION */
 .add-assignment-section {
@@ -526,8 +554,12 @@
 
 /* Responsiveness */
 @media (max-width: 768px) {
-  .assignments-container { padding: 1rem; }
-  .card-header h3 { font-size: 1rem; }
+  .assignments-container {
+    padding: 1rem;
+  }
+  .card-header h3 {
+    font-size: 1rem;
+  }
 
   .card-header {
     flex-direction: column;

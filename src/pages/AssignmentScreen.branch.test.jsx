@@ -48,7 +48,10 @@ describe('AssignmentScreen branch coverage cases', () => {
     vi.spyOn(AssignHook, 'useAssignments').mockReturnValue({
       pending: [],
       submitted: [],
-      graded: [{ id: 'a1', score: '85%' }, { id: 'a2', score: '95%' }],
+      graded: [
+        { id: 'a1', score: '85%' },
+        { id: 'a2', score: '95%' },
+      ],
       allAssignments: [],
       loading: false,
       error: null,

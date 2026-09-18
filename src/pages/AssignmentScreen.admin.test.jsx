@@ -14,7 +14,9 @@ describe('AssignmentScreen admin view branches', () => {
       pending: [],
       submitted: [],
       graded: [],
-      allAssignments: [{ id: '1', title: 'A1', courseId: 'html', dueDate: new Date().toISOString() }],
+      allAssignments: [
+        { id: '1', title: 'A1', courseId: 'html', dueDate: new Date().toISOString() },
+      ],
       loading: false,
       error: null,
       fetchPendingAssignments: vi.fn(),

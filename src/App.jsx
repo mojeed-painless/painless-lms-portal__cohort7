@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import CourseAccessRoute from './components/common/CourseAccessRoute';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import './App.css'
+import './App.css';
 
 // import DashboardScreen from './pages/DashboardScreen';
 
@@ -11,7 +11,7 @@ import MainLayout from './pages/MainLayout';
 import HomeScreen from './pages/HomeScreen';
 import { cssRoutes } from './routes/cssRoutes';
 import { jsRoutes } from './routes/jsRoutes';
-import LoginScreen from './pages/LoginScreen'; 
+import LoginScreen from './pages/LoginScreen';
 import RegisterScreen from './pages/RegisterScreen';
 import RoleBasedDashboard from './components/common/RoleBasedDashboard';
 import NotFoundScreen from './pages/NotFoundScreen';
@@ -24,7 +24,9 @@ import LeaderboardScreen from './pages/LeaderboardScreen';
 import TranscriptScreen from './pages/TranscriptScreen';
 import SettingsScreen from './pages/SettingsScreen';
 
-{/* Introduction pages */}
+{
+  /* Introduction pages */
+}
 import WelcomeScreen from './pages/html-pages/WelcomeScreen';
 import GeneralOverview from './pages/html-pages/GeneralOverview';
 import WhyLearn from './pages/html-pages/WhyLearn';
@@ -32,7 +34,9 @@ import CourseOverview from './pages/html-pages/CourseOverview';
 import CodeEditors from './pages/html-pages/CodeEditors';
 import AssignmentGuide from './pages/html-pages/AssignmentGuide';
 
-{/* HTML pages */}
+{
+  /* HTML pages */
+}
 import HTMLTransition from './pages/html-pages/HTMLTransition';
 import HTMLPageStructure from './pages/html-pages/HTMLPageStructure';
 import ListTags from './pages/html-pages/ListTags';
@@ -43,7 +47,9 @@ import InlineBlockElement from './pages/html-pages/InlineBlockElement';
 import Forms from './pages/html-pages/Forms';
 import HTMLStyling from './pages/html-pages/HTMLStyling';
 
-{/* CSS pages */}
+{
+  /* CSS pages */
+}
 import CSSTransition from './pages/css-pages/CSSTransition';
 import Animation from './pages/css-pages/Animation';
 import AttributesSelector from './pages/css-pages/AttributesSelector';
@@ -78,7 +84,9 @@ import TextFormatting from './pages/css-pages/TextFormatting';
 import Transform from './pages/css-pages/Transform';
 import Transition from './pages/css-pages/Transition';
 
-{/* JS pages */}
+{
+  /* JS pages */
+}
 import JSTransition from './pages/js-pages/JSTransition';
 import JavascriptIntro from './pages/js-pages/JavascriptIntro';
 import LinkingJavascript from './pages/js-pages/LinkingJavascript';
@@ -101,81 +109,66 @@ import BooleanConversion from './pages/js-pages/BooleanConversion';
 
 import LoadingAnimation from './components/common/LoadingAnimation';
 
-
-
-
 function App() {
-
   return (
     <ErrorBoundary>
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          <Route path="/home" element={<HomeScreen />} />
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
-          
-          
-          <Route path="/" element={<PrivateRoute />}>
+      <Router>
+        <div className="min-h-screen bg-gray-50">
+          <Routes>
+            <Route path="/home" element={<HomeScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
 
-            <Route element={<MainLayout />}>
-              <Route index element={<RoleBasedDashboard />} />
-              <Route path="/content" element={<CourseContentScreen />} />
-              <Route path="/assignments" element={<AssignmentScreen />} />
-              <Route path="/quizzes" element={<QuizScreen />} />
-              <Route path="/leaderboard" element={<LeaderboardScreen />} />
-              <Route path="/transcript" element={<TranscriptScreen />} />
-              <Route path="/settings" element={<SettingsScreen />} />
+            <Route path="/" element={<PrivateRoute />}>
+              <Route element={<MainLayout />}>
+                <Route index element={<RoleBasedDashboard />} />
+                <Route path="/content" element={<CourseContentScreen />} />
+                <Route path="/assignments" element={<AssignmentScreen />} />
+                <Route path="/quizzes" element={<QuizScreen />} />
+                <Route path="/leaderboard" element={<LeaderboardScreen />} />
+                <Route path="/transcript" element={<TranscriptScreen />} />
+                <Route path="/settings" element={<SettingsScreen />} />
 
-              
-              {/* Introduction pages - Public to all authenticated users */}
-              <Route path="/welcome" element={<WelcomeScreen />} />
-              <Route path="/general-overview" element={<GeneralOverview />} />
-              <Route path="/why" element={<WhyLearn />} />
-              <Route path="/course-overview" element={<CourseOverview />} />
-              <Route path="/editor" element={<CodeEditors />} />
-              <Route path="/assignment-guide" element={<AssignmentGuide />} />
+                {/* Introduction pages - Public to all authenticated users */}
+                <Route path="/welcome" element={<WelcomeScreen />} />
+                <Route path="/general-overview" element={<GeneralOverview />} />
+                <Route path="/why" element={<WhyLearn />} />
+                <Route path="/course-overview" element={<CourseOverview />} />
+                <Route path="/editor" element={<CodeEditors />} />
+                <Route path="/assignment-guide" element={<AssignmentGuide />} />
 
-              
-              {/* HTML, CSS, and JavaScript Content - Requires 'htmlAccess' */}
-              <Route element={<CourseAccessRoute courseType="html" />}>
-                {/* HTML Content */}
-                <Route path="/html-transition" element={<HTMLTransition />} />
-                <Route path="/html-structure" element={<HTMLPageStructure />} />
-                <Route path="/html-list" element={<ListTags />} />
-                <Route path="/html-table" element={<TableTags />} />
-                <Route path="/html-image" element={<Images />} />
-                <Route path="/html-hyperlinks" element={<Hyperlinks />} />
-                <Route path="/html-block-element" element={<InlineBlockElement />} />
-                <Route path="/html-form" element={<Forms />} />
-                <Route path="/html-style" element={<HTMLStyling />} />
+                {/* HTML, CSS, and JavaScript Content - Requires 'htmlAccess' */}
+                <Route element={<CourseAccessRoute courseType="html" />}>
+                  {/* HTML Content */}
+                  <Route path="/html-transition" element={<HTMLTransition />} />
+                  <Route path="/html-structure" element={<HTMLPageStructure />} />
+                  <Route path="/html-list" element={<ListTags />} />
+                  <Route path="/html-table" element={<TableTags />} />
+                  <Route path="/html-image" element={<Images />} />
+                  <Route path="/html-hyperlinks" element={<Hyperlinks />} />
+                  <Route path="/html-block-element" element={<InlineBlockElement />} />
+                  <Route path="/html-form" element={<Forms />} />
+                  <Route path="/html-style" element={<HTMLStyling />} />
 
-                {/* CSS Content - grouped via route config */}
-                {cssRoutes.map(({ path, component: Component }) => (
-                  <Route key={path} path={path} element={<Component />} />
-                ))}
+                  {/* CSS Content - grouped via route config */}
+                  {cssRoutes.map(({ path, component: Component }) => (
+                    <Route key={path} path={path} element={<Component />} />
+                  ))}
 
-                {/* JavaScript Content - grouped via route config */}
-                {jsRoutes.map(({ path, component: Component }) => (
-                  <Route key={path} path={path} element={<Component />} />
-                ))}
+                  {/* JavaScript Content - grouped via route config */}
+                  {jsRoutes.map(({ path, component: Component }) => (
+                    <Route key={path} path={path} element={<Component />} />
+                  ))}
+                </Route>
               </Route>
             </Route>
 
+            <Route path="*" element={<NotFoundScreen />} />
+            <Route path="/no-access" element={<NoAccess />} />
 
-          </Route>
-          
-          <Route path="*" element={<NotFoundScreen />} />
-          <Route path="/no-access" element={<NoAccess />} />
+            <Route path="/animate" element={<LoadingAnimation />} />
 
-
-
-
-
-
-          <Route path="/animate" element={<LoadingAnimation />} />
-          
-          {/* <Route element={<MainLayout />}>
+            {/* <Route element={<MainLayout />}>
               <Route index element={<RoleBasedDashboard />} />
               <Route path="/catalog" element={<CourseCatalogScreen />} />
               <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
@@ -244,14 +237,11 @@ function App() {
               
               <Route path="/js-transition" element={<JSTransition />} />
           </Route> */}
-
-        </Routes>
-        
-        
-      </div>
-    </Router>
+          </Routes>
+        </div>
+      </Router>
     </ErrorBoundary>
-  )
+  );
 }
 
-export default App
+export default App;

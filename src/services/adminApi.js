@@ -11,7 +11,9 @@ export async function fetchPendingUsers(token) {
   if (!token) throw new Error('Authorization token is required');
 
   try {
-    const data = await fetchJson('/users/admin/pending', { headers: { Authorization: `Bearer ${token}` } });
+    const data = await fetchJson('/users/admin/pending', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const list = Array.isArray(data) ? data : data.users || [];
     return list;
   } catch (err) {
@@ -29,7 +31,9 @@ export async function fetchAllUsers(token) {
   if (!token) throw new Error('Authorization token is required');
 
   try {
-    const data = await fetchJson('/users/admin/all', { headers: { Authorization: `Bearer ${token}` } });
+    const data = await fetchJson('/users/admin/all', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const list = Array.isArray(data) ? data : data.users || [];
     return list;
   } catch (err) {
@@ -87,7 +91,10 @@ export async function updateCourseAccess(userId, courseAccessData, token) {
   if (!userId) throw new Error('User ID is required');
 
   try {
-    const validated = updateCourseAccessSchema.parse({ userId, accessList: Object.keys(courseAccessData).filter(k => courseAccessData[k]) });
+    const validated = updateCourseAccessSchema.parse({
+      userId,
+      accessList: Object.keys(courseAccessData).filter((k) => courseAccessData[k]),
+    });
     // Tests expect a PUT to /users/admin/:id - align with that
     const data = await fetchJson(`/users/admin/${validated.userId}`, {
       method: 'PUT',

@@ -28,7 +28,9 @@ const CourseAccessRoute = ({ courseType }) => {
         const data = await response.json();
         setReleaseDay(Number(data.value) || 0);
       } catch (error) {
-        logError('Error fetching release day', { error: error && error.message ? error.message : error });
+        logError('Error fetching release day', {
+          error: error && error.message ? error.message : error,
+        });
         setReleaseDay(0);
       } finally {
         setIsReleaseLoading(false);
@@ -60,13 +62,17 @@ const CourseAccessRoute = ({ courseType }) => {
   if (courseType === 'html') {
     // HTML access is controlled by release day only
     if (!isPathUnlocked(location.pathname, releaseDay)) {
-      return <Navigate to="/no-access" state={{ from: location, reason: 'content_locked' }} replace />;
+      return (
+        <Navigate to="/no-access" state={{ from: location, reason: 'content_locked' }} replace />
+      );
     }
   } else {
     // JS and React require specific access flags
     const accessField = courseType === 'js' ? 'jsAccess' : 'reactAccess';
     if (!user?.[accessField]) {
-      return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
+      return (
+        <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />
+      );
     }
   }
 

@@ -17,9 +17,7 @@ const normalizeQuestion = (question) => {
     };
   });
 
-  const correctIndex = Number.isInteger(question.correctAnswer)
-    ? question.correctAnswer
-    : 0;
+  const correctIndex = Number.isInteger(question.correctAnswer) ? question.correctAnswer : 0;
 
   return {
     ...question,
@@ -78,10 +76,6 @@ export const DailyQuizData = [
   },
 ];
 
-export const allQuizzes = [
-  ...htmlCssQuizzes,
-  ...javascriptQuizzes,
-  ...reactQuizzes,
-];
+export const allQuizzes = [...htmlCssQuizzes, ...javascriptQuizzes, ...reactQuizzes];
 
 export default allQuizzes;

@@ -8,7 +8,13 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result } = renderHook(() =>
-      useAdminAssignments({ createAssignment: createFn, updateAssignment: vi.fn(), deleteAssignment: vi.fn(), getCourseTypeFromId: (id) => id, showToast })
+      useAdminAssignments({
+        createAssignment: createFn,
+        updateAssignment: vi.fn(),
+        deleteAssignment: vi.fn(),
+        getCourseTypeFromId: (id) => id,
+        showToast,
+      })
     );
 
     // Initially hidden
@@ -20,7 +26,12 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     // Submit new assignment
     let res;
     await act(async () => {
-      res = await result.current.handleAdminAssignmentSubmit({ title: 'T', description: '', dueDate: '2026-12-31', courseType: 'html' });
+      res = await result.current.handleAdminAssignmentSubmit({
+        title: 'T',
+        description: '',
+        dueDate: '2026-12-31',
+        courseType: 'html',
+      });
     });
 
     expect(createFn).toHaveBeenCalled();
@@ -33,16 +44,35 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result } = renderHook(() =>
-      useAdminAssignments({ createAssignment: vi.fn(), updateAssignment: updateFn, deleteAssignment: vi.fn(), getCourseTypeFromId: (id) => id, showToast, error: 'Some error' })
+      useAdminAssignments({
+        createAssignment: vi.fn(),
+        updateAssignment: updateFn,
+        deleteAssignment: vi.fn(),
+        getCourseTypeFromId: (id) => id,
+        showToast,
+        error: 'Some error',
+      })
     );
 
     // Simulate entering edit mode
-    act(() => result.current.handleEditAssignment({ id: '1', title: 'Old', courseId: 'html', dueDate: '2026-01-01' }));
+    act(() =>
+      result.current.handleEditAssignment({
+        id: '1',
+        title: 'Old',
+        courseId: 'html',
+        dueDate: '2026-01-01',
+      })
+    );
     expect(result.current.showAssignmentForm).toBe(true);
 
     let res;
     await act(async () => {
-      res = await result.current.handleAdminAssignmentSubmit({ title: 'Updated', description: '', dueDate: '2026-12-31', courseType: 'html' });
+      res = await result.current.handleAdminAssignmentSubmit({
+        title: 'Updated',
+        description: '',
+        dueDate: '2026-12-31',
+        courseType: 'html',
+      });
     });
 
     expect(updateFn).toHaveBeenCalled();
@@ -56,7 +86,13 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result: r1 } = renderHook(() =>
-      useAdminAssignments({ createAssignment: vi.fn(), updateAssignment: vi.fn(), deleteAssignment: deleteSuccess, getCourseTypeFromId: (id) => id, showToast })
+      useAdminAssignments({
+        createAssignment: vi.fn(),
+        updateAssignment: vi.fn(),
+        deleteAssignment: deleteSuccess,
+        getCourseTypeFromId: (id) => id,
+        showToast,
+      })
     );
 
     await act(async () => {
@@ -66,7 +102,13 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     expect(showToast).toHaveBeenCalledWith('Assignment deleted successfully!', 'success');
 
     const { result: r2 } = renderHook(() =>
-      useAdminAssignments({ createAssignment: vi.fn(), updateAssignment: vi.fn(), deleteAssignment: deleteFail, getCourseTypeFromId: (id) => id, showToast })
+      useAdminAssignments({
+        createAssignment: vi.fn(),
+        updateAssignment: vi.fn(),
+        deleteAssignment: deleteFail,
+        getCourseTypeFromId: (id) => id,
+        showToast,
+      })
     );
 
     await act(async () => {

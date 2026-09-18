@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
 import { useQuizSession } from '../hooks/useQuizSession';
-import { AttemptedTopicQuiz } from '../components/common/TopicQuiz'
+import { AttemptedTopicQuiz } from '../components/common/TopicQuiz';
 import { API_BASE_URL } from '../config/api';
 import { logError } from '../utils/logger';
-import { TbPointFilled } from "react-icons/tb";
-import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
+import { TbPointFilled } from 'react-icons/tb';
+import {
+  TbHexagonNumber1Filled,
+  TbHexagonNumber2Filled,
+  TbHexagonNumber3Filled,
+} from 'react-icons/tb';
 import {
   Sparkles,
   WandSparkles,
@@ -27,10 +31,7 @@ import {
 import { DailyQuizData } from '../quizData.js';
 import { useStudentAssignments } from '../hooks/useStudentAssignments';
 
-
-
 export default function QuizScreen() {
-  
   const { user } = useAuth();
   const [isActive, setIsActive] = useState('daily quiz');
 
@@ -59,9 +60,10 @@ export default function QuizScreen() {
     const yyyy = now.getFullYear();
     const todayStrLocal = `${mm}/${dd}/${yyyy}`;
 
-    const entry = DailyQuizData.find(d => d.date === todayStrLocal) || DailyQuizData[0] || { questions: [] };
+    const entry = DailyQuizData.find((d) => d.date === todayStrLocal) ||
+      DailyQuizData[0] || { questions: [] };
     const questions = entry.questions || [];
-    const answers = questions.map(q => ({
+    const answers = questions.map((q) => ({
       questionId: q.id,
       questionText: q.question,
       selectedOption: selectedOptions[q.id] || null,
@@ -152,9 +154,11 @@ export default function QuizScreen() {
         const iso = today.toISOString().slice(0, 10);
 
         // Try fetching today's leaderboard
-        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${iso}`, { headers });
+        const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${iso}`, {
+          headers,
+        });
         const data = await res.json();
-        
+
         // If today has data, use it
         if (data.top && data.top.length > 0) {
           setDailyTop(data.top);
@@ -163,10 +167,13 @@ export default function QuizScreen() {
           const yesterday = new Date(today);
           yesterday.setDate(yesterday.getDate() - 1);
           const yesterdayIso = yesterday.toISOString().slice(0, 10);
-          
-          const yesterdayRes = await fetch(`${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${yesterdayIso}`, { headers });
+
+          const yesterdayRes = await fetch(
+            `${API_BASE_URL}/api/quiz-attempts/leaderboard/daily?date=${yesterdayIso}`,
+            { headers }
+          );
           const yesterdayData = await yesterdayRes.json();
-          
+
           if (yesterdayData.top && yesterdayData.top.length > 0) {
             setDailyTop(yesterdayData.top);
           }
@@ -192,7 +199,7 @@ export default function QuizScreen() {
         }
         const iso = new Date().toISOString().slice(0, 10);
         const res = await fetch(`${API_BASE_URL}/api/quiz-attempts/daily?date=${iso}`, {
-          headers: { Authorization: `Bearer ${user.token}` }
+          headers: { Authorization: `Bearer ${user.token}` },
         });
         if (res.status === 404) {
           setMyDailyAttempt(null);
@@ -244,54 +251,100 @@ export default function QuizScreen() {
     }
   }, []);
 
-
-
   // previousAttempts fetching removed
-
 
   return (
     <div className="quiz__container">
       <div className="transcript__header">
         <div className="transcript__header-title">
           <h1>
-            <span><Sparkles size={25}/></span> 
+            <span>
+              <Sparkles size={25} />
+            </span>
             {isActive === 'daily quiz' ? 'Daily' : 'Topic'} Quiz Center
           </h1>
           <p className="transcript__header-subtitle">
-            {
-              isActive === 'daily quiz' ? 'Challenge others to climb up the leaderboard' : 
-              'Check out list of topic base quizzes you already attempted'}
+            {isActive === 'daily quiz'
+              ? 'Challenge others to climb up the leaderboard'
+              : 'Check out list of topic base quizzes you already attempted'}
           </p>
         </div>
         {/* Submission toast / modal */}
         {submissionInProgress && (
-          <div style={{ position: 'fixed', right: 20, top: 80, background: '#fff3cd', color: '#664d03', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+          <div
+            style={{
+              position: 'fixed',
+              right: 20,
+              top: 80,
+              background: '#fff3cd',
+              color: '#664d03',
+              padding: '10px 14px',
+              borderRadius: 6,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              zIndex: 1200,
+            }}
+          >
             Submitting your answers…
           </div>
         )}
 
         {submissionDone && (
-          <div style={{ position: 'fixed', right: 20, top: 80, background: '#d1e7dd', color: '#0f5132', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+          <div
+            style={{
+              position: 'fixed',
+              right: 20,
+              top: 80,
+              background: '#d1e7dd',
+              color: '#0f5132',
+              padding: '10px 14px',
+              borderRadius: 6,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              zIndex: 1200,
+            }}
+          >
             Quiz submitted successfully.
           </div>
         )}
 
         {submissionError && (
-          <div style={{ position: 'fixed', right: 20, top: 80, background: '#f8d7da', color: '#842029', padding: '10px 14px', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.08)', zIndex: 1200 }}>
+          <div
+            style={{
+              position: 'fixed',
+              right: 20,
+              top: 80,
+              background: '#f8d7da',
+              color: '#842029',
+              padding: '10px 14px',
+              borderRadius: 6,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+              zIndex: 1200,
+            }}
+          >
             <div style={{ marginBottom: 6 }}>Error submitting quiz: {submissionError}</div>
-            <button onClick={() => setSubmissionError(null)} style={{ background: 'transparent', border: 'none', color: '#842029', textDecoration: 'underline', cursor: 'pointer' }}>Close</button>
+            <button
+              onClick={() => setSubmissionError(null)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#842029',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+            >
+              Close
+            </button>
           </div>
         )}
-        
+
         <div className="quiz__nav-btn">
-          <button 
-            className={isActive === 'daily quiz' ? 'active-quiz' : ''} 
+          <button
+            className={isActive === 'daily quiz' ? 'active-quiz' : ''}
             onClick={() => setIsActive('daily quiz')}
           >
             <WandSparkles size={18} /> Daily Quiz
           </button>
-          <button 
-            className={isActive === 'topic quiz' ? 'active-quiz' : ''} 
+          <button
+            className={isActive === 'topic quiz' ? 'active-quiz' : ''}
             onClick={() => setIsActive('topic quiz')}
           >
             <Sparkle size={18} /> Topic Quiz
@@ -299,22 +352,25 @@ export default function QuizScreen() {
         </div>
       </div>
 
+      {isActive === 'daily quiz' && (
+        <div className="daily-quiz__container">
+          {/* QUIZ COUNTDOWN AND CONTROLS */}
+          {!quizIsLive && (
+            <div className="quiz__countdown">
+              <div className="quiz__back">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
 
-      {isActive === 'daily quiz' && 
-      <div className="daily-quiz__container">
-
-        {/* QUIZ COUNTDOWN AND CONTROLS */}
-        {!quizIsLive && (
-          <div className="quiz__countdown">
-            <div className="quiz__back">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-
-            
               <div className="before__quiz">
-                <h2> <span className="siren-blink"><Siren size={25}/></span> Next Daily Quiz In:</h2>
+                <h2>
+                  {' '}
+                  <span className="siren-blink">
+                    <Siren size={25} />
+                  </span>{' '}
+                  Next Daily Quiz In:
+                </h2>
 
                 <div className="quiz__timer">
                   <div className="quiz__time-box">
@@ -331,201 +387,292 @@ export default function QuizScreen() {
                   </div>
                 </div>
 
-                <div className='scoring__rule'>
+                <div className="scoring__rule">
                   <p> Scoring rule: </p>
                   <div>
-                    <span><i><TbPointFilled/></i>1st:   <small>5 pts + correct answers</small></span>
-                    <span><i><TbPointFilled/></i>2nd:   <small>3 pts + correct answers</small></span>
-                    <span><i><TbPointFilled/></i>3rd:   <small>1 pt + correct answers</small></span>
-                    <span><i><TbPointFilled/></i>others:   <small>0 pts + correct answers</small></span>
+                    <span>
+                      <i>
+                        <TbPointFilled />
+                      </i>
+                      1st: <small>5 pts + correct answers</small>
+                    </span>
+                    <span>
+                      <i>
+                        <TbPointFilled />
+                      </i>
+                      2nd: <small>3 pts + correct answers</small>
+                    </span>
+                    <span>
+                      <i>
+                        <TbPointFilled />
+                      </i>
+                      3rd: <small>1 pt + correct answers</small>
+                    </span>
+                    <span>
+                      <i>
+                        <TbPointFilled />
+                      </i>
+                      others: <small>0 pts + correct answers</small>
+                    </span>
                   </div>
                 </div>
               </div>
-          </div>
-        )}
+            </div>
+          )}
 
-        {(quizIsLive && !quizStarted)  && (() => {
-          const now = new Date();
-          const mm = String(now.getMonth() + 1).padStart(2, '0');
-          const dd = String(now.getDate()).padStart(2, '0');
-          const yyyy = now.getFullYear();
-          const todayStr = `${mm}/${dd}/${yyyy}`;
-          const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
-          const questions = entry.questions || [];
+          {quizIsLive &&
+            !quizStarted &&
+            (() => {
+              const now = new Date();
+              const mm = String(now.getMonth() + 1).padStart(2, '0');
+              const dd = String(now.getDate()).padStart(2, '0');
+              const yyyy = now.getFullYear();
+              const todayStr = `${mm}/${dd}/${yyyy}`;
+              const entry = DailyQuizData.find((d) => d.date === todayStr) ||
+                DailyQuizData[0] || { questions: [] };
+              const questions = entry.questions || [];
 
-          return (
-          <div className="quiz__countdown">
-              <div className="during__quiz">
-                <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '8px' }}>
-                  {Math.max(questions.length, 1)} questions available • Quiz window closes in:
-                </p>
+              return (
+                <div className="quiz__countdown">
+                  <div className="during__quiz">
+                    <h2>
+                      <span className="siren-blink live-text">LIVE</span> Quiz is on now!
+                    </h2>
+                    <p style={{ fontSize: '14px', color: '#666', marginTop: '8px' }}>
+                      {Math.max(questions.length, 1)} questions available • Quiz window closes in:
+                    </p>
 
-                <div className="quiz__timer">
-                  <div className="quiz__time-box live-time-box">
-                    <span>{String(timeLeft.duringQuiz.minutes).padStart(2, '0')}</span>
-                    <small>Minutes</small>
-                  </div>
-                  <div className="quiz__time-box live-time-box">
-                    <span>{String(timeLeft.duringQuiz.seconds).padStart(2, '0')}</span>
-                    <small>Seconds</small>
-                  </div>
-                </div>
-
-                  {myDailyLoading ? (
-                    <div style={{ padding: 12, color: '#666' }}>Checking attempt…</div>
-                  ) : myDailyAttempt ? (
-                    <div style={{ padding: 12, color: '#0b5' }}>
-                      You already attempted today's quiz — Score: {myDailyAttempt.score}/{myDailyAttempt.total}
-                    </div>
-                  ) : (
-                    <button className="quiz__start-btn" onClick={() => setQuizStarted(true)}>
-                      Start Quiz
-                    </button>
-                  )}
-              </div>
-          </div>
-        );
-        })()}
-
-        {/* QUIZ QUESTIONS */}
-        {(quizIsLive && quizStarted) && 
-          <article className='daily-quiz__live'>
-            <div className="daily-quiz__box">
-              {(() => {
-                const now = new Date();
-                const mm = String(now.getMonth() + 1).padStart(2, '0');
-                const dd = String(now.getDate()).padStart(2, '0');
-                const yyyy = now.getFullYear();
-                const todayStr = `${mm}/${dd}/${yyyy}`;
-                const entry = DailyQuizData.find(d => d.date === todayStr) || DailyQuizData[0] || { questions: [] };
-                const questions = entry.questions || [];
-                const q = questions[currentQuestionIndex] || null;
-
-                return (
-                  <>
-                    <div className="daily-quiz__header">
-                      <span>Question {Math.min(currentQuestionIndex + 1, Math.max(questions.length, 1))} of {Math.max(questions.length, 1)}</span>
-                      <span className='daily-quiz__timer'><TimerReset size={18}/> 
-                        {String(timeLeft.duringQuiz.minutes).padStart(2, '0')} : {String(timeLeft.duringQuiz.seconds).padStart(2, '0')}
-                      </span>
+                    <div className="quiz__timer">
+                      <div className="quiz__time-box live-time-box">
+                        <span>{String(timeLeft.duringQuiz.minutes).padStart(2, '0')}</span>
+                        <small>Minutes</small>
+                      </div>
+                      <div className="quiz__time-box live-time-box">
+                        <span>{String(timeLeft.duringQuiz.seconds).padStart(2, '0')}</span>
+                        <small>Seconds</small>
+                      </div>
                     </div>
 
-                    <div className="daily-quiz__questions">
-                      {q ? (
-                        <div className='daily-quiz__question'>
-                          <div className="daily-quiz__question-header">
-                            <h4>{q.question}</h4>
-                            {q.image && <img src={q.image} alt="Question visual" className="daily-quiz__question-image" />}
-                          </div>
-
-                          <div className="daily-quiz__options">
-                            {q.options.map(opt => (
-                              <button
-                                key={opt.id}
-                                className={`daily-quiz__option ${selectedOptions[q.id] === opt.id ? 'selected' : ''}`}
-                                onClick={() => !submissionInProgress && !submissionDone && setSelectedOptions(prev => ({ ...prev, [q.id]: opt.id }))}
-                                disabled={submissionInProgress || submissionDone}
-                              >
-                                <span>{opt.id}</span>
-                                {opt.text}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='daily-quiz__question'>
-                          <h4>No questions available for today.</h4>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="daily-quiz__nav">
-                      <button className={currentQuestionIndex === 0 ? 'daily-quiz__nav-disabled' : ''} disabled={currentQuestionIndex === 0 || submissionInProgress || submissionDone} onClick={() => setCurrentQuestionIndex(i => Math.max(0, i - 1))}>
-                        <span><MoveLeft size={16} /></span> 
-                        Previous
+                    {myDailyLoading ? (
+                      <div style={{ padding: 12, color: '#666' }}>Checking attempt…</div>
+                    ) : myDailyAttempt ? (
+                      <div style={{ padding: 12, color: '#0b5' }}>
+                        You already attempted today's quiz — Score: {myDailyAttempt.score}/
+                        {myDailyAttempt.total}
+                      </div>
+                    ) : (
+                      <button className="quiz__start-btn" onClick={() => setQuizStarted(true)}>
+                        Start Quiz
                       </button>
-                      
-                      { (currentQuestionIndex < questions.length - 1) ? (
-                        <button disabled={submissionInProgress || submissionDone} onClick={() => setCurrentQuestionIndex(i => Math.min(i + 1, Math.max(0, questions.length - 1)))}>
-                          Next 
-                          <span><MoveRight size={16} /></span>
-                        </button> ) : (
-                        <button disabled={submissionInProgress || submissionDone} onClick={handleSubmitQuiz}>{submissionInProgress ? 'Submitting...' : 'Finish'}</button>)}     
-                    </div>  
-                  </>
-                );
-              })()}
-            </div>
-          </article>
-        }
-
-
-
-
-
-
-
-
-
-
-        <div className="quiz__article">
-          {/* LEADERBOARD */}
-          <div className="quiz__leader">
-            <div className="quiz__leader-header">
-                <h4><span><Trophy size={20}/></span>Today's Top 3</h4>
-                <small className="quiz__date">{new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}</small>
-            </div>
-
-            <button><Link to="/leaderboard">View Leaderboard</Link></button>
-
-            <div className="quiz__leader-list">
-              {leaderLoading && <div style={{ padding: 12 }}>Loading leaderboard…</div>}
-              {!leaderLoading && dailyTop.length === 0 && (
-                <div style={{ padding: 12, color: '#666' }}>No attempts yet for today.</div>
-              )}
-
-              {!leaderLoading && dailyTop.map(item => (
-                <div key={item.studentId || item.rank} className="quiz__leader-item">
-                  <span className="quiz__leader-rank">
-                    {item.rank === 1 ? <TbHexagonNumber1Filled/> : item.rank === 2 ? <TbHexagonNumber2Filled/> : <TbHexagonNumber3Filled/>}
-                  </span>
-                  <div className="quiz__leader-info">
-                    <h5>{item.name || item.username || 'Unknown'}</h5>
-                    <small>Score: <span>{item.score}</span> / {item.total}</small>
+                    )}
                   </div>
-                  <small className="quiz__time"><span><TimerReset size={15}/></span> {Math.floor((item.timeTaken||0)/60)}:{String((item.timeTaken||0)%60).padStart(2,'0')}</small>
                 </div>
-              ))}
+              );
+            })()}
+
+          {/* QUIZ QUESTIONS */}
+          {quizIsLive && quizStarted && (
+            <article className="daily-quiz__live">
+              <div className="daily-quiz__box">
+                {(() => {
+                  const now = new Date();
+                  const mm = String(now.getMonth() + 1).padStart(2, '0');
+                  const dd = String(now.getDate()).padStart(2, '0');
+                  const yyyy = now.getFullYear();
+                  const todayStr = `${mm}/${dd}/${yyyy}`;
+                  const entry = DailyQuizData.find((d) => d.date === todayStr) ||
+                    DailyQuizData[0] || { questions: [] };
+                  const questions = entry.questions || [];
+                  const q = questions[currentQuestionIndex] || null;
+
+                  return (
+                    <>
+                      <div className="daily-quiz__header">
+                        <span>
+                          Question{' '}
+                          {Math.min(currentQuestionIndex + 1, Math.max(questions.length, 1))} of{' '}
+                          {Math.max(questions.length, 1)}
+                        </span>
+                        <span className="daily-quiz__timer">
+                          <TimerReset size={18} />
+                          {String(timeLeft.duringQuiz.minutes).padStart(2, '0')} :{' '}
+                          {String(timeLeft.duringQuiz.seconds).padStart(2, '0')}
+                        </span>
+                      </div>
+
+                      <div className="daily-quiz__questions">
+                        {q ? (
+                          <div className="daily-quiz__question">
+                            <div className="daily-quiz__question-header">
+                              <h4>{q.question}</h4>
+                              {q.image && (
+                                <img
+                                  src={q.image}
+                                  alt="Question visual"
+                                  className="daily-quiz__question-image"
+                                />
+                              )}
+                            </div>
+
+                            <div className="daily-quiz__options">
+                              {q.options.map((opt) => (
+                                <button
+                                  key={opt.id}
+                                  className={`daily-quiz__option ${selectedOptions[q.id] === opt.id ? 'selected' : ''}`}
+                                  onClick={() =>
+                                    !submissionInProgress &&
+                                    !submissionDone &&
+                                    setSelectedOptions((prev) => ({ ...prev, [q.id]: opt.id }))
+                                  }
+                                  disabled={submissionInProgress || submissionDone}
+                                >
+                                  <span>{opt.id}</span>
+                                  {opt.text}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="daily-quiz__question">
+                            <h4>No questions available for today.</h4>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="daily-quiz__nav">
+                        <button
+                          className={currentQuestionIndex === 0 ? 'daily-quiz__nav-disabled' : ''}
+                          disabled={
+                            currentQuestionIndex === 0 || submissionInProgress || submissionDone
+                          }
+                          onClick={() => setCurrentQuestionIndex((i) => Math.max(0, i - 1))}
+                        >
+                          <span>
+                            <MoveLeft size={16} />
+                          </span>
+                          Previous
+                        </button>
+
+                        {currentQuestionIndex < questions.length - 1 ? (
+                          <button
+                            disabled={submissionInProgress || submissionDone}
+                            onClick={() =>
+                              setCurrentQuestionIndex((i) =>
+                                Math.min(i + 1, Math.max(0, questions.length - 1))
+                              )
+                            }
+                          >
+                            Next
+                            <span>
+                              <MoveRight size={16} />
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            disabled={submissionInProgress || submissionDone}
+                            onClick={handleSubmitQuiz}
+                          >
+                            {submissionInProgress ? 'Submitting...' : 'Finish'}
+                          </button>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </article>
+          )}
+
+          <div className="quiz__article">
+            {/* LEADERBOARD */}
+            <div className="quiz__leader">
+              <div className="quiz__leader-header">
+                <h4>
+                  <span>
+                    <Trophy size={20} />
+                  </span>
+                  Today's Top 3
+                </h4>
+                <small className="quiz__date">
+                  {new Date().toLocaleDateString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                  })}
+                </small>
+              </div>
+
+              <button>
+                <Link to="/leaderboard">View Leaderboard</Link>
+              </button>
+
+              <div className="quiz__leader-list">
+                {leaderLoading && <div style={{ padding: 12 }}>Loading leaderboard…</div>}
+                {!leaderLoading && dailyTop.length === 0 && (
+                  <div style={{ padding: 12, color: '#666' }}>No attempts yet for today.</div>
+                )}
+
+                {!leaderLoading &&
+                  dailyTop.map((item) => (
+                    <div key={item.studentId || item.rank} className="quiz__leader-item">
+                      <span className="quiz__leader-rank">
+                        {item.rank === 1 ? (
+                          <TbHexagonNumber1Filled />
+                        ) : item.rank === 2 ? (
+                          <TbHexagonNumber2Filled />
+                        ) : (
+                          <TbHexagonNumber3Filled />
+                        )}
+                      </span>
+                      <div className="quiz__leader-info">
+                        <h5>{item.name || item.username || 'Unknown'}</h5>
+                        <small>
+                          Score: <span>{item.score}</span> / {item.total}
+                        </small>
+                      </div>
+                      <small className="quiz__time">
+                        <span>
+                          <TimerReset size={15} />
+                        </span>{' '}
+                        {Math.floor((item.timeTaken || 0) / 60)}:
+                        {String((item.timeTaken || 0) % 60).padStart(2, '0')}
+                      </small>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* INSTRUCTIONS */}
+            <div className="quiz__instruction">
+              <h4>
+                <span>
+                  <BadgeInfo />
+                </span>
+                How it works
+              </h4>
+              <ol>
+                <li>
+                  The Daily Quiz window is set by administrators. Check the countdown timer below
+                  for timing.
+                </li>
+                <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
+                <li>Answer all questions before the timer expires.</li>
+                <li>Your score is based on correct answers and submission time.</li>
+                <li>Top 3 performers get bonus points (5/3/1 pts).</li>
+                <li>Check the leaderboard to see your ranking!</li>
+              </ol>
             </div>
           </div>
 
-          {/* INSTRUCTIONS */}
-          <div className="quiz__instruction">
-            <h4><span><BadgeInfo/></span>How it works</h4>
-            <ol>
-              <li>The Daily Quiz window is set by administrators. Check the countdown timer below for timing.</li>
-              <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
-              <li>Answer all questions before the timer expires.</li>
-              <li>Your score is based on correct answers and submission time.</li>
-              <li>Top 3 performers get bonus points (5/3/1 pts).</li>
-              <li>Check the leaderboard to see your ranking!</li>
-            </ol>
-          </div>
+          {/* Previous quizzes UI removed */}
         </div>
+      )}
 
-        {/* Previous quizzes UI removed */}
-      </div>}
-
-      
-      
-      
-      {isActive === 'topic quiz' && 
+      {isActive === 'topic quiz' && (
         <>
-          <AttemptedTopicQuiz/>
+          <AttemptedTopicQuiz />
         </>
-      }
-
+      )}
     </div>
   );
 }

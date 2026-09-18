@@ -19,7 +19,7 @@ describe('PrevNextBtn', () => {
     });
 
     const { container } = render(
-      <MemoryRouter initialEntries={["/lesson-1"]}>
+      <MemoryRouter initialEntries={['/lesson-1']}>
         <PrevNextBtn prevPath="/p" nextPath="/n" />
       </MemoryRouter>
     );
@@ -40,13 +40,17 @@ describe('PrevNextBtn', () => {
     });
 
     render(
-      <MemoryRouter initialEntries={["/lesson-1"]}>
+      <MemoryRouter initialEntries={['/lesson-1']}>
         <PrevNextBtn prevPath="/p" nextPath="/n" />
       </MemoryRouter>
     );
 
     // next should be rendered as a link
-    const nextLink = screen.getAllByText(/next/i).find(n => n.tagName.toLowerCase() === 'span' ? n.parentElement.tagName.toLowerCase() === 'a' : false);
+    const nextLink = screen
+      .getAllByText(/next/i)
+      .find((n) =>
+        n.tagName.toLowerCase() === 'span' ? n.parentElement.tagName.toLowerCase() === 'a' : false
+      );
     expect(nextLink).toBeTruthy();
   });
 });

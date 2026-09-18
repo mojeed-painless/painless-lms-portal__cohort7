@@ -9,7 +9,8 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 // Define the base URL for your backend API
 const API_URL = `${API_BASE}/api/users`;
 
-const capitalizeFirst = (s) => (typeof s === 'string' && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+const capitalizeFirst = (s) =>
+  typeof s === 'string' && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
 const capitalizeUser = (u) => {
   if (!u) return u;
@@ -67,11 +68,7 @@ export const AuthProvider = ({ children }) => {
         },
       };
 
-      const { data } = await axios.post(
-        `${API_URL}/login`,
-        { identifier, password },
-        config
-      );
+      const { data } = await axios.post(`${API_URL}/login`, { identifier, password }, config);
 
       // Save user data to state and local storage
       const formatted = capitalizeUser(data);
@@ -79,12 +76,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('userInfo', JSON.stringify(formatted));
       setIsLoading(false);
       return data;
-      
     } catch (err) {
-      const errorMessage = err.response && err.response.data.message
-        ? err.response.data.message
-        : err.message;
-      
+      const errorMessage =
+        err.response && err.response.data.message ? err.response.data.message : err.message;
+
       setError(errorMessage);
       setIsLoading(false);
       const wrappedError = new Error(errorMessage);
@@ -105,18 +100,16 @@ export const AuthProvider = ({ children }) => {
 
       await axios.post(
         `${API_URL}/register`,
-        { firstName, lastName, username, email, password, role }, 
+        { firstName, lastName, username, email, password, role },
         config
       );
 
       setIsLoading(false);
       return { success: true };
-
     } catch (err) {
-      const errorMessage = err.response && err.response.data.message
-        ? err.response.data.message
-        : err.message;
-      
+      const errorMessage =
+        err.response && err.response.data.message ? err.response.data.message : err.message;
+
       setError(errorMessage);
       setIsLoading(false);
       const wrappedError = new Error(errorMessage);
@@ -127,19 +120,19 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('userInfo');
-    
+
     // Clear quiz-related localStorage to prevent cross-user contamination
     const keys = Object.keys(localStorage);
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (key.startsWith('quiz_')) {
         localStorage.removeItem(key);
       }
     });
-    
+
     setUser(null);
     // You might also want to redirect the user here
   };
-  
+
   // --- Context Value ---
   const value = {
     user,

@@ -13,7 +13,7 @@ const PrivateRoute = () => {
 
   if (isLoading) {
     return (
-            <div className="loading-overlay" aria-live="polite" aria-busy="true">
+      <div className="loading-overlay" aria-live="polite" aria-busy="true">
         <div className="spinner" role="status" aria-label="Loading">
           <div className="ring ring1" />
           <div className="ring ring2" />

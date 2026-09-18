@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   build-and-test:
@@ -25,6 +25,9 @@ jobs:
 
       - name: Run Linter
         run: npm run lint
+
+      - name: Check Formatting
+        run: npm run format:check
 
       - name: Run Tests with 60% Coverage Enforcement
         run: npm run test:coverage
