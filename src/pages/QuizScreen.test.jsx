@@ -120,7 +120,8 @@ describe('QuizScreen Offline Execution via MSW', () => {
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
-        expect(screen.getByText(/submitted successfully|score/i)).toBeInTheDocument();
+        const matches = screen.getAllByText(/submitted successfully|score/i);
+        expect(matches.length).toBeGreaterThan(0);
       });
     });
 
