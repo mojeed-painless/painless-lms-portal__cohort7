@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import AssignmentBox from '../../components/common/AssignmentBox';
 import { useState } from 'react';
+import { logInfo } from '../../utils/logger';
 import { useAuth } from '../../context/AuthContext';
 import { useProgress } from '../../context/ProgressContext';
 import '../../assets/styles/welcome-content.css';
@@ -23,7 +24,7 @@ export default function WelcomeScreen() {
         setIsSelected(prev => (
             (prev === selectedHead) ? '' : selectedHead
         ))
-        console.log(selectedHead);
+        logInfo('WelcomeScreen section toggled', { selected: selectedHead });
     }
 
     return (

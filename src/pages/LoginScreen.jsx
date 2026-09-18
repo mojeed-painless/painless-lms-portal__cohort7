@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logError } from '../utils/logger';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from "react-icons/fc";
@@ -57,7 +58,7 @@ const LoginScreen = () => {
       // Redirection handled by useEffect
     } catch (err) {
       // Error handling is managed by AuthContext and displayed below
-      console.error(err); 
+      logError('Login error', { error: err && err.message ? err.message : err });
     }
   };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logError } from '../utils/logger';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from "react-icons/fc";
@@ -81,7 +82,7 @@ const RegisterScreen = () => {
       }, 5000);
 
     } catch (err) {
-      console.error(err); 
+      logError('Registration error', { error: err && err.message ? err.message : err });
     }
   };
 

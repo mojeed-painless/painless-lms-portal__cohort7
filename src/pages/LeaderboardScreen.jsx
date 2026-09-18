@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logError, logInfo } from '../utils/logger';
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../assets/styles/leaderboard.css';
@@ -40,7 +41,7 @@ export default function LeaderboardScreen() {
           }
 
           if (!res.ok) {
-            console.warn('/admin/grades failed, falling back to /admin/all', res.status);
+            logInfo('/admin/grades failed, falling back to /admin/all', { status: res.status });
             res = await fetch(`${API_BASE}/api/users/admin/all`, { headers });
           }
 
@@ -70,7 +71,7 @@ export default function LeaderboardScreen() {
         mapped.sort((a, b) => (b.overall || 0) - (a.overall || 0));
         if (mounted) setLeaders(mapped);
       } catch (err) {
-        console.error('Failed to load leaderboard', err);
+        logError('Failed to load leaderboard', { error: err && err.message ? err.message : err });
       }
     };
 
@@ -90,7 +91,7 @@ export default function LeaderboardScreen() {
         const res = await fetch(`${API_BASE}/api/quiz-attempts/leaderboard/daily/aggregate`, { headers });
 
         if (!res.ok) {
-          console.warn('Failed to fetch daily quiz leaderboard:', res.status);
+          logError('Failed to fetch daily quiz leaderboard', { status: res.status });
           setDailyQuizLeaders([]);
           return;
         }
@@ -99,7 +100,7 @@ export default function LeaderboardScreen() {
         const leaders = Array.isArray(data) ? data : (data.leaders || []);
         if (mounted) setDailyQuizLeaders(leaders);
       } catch (err) {
-        console.error('Failed to load daily quiz leaderboard', err);
+        logError('Failed to load daily quiz leaderboard', { error: err && err.message ? err.message : err });
         setDailyQuizLeaders([]);
       } finally {
         setDailyQuizLoading(false);

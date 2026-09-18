@@ -3,6 +3,7 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../config/api';
 import { isPathUnlocked } from '../../utils/htmlCourseUnlockConfig';
+import { logError } from '../../utils/logger';
 
 /**
  * Route guard for course content access.
@@ -27,7 +28,7 @@ const CourseAccessRoute = ({ courseType }) => {
         const data = await response.json();
         setReleaseDay(Number(data.value) || 0);
       } catch (error) {
-        console.error('Error fetching release day:', error);
+        logError('Error fetching release day', { error: error && error.message ? error.message : error });
         setReleaseDay(0);
       } finally {
         setIsReleaseLoading(false);

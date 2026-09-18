@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logInfo, logError } from '../utils/logger';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useProgress } from '../context/ProgressContext';
@@ -63,9 +64,9 @@ const DashboardScreen = () => {
           const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
           if (mounted) setQuizAttempts(stored);
         } catch (e) {
-          console.error('Failed to load quiz attempts', e);
+          logError('Failed to load quiz attempts (local fallback parse)', { error: e && e.message ? e.message : e });
         }
-        console.error('Failed to load quiz attempts from backend', err);
+        logError('Failed to load quiz attempts from backend', { error: err && err.message ? err.message : err });
       }
     };
     if (token) load();
@@ -113,7 +114,7 @@ const DashboardScreen = () => {
               jsAccess: currentUserData.jsAccess || false,
               reactAccess: currentUserData.reactAccess || false
             };
-            console.log('Setting new access:', newAccess);
+            logInfo('Setting new access', { access: newAccess });
             setCourseAccess(newAccess);
           }
         }
