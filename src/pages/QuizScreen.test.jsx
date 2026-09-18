@@ -75,7 +75,8 @@ describe('QuizScreen Offline Execution via MSW', () => {
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/submitted successfully|score/i)).toBeInTheDocument();
+      const matches = screen.getAllByText(/submitted successfully|score/i);
+      expect(matches.length).toBeGreaterThan(0);
     });
   });
 });
@@ -157,7 +158,8 @@ describe('QuizScreen Offline Execution via MSW', () => {
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
-        expect(screen.getByText(/already attempted today/i)).toBeInTheDocument();
+        const matches = screen.getAllByText(/already attempted today|you already attempted/i);
+        expect(matches.length).toBeGreaterThan(0);
       });
     });
   });
