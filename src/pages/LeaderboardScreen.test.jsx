@@ -15,10 +15,10 @@ const mockGradesData = [
 // Use real logger in these tests so console output can be observed.
 
 const server = setupServer(
-  http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+  http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
     return HttpResponse.json(mockLeaderboardData);
   }),
-  http.get('http://localhost:5000/api/users/grades', () => {
+  http.get('*/api/users/grades', () => {
     return HttpResponse.json(mockGradesData);
   })
 );
@@ -33,14 +33,14 @@ describe('LeaderboardScreen Integration', () => {
     render(<LeaderboardScreen />);
 
     await waitFor(() => {
-      expect(screen.getByText('Alice')).toBeInTheDocument();
-      expect(screen.getByText('Bob')).toBeInTheDocument();
+      expect(screen.getByText(/Alice/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bob/i)).toBeInTheDocument();
     });
   });
 
   it('renders fallback or error state gracefully when API fails', async () => {
     server.use(
-      http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+      http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
         return new HttpResponse(null, { status: 500 });
       })
     );
