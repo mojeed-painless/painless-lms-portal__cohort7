@@ -55,8 +55,23 @@ describe('QuizScreen Offline Execution via MSW', () => {
     const startBtn = await screen.findByRole('button', { name: /start quiz/i });
     fireEvent.click(startBtn);
 
-    // Wait for an actionable finish/submit button and submit
-    const submitBtn = await screen.findByRole('button', { name: /finish|submit/i });
+    // Advance through questions until a Finish button appears
+    let submitBtn = null;
+    for (let i = 0; i < 10; i++) {
+      try {
+        submitBtn = await screen.findByRole('button', { name: /finish|submit/i, timeout: 200 });
+        break;
+      } catch (e) {
+        const next = screen.queryByRole('button', { name: /next/i });
+        if (next) fireEvent.click(next);
+        else break;
+      }
+    }
+
+    if (!submitBtn) {
+      // Fallback: try to find any button labelled Submit
+      submitBtn = await screen.findByRole('button', { name: /submit/i });
+    }
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -64,3 +79,61 @@ describe('QuizScreen Offline Execution via MSW', () => {
     });
   });
 });
+
+  describe('QuizScreen Integration (submit endpoints)', () => {
+    it('handles successful quiz submission (200 OK)', async () => {
+      // ensure submit endpoint returns 200 OK
+      server.use(
+        http.post('http://localhost:5000/api/quiz-attempts/submit', () => {
+          return HttpResponse.json({ success: true, score: 100 }, { status: 200 });
+        }),
+        http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+          return HttpResponse.json([]);
+        })
+      );
+
+      render(
+        <AuthProvider>
+          <MemoryRouter>
+            <QuizScreen />
+          </MemoryRouter>
+        </AuthProvider>
+      );
+
+      const startBtn = await screen.findByRole('button', { name: /start quiz/i });
+      fireEvent.click(startBtn);
+
+      const submitBtn = await screen.findByRole('button', { name: /finish|submit/i });
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        expect(screen.getByText(/submitted successfully|score/i)).toBeInTheDocument();
+      });
+    });
+
+    it('handles duplicate quiz submission conflict (409 Conflict)', async () => {
+      server.use(
+        http.post('http://localhost:5000/api/quiz-attempts/submit', () => {
+          return HttpResponse.json({ message: 'Quiz already attempted today', attempt: { score: 80, total: 100 } }, { status: 409 });
+        })
+      );
+
+      render(
+        <AuthProvider>
+          <MemoryRouter>
+            <QuizScreen />
+          </MemoryRouter>
+        </AuthProvider>
+      );
+
+      const startBtn = await screen.findByRole('button', { name: /start quiz/i });
+      fireEvent.click(startBtn);
+
+      const submitBtn = await screen.findByRole('button', { name: /finish|submit/i });
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        expect(screen.getByText(/already attempted today/i)).toBeInTheDocument();
+      });
+    });
+  });
