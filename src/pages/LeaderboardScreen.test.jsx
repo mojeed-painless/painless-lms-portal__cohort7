@@ -2,6 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import * as logger from '../utils/logger';
+import LeaderboardScreen from './LeaderboardScreen';
 
 const mockLeaderboardData = [
   { id: '1', name: 'Alice', points: 95, rank: 1 },
@@ -12,51 +14,77 @@ const mockGradesData = [
   { courseId: 'react-101', grade: 'A' },
 ];
 
-// Use real logger in these tests so console output can be observed.
-
-const server = setupServer(
-  http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
-    return HttpResponse.json(mockLeaderboardData);
-  }),
-  http.get('http://localhost:5000/api/users/grades', () => {
-    return HttpResponse.json(mockGradesData);
-  })
-);
+const server = setupServer();
 
 beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 describe('LeaderboardScreen Integration', () => {
   it('renders leaderboard data correctly upon successful API fetch', async () => {
-    const { default: LeaderboardScreen } = await import('./LeaderboardScreen');
+    server.use(
+      http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+        return HttpResponse.json(mockLeaderboardData);
+      }),
+      http.get('*/api/users/grades', () => {
+        return HttpResponse.json(mockGradesData);
+      })
+    );
+
     render(<LeaderboardScreen />);
 
     await waitFor(() => {
-      expect(screen.getByText('Alice')).toBeInTheDocument();
-      expect(screen.getByText('Bob')).toBeInTheDocument();
+      expect(screen.getByText(/Alice/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bob/i)).toBeInTheDocument();
     });
   });
 
   it('renders fallback or error state gracefully when API fails', async () => {
     server.use(
-      http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+      http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
         return new HttpResponse(null, { status: 500 });
       })
     );
 
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const { default: LeaderboardScreen } = await import('./LeaderboardScreen');
     render(<LeaderboardScreen />);
 
     await waitFor(() => {
       expect(screen.queryByText('Alice')).not.toBeInTheDocument();
     });
 
-    // Verify structured logging was used for the failure by asserting console.error output
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith(expect.stringContaining('daily quiz leaderboard'));
     });
-    spy.mockRestore();
+  });
+
+  it('handles malformed API responses gracefully and logs validation errors', async () => {
+    const malformedData = [
+      {
+        rank: 'invalid-rank-type',
+        studentId: 12345,
+        name: 'John Doe',
+      },
+    ];
+
+    server.use(
+      http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+        return HttpResponse.json(malformedData);
+      })
+    );
+
+    const logErrorSpy = vi.spyOn(logger, 'logError').mockImplementation(() => {});
+    render(<LeaderboardScreen />);
+
+    await waitFor(() => {
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        'Leaderboard schema validation failed',
+        expect.objectContaining({ errors: expect.any(Object) })
+      );
+      expect(screen.getByText(/Invalid data structure received from server/i)).toBeInTheDocument();
+    });
   });
 });

@@ -6,7 +6,9 @@ import { useLeaderboard } from './useLeaderboard';
 
 const server = setupServer(
   http.get('/api/users/grades', () => HttpResponse.json([{ id: '1', grade: 'A' }])),
-  http.get('/api/quiz-attempts/leaderboard/daily/aggregate', () => HttpResponse.json([{ id: '101', points: 50 }]))
+  http.get('/api/quiz-attempts/leaderboard/daily/aggregate', () =>
+    HttpResponse.json([{ id: '101', name: 'Alice', points: 50, rank: 1 }])
+  )
 );
 
 beforeAll(() => server.listen());
@@ -20,6 +22,12 @@ describe('useLeaderboard Hook', () => {
     await waitFor(() => {
       expect(result.current.leaders).toHaveLength(1);
       expect(result.current.dailyQuizLeaders).toHaveLength(1);
+      expect(result.current.dailyQuizLeaders[0]).toMatchObject({
+        studentId: '101',
+        name: 'Alice',
+        score: 50,
+        rank: 1,
+      });
       expect(result.current.dailyQuizLoading).toBe(false);
       expect(result.current.authRequired).toBe(false);
     });

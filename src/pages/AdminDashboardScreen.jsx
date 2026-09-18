@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useAdminDashboard } from '../hooks/useAdminDashboard';
 import '../assets/styles/admin.css'; 
 import { adminStats } from '../data.js';
 import {
@@ -21,12 +22,25 @@ import { logError, logInfo } from '../utils/logger';
 const AdminDashboardScreen = () => {
     const { user } = useAuth();
     const activeUser = user || (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo') || 'null') : null);
+    const { users: dashboardUsers, loading: dashboardLoading, error: dashboardError } = useAdminDashboard();
     const [pendingUsers, setPendingUsers] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [courseAccess, setCourseAccess] = useState({});
     const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+      if (!dashboardLoading) {
+        setAllUsers(dashboardUsers);
+      }
+    }, [dashboardUsers, dashboardLoading]);
+
+    useEffect(() => {
+      if (dashboardError) {
+        setError(dashboardError);
+      }
+    }, [dashboardError]);
 
     const showToast = (message, type = 'info') => {
       setToast({ message, type });
