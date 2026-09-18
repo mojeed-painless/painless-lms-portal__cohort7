@@ -2,6 +2,7 @@ import UnderDevelopment from "../components/common/UnderDevelopment";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 import '../assets/styles/transcript.css';
 import { useEffect, useState } from 'react';
+import { logError } from '../utils/logger';
 import { useAuth } from '../context/AuthContext';
 import { useAssignments } from '../hooks/useAssignments';
 import { 
@@ -49,9 +50,9 @@ export default function TranscriptScreen() {
           const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
           if (mounted) setQuizAttempts(stored);
         } catch (e) {
-          console.error('Failed to load quiz attempts', e);
+          logError('Failed to load quiz attempts (local fallback parse)', { error: e && e.message ? e.message : e });
         }
-        console.error('Failed to load quiz attempts from backend', err);
+        logError('Failed to load quiz attempts from backend', { error: err && err.message ? err.message : err });
       }
     };
     load();

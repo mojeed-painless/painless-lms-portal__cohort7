@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchJson } from '../services/apiClient';
+import { logError } from '../utils/logger';
 
 /**
  * Encapsulates the daily-quiz session lifecycle that previously lived
@@ -110,7 +111,7 @@ export function useQuizSession(userOrQuizId) {
           setQuizIsLive(false);
         }
       } catch (err) {
-        console.error('Error fetching session', err);
+        logError('Error fetching session', { error: err && err.message ? err.message : err });
         setDailySession(null);
       } finally {
         setSessionLoading(false);

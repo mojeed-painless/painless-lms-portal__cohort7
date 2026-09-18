@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import LeaderboardScreen from './LeaderboardScreen';
 
 const mockLeaderboardData = [
   { id: '1', name: 'Alice', points: 95, rank: 1 },
@@ -12,6 +11,8 @@ const mockLeaderboardData = [
 const mockGradesData = [
   { courseId: 'react-101', grade: 'A' },
 ];
+
+// Use real logger in these tests so console output can be observed.
 
 const server = setupServer(
   http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
@@ -28,6 +29,7 @@ afterAll(() => server.close());
 
 describe('LeaderboardScreen Integration', () => {
   it('renders leaderboard data correctly upon successful API fetch', async () => {
+    const { default: LeaderboardScreen } = await import('./LeaderboardScreen');
     render(<LeaderboardScreen />);
 
     await waitFor(() => {
@@ -38,15 +40,23 @@ describe('LeaderboardScreen Integration', () => {
 
   it('renders fallback or error state gracefully when API fails', async () => {
     server.use(
-      http.get('/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+      http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
         return new HttpResponse(null, { status: 500 });
       })
     );
 
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { default: LeaderboardScreen } = await import('./LeaderboardScreen');
     render(<LeaderboardScreen />);
 
     await waitFor(() => {
       expect(screen.queryByText('Alice')).not.toBeInTheDocument();
     });
+
+    // Verify structured logging was used for the failure by asserting console.error output
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining('daily quiz leaderboard'));
+    });
+    spy.mockRestore();
   });
 });

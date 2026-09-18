@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { logInfo, logError } from '../utils/logger';
 import { useAuth } from './AuthContext';
 
 const ProgressContext = createContext();
@@ -52,7 +53,7 @@ export const ProgressProvider = ({ children }) => {
         setCompletedLessons(serverProgress);
         localStorage.setItem(`progress_${user._id}`, JSON.stringify(serverProgress));
       } catch (err) {
-        console.warn('Could not fetch progress from server:', err.message);
+        logInfo('Could not fetch progress from server', { error: err && err.message ? err.message : err });
         // If server fails, keep localStorage data (already loaded above)
       } finally {
         setIsLoading(false);
@@ -81,7 +82,7 @@ export const ProgressProvider = ({ children }) => {
 
     // Sync with backend using the updated array
     if (!user?._id || !user?.token) {
-      console.warn('Cannot sync progress: user not authenticated');
+      logInfo('Cannot sync progress: user not authenticated');
       return;
     }
 
@@ -98,7 +99,7 @@ export const ProgressProvider = ({ children }) => {
         config
       );
     } catch (err) {
-      console.error('Error syncing progress to backend:', err.message);
+      logError('Error syncing progress to backend', { error: err && err.message ? err.message : err });
       // Progress is still saved locally, will sync on next login
     }
   };
