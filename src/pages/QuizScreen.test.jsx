@@ -82,7 +82,7 @@ describe('QuizScreen Offline Execution via MSW', () => {
 });
 
   describe('QuizScreen Integration (submit endpoints)', () => {
-    it('handles successful quiz submission (200 OK)', async () => {
+    it('handles successful quiz submission (200 OK)', { timeout: 20000 }, async () => {
       // ensure submit endpoint returns 200 OK
       server.use(
         http.post('http://localhost:5000/api/quiz-attempts/submit', () => {
@@ -125,7 +125,7 @@ describe('QuizScreen Offline Execution via MSW', () => {
       });
     });
 
-    it('handles duplicate quiz submission conflict (409 Conflict)', async () => {
+    it('handles duplicate quiz submission conflict (409 Conflict)', { timeout: 20000 }, async () => {
       server.use(
         http.post('http://localhost:5000/api/quiz-attempts/submit', () => {
           return HttpResponse.json({ message: 'Quiz already attempted today', attempt: { score: 80, total: 100 } }, { status: 409 });

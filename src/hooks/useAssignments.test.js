@@ -26,6 +26,24 @@ describe('useAssignments Hook', () => {
     expect(result.current.error).toBeNull();
   });
 
+  it('handles object-style assignments response (data.assignments)', async () => {
+    server.use(
+      http.get('*/api/assignments', () => {
+        return HttpResponse.json({ assignments: [{ id: '100', title: 'Obj Assignment' }] });
+      })
+    );
+
+    const { result } = renderHook(() => useAssignments());
+
+    await act(async () => {
+      await result.current.fetchAssignments();
+    });
+
+    expect(result.current.assignments).toHaveLength(1);
+    expect(result.current.assignments[0].id).toBe('100');
+    expect(result.current.error).toBeNull();
+  });
+
   it('handles server error when fetching assignments fails', async () => {
     // Override MSW default handler to return 500 error
     server.use(
@@ -200,6 +218,26 @@ describe('useAssignments Hook', () => {
 
       expect(gradeResult).toBe(true);
       expect(result.current.error).toBeNull();
+    });
+
+    it('succeeds grading but sets error when refresh fails', async () => {
+      const { result } = renderHook(() => useAssignments(TOKEN));
+
+      server.use(
+        http.put('*/api/assignments/1/grade', () => {
+          return HttpResponse.json({ success: true });
+        }),
+        http.get('*/api/assignments/admin/graded', () => {
+          return new HttpResponse(null, { status: 500 });
+        })
+      );
+
+      const gradeResult = await act(async () => {
+        return await result.current.gradeAssignment('1', 90, 'Nice job');
+      });
+
+      expect(gradeResult).toBe(true);
+      expect(result.current.error).toBe('Failed to fetch all assignments');
     });
   });
 

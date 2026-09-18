@@ -88,36 +88,7 @@ export const handlers = [
     return HttpResponse.json({ session: { startAt: start, endAt: end } });
   }),
 
-  // Admin Dashboard Handlers
-  http.get('*/api/users/admin/pending', () => {
-    return HttpResponse.json([
-      { id: 'usr_pending_1', name: 'Pending User 1', status: 'pending', role: 'student' },
-    ]);
-  }),
-
-  http.get('*/api/users/admin/all', () => {
-    return HttpResponse.json([
-      { id: 'usr_1', name: 'Hanna', status: 'active', role: 'student', isApproved: true, htmlAccess: true },
-      { id: 'usr_2', name: 'Raheem', status: 'active', role: 'student', isApproved: true, jsAccess: true },
-    ]);
-  }),
-
-  http.patch('*/api/users/admin/:id/updateCourseAccess', async ({ request, params }) => {
-    const { accessList } = await request.json();
-    return HttpResponse.json({
-      id: params.id,
-      accessList,
-      message: 'Course access updated successfully',
-    });
-  }),
-
-  // Update user and delete user endpoints used by AdminDashboardScreen
-  http.patch('*/api/users/admin/:id', async ({ request, params }) => {
-    const body = await request.json();
-    return HttpResponse.json({ id: params.id, ...body });
-  }),
-
-  http.delete('*/api/users/admin/:id', async ({ params }) => {
-    return HttpResponse.json({ id: params.id, deleted: true });
-  }),
+  // (Admin handlers intentionally omitted here so tests can register specific
+  // responses via `server.use(...)`. This prevents global admin handlers from
+  // conflicting with test-scoped handlers.)
 ];

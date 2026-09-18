@@ -1,7 +1,25 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const VITE_BASE = import.meta.env.VITE_API_BASE_URL;
+const IS_TEST = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
+
+const API_HOST_FOR_TEST = 'http://localhost:5000';
+
+const API_BASE_URL = VITE_BASE || (IS_TEST ? API_HOST_FOR_TEST : '/api');
+
+function buildUrl(endpoint) {
+  // In test environment we want requests to go to the test host and
+  // ensure the path contains a single `/api` segment so MSW handlers
+  // that match `*/api/*` will intercept correctly.
+  if (IS_TEST) {
+    const ep = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
+    return `${API_HOST_FOR_TEST}${ep}`;
+  }
+  // In non-test env keep previous behavior (API_BASE_URL may be '/api' or a full base)
+  return `${API_BASE_URL}${endpoint}`;
+}
 
 export async function fetchJson(endpoint, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const url = buildUrl(endpoint);
+  const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
