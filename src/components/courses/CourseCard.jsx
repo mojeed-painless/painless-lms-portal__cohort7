@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import thumbnail from '../../assets/portfolio1.jpg';
 
 const CourseCard = ({ course }) => {
@@ -15,7 +15,6 @@ const CourseCard = ({ course }) => {
 
   return (
     <div className="card-container">
-      
       {/* Course Image */}
       <div className="card-image-wrapper">
         <img
@@ -29,9 +28,7 @@ const CourseCard = ({ course }) => {
       <div className="card-content">
         <div>
           {/* Title */}
-          <h3 className="card-title">
-            {course.title}
-          </h3>
+          <h3 className="card-title">{course.title}</h3>
           {/* Instructor (Using instructor.username from the backend populate) */}
           <p className="card-instructor">
             By {course.instructor ? course.instructor.username : 'Unknown Instructor'}
@@ -40,17 +37,11 @@ const CourseCard = ({ course }) => {
 
         {/* Progress Bar Placeholder (for demonstration) */}
         <div className="card-progress-bar">
-          <div 
-            className="card-progress-fill" 
-            style={{ width: `${progressPercentage}%` }}
-          ></div>
+          <div className="card-progress-fill" style={{ width: `${progressPercentage}%` }}></div>
         </div>
-        
+
         {/* Action Button */}
-        <button
-          onClick={handleActionClick}
-          className="primary-btn card-action-btn"
-        >
+        <button onClick={handleActionClick} className="primary-btn card-action-btn">
           {actionText}
         </button>
       </div>

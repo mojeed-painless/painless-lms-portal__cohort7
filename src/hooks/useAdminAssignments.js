@@ -105,20 +105,21 @@ export function useAdminAssignmentForm({
           payload.dueDate,
           payload.courseType
         )
-      : await createFn(
-          payload.title,
-          payload.description,
-          payload.dueDate,
-          payload.courseType
-        );
+      : await createFn(payload.title, payload.description, payload.dueDate, payload.courseType);
 
     if (success) {
       setShowAssignmentForm(false);
       setEditingAssignmentId(null);
       setEditingAssignment({ title: '', courseType: 'html', dueDate: '' });
-      showToast(isEditing ? 'Assignment updated successfully!' : 'Assignment created successfully!', 'success');
+      showToast(
+        isEditing ? 'Assignment updated successfully!' : 'Assignment created successfully!',
+        'success'
+      );
     } else {
-      showToast(error || (isEditing ? 'Failed to update assignment' : 'Failed to create assignment'), 'error');
+      showToast(
+        error || (isEditing ? 'Failed to update assignment' : 'Failed to create assignment'),
+        'error'
+      );
     }
 
     return success;

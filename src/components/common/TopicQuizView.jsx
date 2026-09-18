@@ -16,7 +16,9 @@ export default function TopicQuizView({
   if (result) {
     return (
       <div className="topic-quiz__box">
-        <p>Passed - Score: {result.score} / {result.total}</p>
+        <p>
+          Passed - Score: {result.score} / {result.total}
+        </p>
       </div>
     );
   }

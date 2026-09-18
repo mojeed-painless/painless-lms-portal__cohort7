@@ -296,7 +296,12 @@ describe('useAssignments Hook', () => {
       const { result } = renderHook(() => useAssignments(TOKEN));
 
       const createResult = await act(async () => {
-        return await result.current.createAssignment('New Assignment', '', '2026-12-31', 'invalidcourse');
+        return await result.current.createAssignment(
+          'New Assignment',
+          '',
+          '2026-12-31',
+          'invalidcourse'
+        );
       });
 
       expect(createResult).toBe(false);
@@ -308,7 +313,12 @@ describe('useAssignments Hook', () => {
       const longTitle = 'a'.repeat(256);
 
       const createResult = await act(async () => {
-        return await result.current.createAssignment(longTitle, 'Description', '2026-12-31', 'html');
+        return await result.current.createAssignment(
+          longTitle,
+          'Description',
+          '2026-12-31',
+          'html'
+        );
       });
 
       expect(createResult).toBe(false);
@@ -329,7 +339,12 @@ describe('useAssignments Hook', () => {
       );
 
       const createResult = await act(async () => {
-        return await result.current.createAssignment('Valid Title', 'Description', '2026-12-31', 'react');
+        return await result.current.createAssignment(
+          'Valid Title',
+          'Description',
+          '2026-12-31',
+          'react'
+        );
       });
 
       expect(createResult).toBe(true);
@@ -345,7 +360,12 @@ describe('useAssignments Hook', () => {
       );
 
       const createResult = await act(async () => {
-        return await result.current.createAssignment('Valid Title', 'Description', '2026-12-31', 'react');
+        return await result.current.createAssignment(
+          'Valid Title',
+          'Description',
+          '2026-12-31',
+          'react'
+        );
       });
 
       expect(createResult).toBe(false);
@@ -372,7 +392,13 @@ describe('useAssignments Hook', () => {
       const { result } = renderHook(() => useAssignments(TOKEN));
 
       const updateResult = await act(async () => {
-        return await result.current.updateAssignment('1', 'Updated title', 'Description', '', 'html');
+        return await result.current.updateAssignment(
+          '1',
+          'Updated title',
+          'Description',
+          '',
+          'html'
+        );
       });
 
       expect(updateResult).toBe(false);
@@ -383,7 +409,13 @@ describe('useAssignments Hook', () => {
       const { result } = renderHook(() => useAssignments(TOKEN));
 
       const updateResult = await act(async () => {
-        return await result.current.updateAssignment('1', 'Updated title', '', '2026-12-31', 'invalidcourse');
+        return await result.current.updateAssignment(
+          '1',
+          'Updated title',
+          '',
+          '2026-12-31',
+          'invalidcourse'
+        );
       });
 
       expect(updateResult).toBe(false);
@@ -405,7 +437,13 @@ describe('useAssignments Hook', () => {
       );
 
       const updateResult = await act(async () => {
-        return await result.current.updateAssignment('1', 'Updated title', 'Description', '2026-12-31', 'html');
+        return await result.current.updateAssignment(
+          '1',
+          'Updated title',
+          'Description',
+          '2026-12-31',
+          'html'
+        );
       });
 
       expect(updateResult).toBe(true);
@@ -426,7 +464,13 @@ describe('useAssignments Hook', () => {
       );
 
       const updateResult = await act(async () => {
-        return await result.current.updateAssignment('1', 'Updated title', 'Description', '2026-12-31', 'html');
+        return await result.current.updateAssignment(
+          '1',
+          'Updated title',
+          'Description',
+          '2026-12-31',
+          'html'
+        );
       });
 
       expect(updateResult).toBe(false);
@@ -480,7 +524,10 @@ describe('useAssignments Hook', () => {
           });
         }),
         http.delete('*/api/assignments/1', () => {
-          return HttpResponse.json({ message: 'Cannot delete a graded assignment' }, { status: 403 });
+          return HttpResponse.json(
+            { message: 'Cannot delete a graded assignment' },
+            { status: 403 }
+          );
         })
       );
 

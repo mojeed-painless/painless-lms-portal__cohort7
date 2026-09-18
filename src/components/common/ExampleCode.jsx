@@ -4,14 +4,13 @@ import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-markup';
 
 export default function ExampleCode({ children, language }) {
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
 
-        useEffect(() => {
-          Prism.highlightAll();
-        }, []);
-
-    return (
-        <pre>
-            <code className={`language-${language}`}>{children}</code>
-        </pre>
-    )
+  return (
+    <pre>
+      <code className={`language-${language}`}>{children}</code>
+    </pre>
+  );
 }

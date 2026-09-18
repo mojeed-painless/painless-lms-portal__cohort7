@@ -26,9 +26,9 @@
 }
 
 .settings__header-title span {
-    display: flex;
-    align-items: center;
-    color: #7925d3;
+  display: flex;
+  align-items: center;
+  color: #7925d3;
 }
 
 .settings__header-subtitle {
@@ -41,7 +41,6 @@
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.5rem;
 }
-
 
 .day-button {
   background: none;

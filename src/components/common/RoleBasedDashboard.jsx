@@ -4,9 +4,9 @@ import AdminDashboardScreen from '../../pages/AdminDashboardScreen';
 
 const RoleBasedDashboard = () => {
   const { user } = useAuth();
-  
+
   if (!user) {
-    return <div>Redirecting...</div>; 
+    return <div>Redirecting...</div>;
   }
 
   if (user.role === 'admin') {

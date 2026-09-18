@@ -7,7 +7,9 @@ import { http, HttpResponse } from 'msw';
 describe('useTopicQuizSubmission Hook', () => {
   it('validates and submits quiz attempt successfully', async () => {
     server.use(
-      http.post('*/api/quiz-attempts', () => HttpResponse.json({ success: true, attemptId: 'att_123' }))
+      http.post('*/api/quiz-attempts', () =>
+        HttpResponse.json({ success: true, attemptId: 'att_123' })
+      )
     );
 
     const { result } = renderHook(() => useTopicQuizSubmission());

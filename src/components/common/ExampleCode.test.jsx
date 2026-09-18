@@ -5,9 +5,7 @@ import ExampleCode from './ExampleCode';
 
 describe('ExampleCode', () => {
   it('renders code block with language class', () => {
-    const { container } = render(
-      <ExampleCode language="js">console.log('hi');</ExampleCode>
-    );
+    const { container } = render(<ExampleCode language="js">console.log('hi');</ExampleCode>);
 
     const codeEl = container.querySelector('code.language-js');
     expect(codeEl).toBeInTheDocument();

@@ -44,10 +44,7 @@ describe('Admin API Service', () => {
     it('should throw error when fetch fails', async () => {
       server.use(
         http.get(`${API_URL}/pending`, () => {
-          return HttpResponse.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-          );
+          return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
         })
       );
 
@@ -55,9 +52,7 @@ describe('Admin API Service', () => {
     });
 
     it('should throw error when token is missing', async () => {
-      await expect(fetchPendingUsers(null)).rejects.toThrow(
-        'Authorization token is required'
-      );
+      await expect(fetchPendingUsers(null)).rejects.toThrow('Authorization token is required');
     });
 
     it('should return empty array when no pending users', async () => {
@@ -96,22 +91,15 @@ describe('Admin API Service', () => {
     it('should throw error when fetch fails', async () => {
       server.use(
         http.get(`${API_URL}/all`, () => {
-          return HttpResponse.json(
-            { message: 'Failed to fetch users' },
-            { status: 500 }
-          );
+          return HttpResponse.json({ message: 'Failed to fetch users' }, { status: 500 });
         })
       );
 
-      await expect(fetchAllUsers(TOKEN)).rejects.toThrow(
-        'Failed to fetch users'
-      );
+      await expect(fetchAllUsers(TOKEN)).rejects.toThrow('Failed to fetch users');
     });
 
     it('should throw error when token is missing', async () => {
-      await expect(fetchAllUsers(null)).rejects.toThrow(
-        'Authorization token is required'
-      );
+      await expect(fetchAllUsers(null)).rejects.toThrow('Authorization token is required');
     });
   });
 
@@ -151,9 +139,7 @@ describe('Admin API Service', () => {
     });
 
     it('should throw error when userId is missing', async () => {
-      await expect(updateUser(null, {}, TOKEN)).rejects.toThrow(
-        'User ID is required'
-      );
+      await expect(updateUser(null, {}, TOKEN)).rejects.toThrow('User ID is required');
     });
 
     it('should throw error when token is missing', async () => {
@@ -168,16 +154,11 @@ describe('Admin API Service', () => {
 
       server.use(
         http.put(`${API_URL}/${userId}`, () => {
-          return HttpResponse.json(
-            { message: 'User not found' },
-            { status: 404 }
-          );
+          return HttpResponse.json({ message: 'User not found' }, { status: 404 });
         })
       );
 
-      await expect(updateUser(userId, updateData, TOKEN)).rejects.toThrow(
-        'User not found'
-      );
+      await expect(updateUser(userId, updateData, TOKEN)).rejects.toThrow('User not found');
     });
   });
 
@@ -199,15 +180,11 @@ describe('Admin API Service', () => {
     });
 
     it('should throw error when userId is missing', async () => {
-      await expect(deleteUser(null, TOKEN)).rejects.toThrow(
-        'User ID is required'
-      );
+      await expect(deleteUser(null, TOKEN)).rejects.toThrow('User ID is required');
     });
 
     it('should throw error when token is missing', async () => {
-      await expect(deleteUser('user-123', null)).rejects.toThrow(
-        'Authorization token is required'
-      );
+      await expect(deleteUser('user-123', null)).rejects.toThrow('Authorization token is required');
     });
 
     it('should handle delete errors', async () => {
@@ -215,16 +192,11 @@ describe('Admin API Service', () => {
 
       server.use(
         http.delete(`${API_URL}/${userId}`, () => {
-          return HttpResponse.json(
-            { message: 'User not found' },
-            { status: 404 }
-          );
+          return HttpResponse.json({ message: 'User not found' }, { status: 404 });
         })
       );
 
-      await expect(deleteUser(userId, TOKEN)).rejects.toThrow(
-        'User not found'
-      );
+      await expect(deleteUser(userId, TOKEN)).rejects.toThrow('User not found');
     });
   });
 
@@ -275,15 +247,15 @@ describe('Admin API Service', () => {
     });
 
     it('should throw error when userId is missing', async () => {
-      await expect(
-        updateCourseAccess(null, { htmlAccess: true }, TOKEN)
-      ).rejects.toThrow('User ID is required');
+      await expect(updateCourseAccess(null, { htmlAccess: true }, TOKEN)).rejects.toThrow(
+        'User ID is required'
+      );
     });
 
     it('should throw error when token is missing', async () => {
-      await expect(
-        updateCourseAccess('user-123', { htmlAccess: true }, null)
-      ).rejects.toThrow('Authorization token is required');
+      await expect(updateCourseAccess('user-123', { htmlAccess: true }, null)).rejects.toThrow(
+        'Authorization token is required'
+      );
     });
   });
 });

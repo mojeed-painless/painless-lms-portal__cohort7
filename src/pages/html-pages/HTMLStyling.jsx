@@ -8,107 +8,102 @@ import TakeQuizButton from '../../components/common/TakeQuizButton';
 import TopicQuiz from '../../components/common/TopicQuiz';
 
 export default function HTMLStyling() {
-
   const [isQuizActive, setIsQuizActive] = useState(false);
 
-    return (
-        <section className="course-content">
-            <div className="course-content__header">
-                <h1>Styling</h1>
-                <p>Hypertext Markup Language</p>
-            </div>
+  return (
+    <section className="course-content">
+      <div className="course-content__header">
+        <h1>Styling</h1>
+        <p>Hypertext Markup Language</p>
+      </div>
 
-            <section>
-                <div className="course-content__container">
-                    <p>
-    HTML styling allows you to apply CSS (Cascading Style Sheets) directly within an HTML tag using the <code className="code">style</code> attribute.
-    It’s one of the simplest ways to apply quick visual formatting without using a separate CSS file or internal stylesheet.
-  </p>
+      <section>
+        <div className="course-content__container">
+          <p>
+            HTML styling allows you to apply CSS (Cascading Style Sheets) directly within an HTML
+            tag using the <code className="code">style</code> attribute. It’s one of the simplest
+            ways to apply quick visual formatting without using a separate CSS file or internal
+            stylesheet.
+          </p>
 
-  <h3>What can we style inline?</h3>
+          <h3>What can we style inline?</h3>
 
-  <ul>
-    <li>Text color</li>
-    <li>Font size</li>
-    <li>Background color</li>
-    <li>Margins and padding</li>
-    <li>Border and width</li>
-    <li>Text alignment</li>
-    <li>And more...</li>
-  </ul>
+          <ul>
+            <li>Text color</li>
+            <li>Font size</li>
+            <li>Background color</li>
+            <li>Margins and padding</li>
+            <li>Border and width</li>
+            <li>Text alignment</li>
+            <li>And more...</li>
+          </ul>
 
-  <h3>Syntax</h3>
+          <h3>Syntax</h3>
 
-<ExampleCode language="html">
-{`<tag style="property: value;">Content</tag>`}
-</ExampleCode>
+          <ExampleCode language="html">{`<tag style="property: value;">Content</tag>`}</ExampleCode>
 
-  <h4>Examples</h4>
+          <h4>Examples</h4>
 
-  <h3>Background Color</h3>
-<ExampleCode language="html">
-{`<div style="background: blue;">
+          <h3>Background Color</h3>
+          <ExampleCode language="html">
+            {`<div style="background: blue;">
     This div has a blue background.
  </div>`}
-</ExampleCode>
+          </ExampleCode>
 
-  <h3>Font Size</h3>
-<ExampleCode language="html">
-{`<p style="font-size: 18px;">
+          <h3>Font Size</h3>
+          <ExampleCode language="html">
+            {`<p style="font-size: 18px;">
     This paragraph has a larger font size.
  </p>`}
-</ExampleCode>
+          </ExampleCode>
 
-  <h3>Multiple Styles</h3>
-<ExampleCode language="html">
-{`<h2 style="color: #ff6600; background: #f0f0f0; padding: 10px; border-radius: 5px;">
+          <h3>Multiple Styles</h3>
+          <ExampleCode language="html">
+            {`<h2 style="color: #ff6600; background: #f0f0f0; padding: 10px; border-radius: 5px;">
     Styled Heading
  </h2>`}
-</ExampleCode>
+          </ExampleCode>
 
-  <h3>When to Use html Styling</h3>
+          <h3>When to Use html Styling</h3>
 
-  <p>
-    HTML styling is best for quick testing or when applying a one-off style to a single element. 
-  </p>
+          <p>
+            HTML styling is best for quick testing or when applying a one-off style to a single
+            element.
+          </p>
 
-  <h3 className="bold">
-    For larger projects, it is recommended to use internal or external stylesheets for better structure, reusability, and cleaner code.
-  </h3>
+          <h3 className="bold">
+            For larger projects, it is recommended to use internal or external stylesheets for
+            better structure, reusability, and cleaner code.
+          </h3>
 
-    <VideoBox 
-        title='Adding styling within html'
-        code='cfsRLanIjTw?si=TlklC8mi5X0tYQVF'
-    />
+          <VideoBox title="Adding styling within html" code="cfsRLanIjTw?si=TlklC8mi5X0tYQVF" />
 
-
-        <AssignmentBox title="Form & Style">
-          <ol>
+          <AssignmentBox title="Form & Style">
+            <ol>
               <li>Create an application form for a new established school</li>
               <li>Add inputs as much as possible to receive students' information</li>
               <li>Add some touch of styling</li>
-          </ol>
-        </AssignmentBox>
+            </ol>
+          </AssignmentBox>
+        </div>
+      </section>
 
+      <TakeQuizButton onSelect={() => setIsQuizActive((prev) => !prev)} />
 
-                </div>
-            </section>
+      <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
+        <TopicQuiz
+          onSelect={() => setIsQuizActive((prev) => !prev)}
+          currentCategory="html"
+          currentTopic="Styling"
+        />
+      </article>
 
-            <TakeQuizButton onSelect={() => setIsQuizActive(prev => !prev)} />
-
-            <article className={`topic-quiz__container ${isQuizActive ? 'active-quiz' : ''}`}>
-              <TopicQuiz 
-                onSelect={() => setIsQuizActive(prev => !prev)} 
-                currentCategory="html" 
-                currentTopic="Styling" 
-              />
-            </article>
-
-            <PrevNextBtn 
-                prevPath="/html-form" 
-                nextPath="/css-transition"
-                // nextPath=""
-            />
-        </section>
-    );
+      <PrevNextBtn
+        prevPath="/html-form"
+        nextPath="/css-transition"
+        // nextPath=""
+      />
+    </section>
+  );
 }

@@ -38,7 +38,7 @@ describe('TestimonialCard', () => {
 
   it('renders correct number of stars based on rating', () => {
     render(<TestimonialCard testimonials={items} />);
-    
+
     // Stars are SVG elements; verify render completes successfully
     expect(screen.getByText('Alice')).toBeInTheDocument();
   });
@@ -73,11 +73,11 @@ describe('TestimonialCard', () => {
     render(<TestimonialCard testimonials={items} />);
 
     const nextBtn = screen.getAllByRole('button', { name: /Previous testimonial/i })[1];
-    
+
     // Navigate through all testimonials
     fireEvent.click(nextBtn);
     expect(screen.getByText('Bob')).toBeInTheDocument();
-    
+
     fireEvent.click(nextBtn);
     expect(screen.getByText('Charlie')).toBeInTheDocument();
   });
@@ -146,7 +146,7 @@ describe('TestimonialCard', () => {
 
     const dots = screen.getAllByRole('button', { name: /Go to testimonial/ });
     expect(dots).toHaveLength(3);
-    
+
     // Test dot click navigation
     fireEvent.click(dots[1]);
     expect(dots[1]).toHaveClass('active');
@@ -157,12 +157,12 @@ describe('TestimonialCard', () => {
 
     const nextBtn = screen.getAllByRole('button', { name: /Previous testimonial/i })[1];
     const dots = screen.getAllByRole('button', { name: /Go to testimonial/ });
-    
+
     expect(dots[0]).toHaveClass('active');
-    
+
     fireEvent.click(nextBtn);
     expect(dots[1]).toHaveClass('active');
-    
+
     fireEvent.click(nextBtn);
     expect(dots[2]).toHaveClass('active');
   });

@@ -2,13 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import '../../assets/styles/topicQuiz.css';
 import { TopicQuizData } from '../../quizData';
 import { logError } from '../../utils/logger';
-import {
-  TimerReset,
-  MoveRight,
-  MoveLeft,
-  X,
-  Check,
-} from 'lucide-react';
+import { TimerReset, MoveRight, MoveLeft, X, Check } from 'lucide-react';
 import useTopicQuizSubmission from '../../hooks/useTopicQuizSubmission';
 import { useTopicQuizState } from '../../hooks/useTopicQuizState';
 import TopicQuizView from './TopicQuizView';
@@ -17,7 +11,8 @@ import { useAuth } from '../../context/AuthContext';
 import { quizAttemptSchema, quizAnswerSchema } from '../../schemas/quiz';
 
 function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
-  const { currentQuestion, selectedAnswers, score, isFinished, selectOption, nextQuestion } = useTopicQuizState(questions);
+  const { currentQuestion, selectedAnswers, score, isFinished, selectOption, nextQuestion } =
+    useTopicQuizState(questions);
 
   const [submissionState, setSubmissionState] = useState({ status: 'idle', message: '' });
   const [result, setResult] = useState(null);
@@ -30,11 +25,12 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
     const calculatedScore = score || 0;
 
     const answers = Object.keys(selectedAnswers).map((qid) => {
-      const question = questions.find(q => String(q.id) === String(qid));
+      const question = questions.find((q) => String(q.id) === String(qid));
       return {
         questionId: Number(qid),
         selectedOption: Number(selectedAnswers[qid]),
-        correctAnswer: typeof question?.correctAnswer !== 'undefined' ? Number(question.correctAnswer) : 0,
+        correctAnswer:
+          typeof question?.correctAnswer !== 'undefined' ? Number(question.correctAnswer) : 0,
       };
     });
 
@@ -50,7 +46,12 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       setError('');
       const data = await submitAttemptHook(payload);
       const passed = typeof data?.passed === 'boolean' ? data.passed : calculatedScore === total;
-      const nextResult = { score: calculatedScore, total, passed, status: data?.status || 'success' };
+      const nextResult = {
+        score: calculatedScore,
+        total,
+        passed,
+        status: data?.status || 'success',
+      };
       setResult(nextResult);
       if (onComplete) onComplete(nextResult);
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
@@ -76,7 +77,13 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   );
 }
 
-export default function TopicQuiz({ currentTopic, topic, questions: providedQuestions, onSelect, onComplete }) {
+export default function TopicQuiz({
+  currentTopic,
+  topic,
+  questions: providedQuestions,
+  onSelect,
+  onComplete,
+}) {
   const { user } = useAuth();
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -106,7 +113,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
   };
 
   const handleOptionSelect = async (questionId, selectedOption, questionText, correctAnswer) => {
-    setAnswers(prev => ({ ...prev, [questionId]: selectedOption }));
+    setAnswers((prev) => ({ ...prev, [questionId]: selectedOption }));
 
     await postAnswer({
       questionId: Number(questionId),
@@ -125,21 +132,27 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
       });
       if (attRes.ok) {
         const attData = await attRes.json();
-        const found = attData.find(a => a.topic === currentTopic);
+        const found = attData.find((a) => a.topic === currentTopic);
         if (found) setAttempted(true);
       }
 
-      const ansRes = await fetch(`${API_BASE}/api/quiz-answers?topic=${encodeURIComponent(currentTopic)}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(user && user._id ? { 'x-user-id': user._id } : {}),
-        },
-      });
+      const ansRes = await fetch(
+        `${API_BASE}/api/quiz-answers?topic=${encodeURIComponent(currentTopic)}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(user && user._id ? { 'x-user-id': user._id } : {}),
+          },
+        }
+      );
       if (ansRes.ok) {
         const ansData = await ansRes.json();
         const map = {};
-        ansData.forEach(a => {
-          map[String(a.questionId)] = { selectedOption: a.selectedOption, correctAnswer: a.correctAnswer };
+        ansData.forEach((a) => {
+          map[String(a.questionId)] = {
+            selectedOption: a.selectedOption,
+            correctAnswer: a.correctAnswer,
+          };
         });
         setAttemptedAnswers(map);
       }
@@ -156,7 +169,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
 
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setRemainingSeconds(prev => {
+      setRemainingSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timerRef.current);
           timerRef.current = null;
@@ -171,7 +184,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
   const computeAndShowResult = async (questions) => {
     const total = questions.length;
     let score = 0;
-    questions.forEach(q => {
+    questions.forEach((q) => {
       const sel = answers[String(q.id)];
       if (sel && q.correctAnswer && sel === q.correctAnswer) score += 1;
     });
@@ -182,12 +195,15 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
       quizId: String(currentTopic || 'quiz'),
       score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
       answers: Object.entries(answers).map(([questionId, selectedValue]) => {
-        const topicObj = TopicQuizData.find(t => t.topic === currentTopic);
-        const matchingQuestion = topicObj?.questions?.find(question => String(question.id) === String(questionId));
-        const selectedOption = matchingQuestion?.options?.findIndex(option => {
-          const optionValue = typeof option === 'string' ? option : option.text;
-          return optionValue === selectedValue;
-        }) ?? 0;
+        const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
+        const matchingQuestion = topicObj?.questions?.find(
+          (question) => String(question.id) === String(questionId)
+        );
+        const selectedOption =
+          matchingQuestion?.options?.findIndex((option) => {
+            const optionValue = typeof option === 'string' ? option : option.text;
+            return optionValue === selectedValue;
+          }) ?? 0;
 
         return {
           questionId: Number(questionId),
@@ -215,17 +231,26 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
       });
       setAttempted(true);
       const map = {};
-      Object.keys(answers).forEach(qid => {
-        const topicObj = TopicQuizData.find(t => t.topic === currentTopic);
-        const q = topicObj?.questions?.find(x => String(x.id) === String(qid));
-        map[String(qid)] = { selectedOption: answers[qid], correctAnswer: q?.correctAnswer || null };
+      Object.keys(answers).forEach((qid) => {
+        const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
+        const q = topicObj?.questions?.find((x) => String(x.id) === String(qid));
+        map[String(qid)] = {
+          selectedOption: answers[qid],
+          correctAnswer: q?.correctAnswer || null,
+        };
       });
       setAttemptedAnswers(map);
     } catch (err) {
       try {
         const key = 'quiz_attempts';
         const attempts = JSON.parse(localStorage.getItem(key) || '[]');
-        const attempt = { topic: currentTopic, date: new Date().toISOString(), score, total, timeTaken };
+        const attempt = {
+          topic: currentTopic,
+          date: new Date().toISOString(),
+          score,
+          total,
+          timeTaken,
+        };
         attempts.unshift(attempt);
         localStorage.setItem(key, JSON.stringify(attempts.slice(0, 100)));
       } catch (e) {
@@ -246,7 +271,7 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
 
     setQuizIsLive(false);
 
-    const topicObj = TopicQuizData.find(t => t.topic === currentTopic);
+    const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
     if (topicObj) {
       await computeAndShowResult(topicObj.questions);
     } else {
@@ -267,7 +292,13 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
   }, [fetchAttemptData, currentTopic]);
 
   if (hasCustomQuestions) {
-    return <GenericTopicQuiz questions={providedQuestions} topic={resolvedTopic || 'Quiz'} onComplete={onComplete} />;
+    return (
+      <GenericTopicQuiz
+        questions={providedQuestions}
+        topic={resolvedTopic || 'Quiz'}
+        onComplete={onComplete}
+      />
+    );
   }
 
   const formatTime = (secs) => {
@@ -278,159 +309,287 @@ export default function TopicQuiz({ currentTopic, topic, questions: providedQues
 
   return (
     <>
-      {TopicQuizData.map(({topic, questions}) => (
-        topic === currentTopic &&
-        <div className="topic-quiz__box" key={topic}>
-          <div className="topic-quiz__header">
-            <span>Question {quizIsLive ? activeQuestion : 0} of {questions.length}</span>
-            <span className='topic-quiz__timer'><TimerReset size={18}/> {formatTime(remainingSeconds)}</span>
-            {!quizIsLive && (
-              <button
-                type="button"
-                aria-label="Close quiz"
-                onClick={onSelect}
-                style={{ cursor: 'pointer', background: 'transparent', border: 'none', padding: 0 }}
-              >
-                <X size={20} />
-              </button>
-            )}
-          </div>
-
-          {!quizIsLive ? (
-            attempted ? (
-              <>
-                {!showAttempted &&
-                  <>
-                    <p style={{ marginBottom: '10px', padding: '0 0.6rem', textAlign: 'center' }}>You have already completed the quiz for <strong>{topic}</strong>.</p>
-                    <button className="take-quiz-btn" onClick={() => {
-                      setShowAttempted(prev => {
-                        const next = !prev;
-                        if (next) setActiveQuestion(1);
-                        return next;
-                      });
-                    }} type="button" aria-label={showAttempted ? 'Hide my quiz' : 'Show my quiz'}>{showAttempted ? 'Hide my quiz' : 'Show my quiz'}</button>
-                  </>
-                }
-
-                {showAttempted && (
-                  <>
-                    <div className="topic-quiz__questions">
-                      {(() => {
-                        const q = questions.find(tq => String(tq.id) === String(activeQuestion)) || questions[0];
-                        const { id: questionId, question, options, correctAnswer } = q;
-                        return (
-                          <div className={`topic-quiz__question ${questionId === activeQuestion ? 'active-question' : ''}`} key={questionId}>
-                            <h4>{question}</h4>
-                            <div className="topic-quiz__options">
-                              {options.map(({id: optionId, text}, index) => {
-                                const optionLetter = String.fromCharCode(65 + index);
-                                const record = attemptedAnswers[String(questionId)] || {};
-                                const sel = record.selectedOption || answers[String(questionId)];
-                                const corr = record.correctAnswer || correctAnswer;
-                                const isSelected = sel === optionLetter;
-                                const isCorrect = corr === optionLetter;
-                                const optionLabel = `${optionLetter}. ${text}`;
-                                return (
-                                  <button
-                                    key={optionId}
-                                    type="button"
-                                    aria-label={optionLabel}
-                                    aria-pressed={isSelected}
-                                    className={`topic-quiz__option disabled ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${(!isCorrect && isSelected) ? 'incorrect' : ''}`}
-                                    disabled
-                                  >
-                                    <span className={isCorrect ? 'correct' : (isSelected ? 'incorrect' : '')}>
-                                      {isCorrect ? <Check size={14}/> : (isSelected ? <X size={14}/> : optionLetter)}
-                                    </span>
-                                    {text}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      })()}
-                    </div>
-
-                    <div className="topic-quiz__nav">
-                      {activeQuestion > 1 ?
-                        <button onClick={() => setActiveQuestion(prev => prev - 1)}><span><MoveLeft size={16} /></span> Previous</button> :
-                        <button className='topic-quiz__nav-disabled' disabled><span><MoveLeft size={16} /></span> Previous</button>
-                      }
-
-                      {activeQuestion < questions.length ?
-                        <button onClick={() => setActiveQuestion(prev => prev + 1)}>Next <span><MoveRight size={16} /></span></button> :
-                        <button className='topic-quiz__nav-disabled' disabled>Next <span><MoveRight size={16} /></span></button>
-                      }
-                    </div>
-                  </>
+      {TopicQuizData.map(
+        ({ topic, questions }) =>
+          topic === currentTopic && (
+            <div className="topic-quiz__box" key={topic}>
+              <div className="topic-quiz__header">
+                <span>
+                  Question {quizIsLive ? activeQuestion : 0} of {questions.length}
+                </span>
+                <span className="topic-quiz__timer">
+                  <TimerReset size={18} /> {formatTime(remainingSeconds)}
+                </span>
+                {!quizIsLive && (
+                  <button
+                    type="button"
+                    aria-label="Close quiz"
+                    onClick={onSelect}
+                    style={{
+                      cursor: 'pointer',
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
                 )}
-              </>
-            ) : (
-              <div style={{ padding: '28px', textAlign: 'center' }}>
-                <p style={{ marginBottom: '12px' }}>Ready to start the quiz for <strong>{topic}</strong>?</p>
-                <button className="take-quiz-btn" onClick={() => setShowStartConfirm(true)}>Take Quiz</button>
               </div>
-            )
-          ) : null}
 
-          {quizIsLive && <div className="topic-quiz__nav">
-            {activeQuestion > 1 ?
-              <button onClick={() => setActiveQuestion(prev => prev - 1)}><span><MoveLeft size={16} /></span> Previous</button> :
-              <button className='topic-quiz__nav-disabled' disabled><span><MoveLeft size={16} /></span> Previous</button>
-            }
+              {!quizIsLive ? (
+                attempted ? (
+                  <>
+                    {!showAttempted && (
+                      <>
+                        <p
+                          style={{ marginBottom: '10px', padding: '0 0.6rem', textAlign: 'center' }}
+                        >
+                          You have already completed the quiz for <strong>{topic}</strong>.
+                        </p>
+                        <button
+                          className="take-quiz-btn"
+                          onClick={() => {
+                            setShowAttempted((prev) => {
+                              const next = !prev;
+                              if (next) setActiveQuestion(1);
+                              return next;
+                            });
+                          }}
+                          type="button"
+                          aria-label={showAttempted ? 'Hide my quiz' : 'Show my quiz'}
+                        >
+                          {showAttempted ? 'Hide my quiz' : 'Show my quiz'}
+                        </button>
+                      </>
+                    )}
 
-            {activeQuestion < questions.length ?
-              <button onClick={() => setActiveQuestion(prev => prev + 1)}>Next <span><MoveRight size={16} /></span></button> :
-              <button onClick={() => setShowFinishConfirm(true)}>Finish Quiz</button>
-            }
-          </div>}
+                    {showAttempted && (
+                      <>
+                        <div className="topic-quiz__questions">
+                          {(() => {
+                            const q =
+                              questions.find((tq) => String(tq.id) === String(activeQuestion)) ||
+                              questions[0];
+                            const { id: questionId, question, options, correctAnswer } = q;
+                            return (
+                              <div
+                                className={`topic-quiz__question ${questionId === activeQuestion ? 'active-question' : ''}`}
+                                key={questionId}
+                              >
+                                <h4>{question}</h4>
+                                <div className="topic-quiz__options">
+                                  {options.map(({ id: optionId, text }, index) => {
+                                    const optionLetter = String.fromCharCode(65 + index);
+                                    const record = attemptedAnswers[String(questionId)] || {};
+                                    const sel =
+                                      record.selectedOption || answers[String(questionId)];
+                                    const corr = record.correctAnswer || correctAnswer;
+                                    const isSelected = sel === optionLetter;
+                                    const isCorrect = corr === optionLetter;
+                                    const optionLabel = `${optionLetter}. ${text}`;
+                                    return (
+                                      <button
+                                        key={optionId}
+                                        type="button"
+                                        aria-label={optionLabel}
+                                        aria-pressed={isSelected}
+                                        className={`topic-quiz__option disabled ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${!isCorrect && isSelected ? 'incorrect' : ''}`}
+                                        disabled
+                                      >
+                                        <span
+                                          className={
+                                            isCorrect ? 'correct' : isSelected ? 'incorrect' : ''
+                                          }
+                                        >
+                                          {isCorrect ? (
+                                            <Check size={14} />
+                                          ) : isSelected ? (
+                                            <X size={14} />
+                                          ) : (
+                                            optionLetter
+                                          )}
+                                        </span>
+                                        {text}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
 
-          {error && <p role="alert" style={{ marginTop: '8px' }}>{error}</p>}
+                        <div className="topic-quiz__nav">
+                          {activeQuestion > 1 ? (
+                            <button onClick={() => setActiveQuestion((prev) => prev - 1)}>
+                              <span>
+                                <MoveLeft size={16} />
+                              </span>{' '}
+                              Previous
+                            </button>
+                          ) : (
+                            <button className="topic-quiz__nav-disabled" disabled>
+                              <span>
+                                <MoveLeft size={16} />
+                              </span>{' '}
+                              Previous
+                            </button>
+                          )}
 
-          {showStartConfirm && (
-            <div className="modal-backdrop">
-              <div className="modal-panel">
-                <h3>Start Quiz</h3>
-                <p>Are you sure you are ready to take the quiz? Once you start the timer will begin.</p>
-                <div className="modal-actions">
-                  <button type="button" className="modal-btn confirm" onClick={handleStartConfirm}>Yes, Start</button>
-                  <button type="button" className="modal-btn" onClick={() => setShowStartConfirm(false)}>Cancel</button>
+                          {activeQuestion < questions.length ? (
+                            <button onClick={() => setActiveQuestion((prev) => prev + 1)}>
+                              Next{' '}
+                              <span>
+                                <MoveRight size={16} />
+                              </span>
+                            </button>
+                          ) : (
+                            <button className="topic-quiz__nav-disabled" disabled>
+                              Next{' '}
+                              <span>
+                                <MoveRight size={16} />
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div style={{ padding: '28px', textAlign: 'center' }}>
+                    <p style={{ marginBottom: '12px' }}>
+                      Ready to start the quiz for <strong>{topic}</strong>?
+                    </p>
+                    <button className="take-quiz-btn" onClick={() => setShowStartConfirm(true)}>
+                      Take Quiz
+                    </button>
+                  </div>
+                )
+              ) : null}
+
+              {quizIsLive && (
+                <div className="topic-quiz__nav">
+                  {activeQuestion > 1 ? (
+                    <button onClick={() => setActiveQuestion((prev) => prev - 1)}>
+                      <span>
+                        <MoveLeft size={16} />
+                      </span>{' '}
+                      Previous
+                    </button>
+                  ) : (
+                    <button className="topic-quiz__nav-disabled" disabled>
+                      <span>
+                        <MoveLeft size={16} />
+                      </span>{' '}
+                      Previous
+                    </button>
+                  )}
+
+                  {activeQuestion < questions.length ? (
+                    <button onClick={() => setActiveQuestion((prev) => prev + 1)}>
+                      Next{' '}
+                      <span>
+                        <MoveRight size={16} />
+                      </span>
+                    </button>
+                  ) : (
+                    <button onClick={() => setShowFinishConfirm(true)}>Finish Quiz</button>
+                  )}
                 </div>
-              </div>
+              )}
+
+              {error && (
+                <p role="alert" style={{ marginTop: '8px' }}>
+                  {error}
+                </p>
+              )}
+
+              {showStartConfirm && (
+                <div className="modal-backdrop">
+                  <div className="modal-panel">
+                    <h3>Start Quiz</h3>
+                    <p>
+                      Are you sure you are ready to take the quiz? Once you start the timer will
+                      begin.
+                    </p>
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="modal-btn confirm"
+                        onClick={handleStartConfirm}
+                      >
+                        Yes, Start
+                      </button>
+                      <button
+                        type="button"
+                        className="modal-btn"
+                        onClick={() => setShowStartConfirm(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {showFinishConfirm && (
+                <div className="modal-backdrop">
+                  <div className="modal-panel">
+                    <h3>Submit Quiz</h3>
+                    <p>
+                      Are you sure you want to submit the quiz? You won't be able to change answers
+                      after submitting.
+                    </p>
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="modal-btn confirm"
+                        onClick={handleFinishConfirm}
+                      >
+                        Yes, Submit
+                      </button>
+                      <button
+                        type="button"
+                        className="modal-btn"
+                        onClick={() => setShowFinishConfirm(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {showResult && (
+                <div className="modal-backdrop">
+                  <div className="modal-panel">
+                    <h3>Congratulations</h3>
+                    <p>You just completed your quiz.</p>
+                    <div style={{ fontWeight: 700 }}>
+                      <p>
+                        Score: {resultData.score} / {resultData.total}
+                      </p>
+                      <p>Time taken: {formatTime(resultData.timeTaken)}</p>
+                    </div>
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="modal-btn confirm"
+                        onClick={() => {
+                          setShowResult(false);
+                          if (onSelect) onSelect();
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-
-          {showFinishConfirm && (
-            <div className="modal-backdrop">
-              <div className="modal-panel">
-                <h3>Submit Quiz</h3>
-                <p>Are you sure you want to submit the quiz? You won't be able to change answers after submitting.</p>
-                <div className="modal-actions">
-                  <button type="button" className="modal-btn confirm" onClick={handleFinishConfirm}>Yes, Submit</button>
-                  <button type="button" className="modal-btn" onClick={() => setShowFinishConfirm(false)}>Cancel</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {showResult && (
-            <div className="modal-backdrop">
-              <div className="modal-panel">
-                <h3>Congratulations</h3>
-                <p>You just completed your quiz.</p>
-                <div style={{ fontWeight: 700 }}>
-                  <p>Score: {resultData.score} / {resultData.total}</p>
-                  <p>Time taken: {formatTime(resultData.timeTaken)}</p>
-                </div>
-                <div className="modal-actions">
-                  <button type="button" className="modal-btn confirm" onClick={() => { setShowResult(false); if (onSelect) onSelect(); }}>Close</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
+          )
+      )}
     </>
   );
 }
@@ -464,7 +623,9 @@ export function AttemptedTopicQuiz() {
       }
     };
     load();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [API_BASE, user]);
 
   const totalScore = attempts.reduce((acc, a) => acc + (a.score || 0), 0);
@@ -489,14 +650,18 @@ export function AttemptedTopicQuiz() {
             {attempts.map((a, idx) => (
               <li key={idx}>
                 <p>{a.topic}</p>
-                <span className="attempted-topic-quiz__score">{a.score} / {a.total}</span>
+                <span className="attempted-topic-quiz__score">
+                  {a.score} / {a.total}
+                </span>
               </li>
             ))}
           </ol>
 
           <div className="attempted-topic-quiz__total">
             <p>Total</p>
-            <span className="attempted-topic-quiz__total-score">{totalScore} / {totalPossible}</span>
+            <span className="attempted-topic-quiz__total-score">
+              {totalScore} / {totalPossible}
+            </span>
           </div>
         </div>
       </div>

@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import UnderDevelopment from '../components/common/UnderDevelopment';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config/api';
-import { getTotalUnlockedRoutes, getFirstRouteForDay, getDayLabel } from '../utils/htmlCourseUnlockConfig';
+import {
+  getTotalUnlockedRoutes,
+  getFirstRouteForDay,
+  getDayLabel,
+} from '../utils/htmlCourseUnlockConfig';
 import '../assets/styles/settings.css';
 import { FileText } from 'lucide-react';
 
@@ -79,7 +83,9 @@ export default function SettingsScreen() {
     <div className="settings__container">
       <div className="settings__header">
         <div className="settings__header-title">
-          <h1><FileText size={25} /> Settings</h1>
+          <h1>
+            <FileText size={25} /> Settings
+          </h1>
           <p className="settings__header-subtitle">Manage course content release</p>
         </div>
       </div>

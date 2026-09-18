@@ -5,21 +5,23 @@ import VideoBox from '../../components/common/VideoBox';
 import QuizBox from '../../components/common/QuizBox';
 
 export default function Animation() {
+  return (
+    <section className="course-content">
+      <div className="course-content__header">
+        <h1>Animations</h1>
+        <p>Cascading Style Sheets</p>
+      </div>
 
-    return (
-        <section className="course-content">
-            <div className="course-content__header">
-                <h1>Animations</h1>
-                <p>Cascading Style Sheets</p>
-            </div>
+      <section>
+        <div className="course-content__container">
+          <p>
+            CSS animations make it possible to animate transitions from one CSS style configuration
+            to another.
+          </p>
 
-            <section>
-                <div className="course-content__container">
-                    <p>CSS animations make it possible to animate transitions from one CSS style configuration to another.</p>
-
-            <h4>Syntax:</h4>
-<ExampleCode language="css"> 
-{`selector {
+          <h4>Syntax:</h4>
+          <ExampleCode language="css">
+            {`selector {
    animation-name: name;
    animation-duration: time;
    animation-timing-function: ease | linear | ease-in | ease-out | ease-in-out;
@@ -29,28 +31,45 @@ export default function Animation() {
    animation-fill-mode: none | forwards | backwards | both;
    animation-play-state: running | paused;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-            <h3>Key Concepts:</h3>
-            <ul>
-                <li><strong>@keyframes</strong>: Define what the animation looks like at each stage.</li>
-                <li><strong>animation-name</strong>: Name of the @keyframes rule to bind to the element.</li>
-                <li><strong>animation-duration</strong>: How long the animation takes to complete one cycle.</li>
-                <li><strong>animation-delay</strong>: Wait time before the animation starts.</li>
-                <li><strong>animation-iteration-count</strong>: Number of times the animation should play.</li>
-                <li><strong>animation-direction</strong>: Whether animation should play in reverse on alternate cycles.</li>
-                <li><strong>animation-fill-mode</strong>: Defines how styles are applied before and after animation executes.</li>
-                <li><strong>animation-timing-function</strong>: Defines the speed curve.</li>
-            </ul>
+          <h3>Key Concepts:</h3>
+          <ul>
+            <li>
+              <strong>@keyframes</strong>: Define what the animation looks like at each stage.
+            </li>
+            <li>
+              <strong>animation-name</strong>: Name of the @keyframes rule to bind to the element.
+            </li>
+            <li>
+              <strong>animation-duration</strong>: How long the animation takes to complete one
+              cycle.
+            </li>
+            <li>
+              <strong>animation-delay</strong>: Wait time before the animation starts.
+            </li>
+            <li>
+              <strong>animation-iteration-count</strong>: Number of times the animation should play.
+            </li>
+            <li>
+              <strong>animation-direction</strong>: Whether animation should play in reverse on
+              alternate cycles.
+            </li>
+            <li>
+              <strong>animation-fill-mode</strong>: Defines how styles are applied before and after
+              animation executes.
+            </li>
+            <li>
+              <strong>animation-timing-function</strong>: Defines the speed curve.
+            </li>
+          </ul>
 
-            <h4>Examples:</h4>
+          <h4>Examples:</h4>
 
-            <h3>Slide In</h3>
-<ExampleCode language="html"> 
-{`<div class="slide">Sliding Box</div>`}
-</ExampleCode>
-<ExampleCode language="css"> 
-{`@keyframes slideIn {
+          <h3>Slide In</h3>
+          <ExampleCode language="html">{`<div class="slide">Sliding Box</div>`}</ExampleCode>
+          <ExampleCode language="css">
+            {`@keyframes slideIn {
   from {
     transform: translateX(-100%);
   }
@@ -66,14 +85,12 @@ export default function Animation() {
     margin-bottom: 20px;
     animation: slideIn 2s ease-in-out forwards;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-            <h3>Color Change</h3>
-<ExampleCode language="html"> 
-{`<div class="color">Color Cycle</div>`}
-</ExampleCode>
-<ExampleCode language="css"> 
-{`@keyframes colorChange {
+          <h3>Color Change</h3>
+          <ExampleCode language="html">{`<div class="color">Color Cycle</div>`}</ExampleCode>
+          <ExampleCode language="css">
+            {`@keyframes colorChange {
     0% { background-color: red; }
     50% { background-color: yellow; }
     100% { background-color: green; }
@@ -85,14 +102,12 @@ export default function Animation() {
     margin-bottom: 20px;
     animation: colorChange 3s infinite alternate;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-            <h3>Bounce</h3>
-<ExampleCode language="html"> 
-{`<div class="bounce">Bouncing</div>`}
-</ExampleCode>
-<ExampleCode language="css"> 
-{`@keyframes bounce {
+          <h3>Bounce</h3>
+          <ExampleCode language="html">{`<div class="bounce">Bouncing</div>`}</ExampleCode>
+          <ExampleCode language="css">
+            {`@keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-50px); }
 }
@@ -104,14 +119,12 @@ export default function Animation() {
     margin-bottom: 20px;
     animation: bounce 1s ease infinite;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-            <h3>Delay and Forward</h3>
-<ExampleCode language="html"> 
-{`<div class="delay">Delayed Slide</div>`}
-</ExampleCode>
-<ExampleCode language="css"> 
-{`/* uses the slideIn @keyframes already created */
+          <h3>Delay and Forward</h3>
+          <ExampleCode language="html">{`<div class="delay">Delayed Slide</div>`}</ExampleCode>
+          <ExampleCode language="css">
+            {`/* uses the slideIn @keyframes already created */
 
 .delay {
     width: 200px;
@@ -120,14 +133,12 @@ export default function Animation() {
     margin-bottom: 20px;
     animation: slideIn 2s ease-in 1s forwards;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-            <h3>Multiple Animations</h3>
-<ExampleCode language="html"> 
-{`<div class="multiple">Bounce + Color</div>`}
-</ExampleCode>
-<ExampleCode language="css"> 
-{`/* bounce & colorChange @keyframes already exist */
+          <h3>Multiple Animations</h3>
+          <ExampleCode language="html">{`<div class="multiple">Bounce + Color</div>`}</ExampleCode>
+          <ExampleCode language="css">
+            {`/* bounce & colorChange @keyframes already exist */
 
 .multiple {
     width: 200px;
@@ -136,21 +147,14 @@ export default function Animation() {
     margin-bottom: 20px;
     animation: bounce 1s ease infinite, colorChange 3s infinite alternate;
 }`}
-</ExampleCode>
+          </ExampleCode>
 
-    <VideoBox 
-        title='Animations'
-        code='LNI1Xz5WiXc'
-    />
-            
-                </div>
-            </section>
+          <VideoBox title="Animations" code="LNI1Xz5WiXc" />
+        </div>
+      </section>
 
-            <QuizBox currentCategory="css2" currentTopic="Animations" />
-            <PrevNextBtn 
-                prevPath="/css_transition" 
-                nextPath="/css_mediaquery"
-            />
-        </section>
-    );
+      <QuizBox currentCategory="css2" currentTopic="Animations" />
+      <PrevNextBtn prevPath="/css_transition" nextPath="/css_mediaquery" />
+    </section>
+  );
 }

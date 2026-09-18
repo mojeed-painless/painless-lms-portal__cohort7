@@ -12,6 +12,7 @@ A modern, comprehensive Learning Management System (LMS) built with React and Vi
 ## 🌟 Features
 
 ### For Students
+
 - **Interactive Course Player**: Engage with multimedia content including videos and code examples
 - **Progress Tracking**: Monitor learning progress across all enrolled courses
 - **Assignments & Quizzes**: Complete interactive assignments and take quizzes with instant feedback
@@ -19,12 +20,14 @@ A modern, comprehensive Learning Management System (LMS) built with React and Vi
 - **Personal Dashboard**: Access enrolled courses, upcoming assignments, and recent activity
 
 ### For Instructors
+
 - **Course Management**: Create and manage course content with rich multimedia support
 - **Student Oversight**: Monitor student progress and performance
 - **Assignment Grading**: Review and grade student submissions
 - **Analytics Dashboard**: Gain insights into course engagement and student success
 
 ### For Administrators
+
 - **User Management**: Oversee all users, roles, and permissions
 - **System Analytics**: Comprehensive reporting on platform usage and performance
 - **Content Moderation**: Ensure quality and compliance of course materials
@@ -51,23 +54,26 @@ A modern, comprehensive Learning Management System (LMS) built with React and Vi
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/mojeed-painless/painless-lms-portal.git
    cd painless-lms-portal
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    ```
 
 4. **Open your browser**
-   
+
    Navigate to `http://localhost:5173` to view the application.
 
 ### Build for Production
@@ -106,21 +112,25 @@ painless-lms-portal/
 ## 🎯 Key Components
 
 ### Authentication System
+
 - Secure login/logout functionality
 - Role-based access control (Student, Instructor, Admin)
 - Protected routes and private components
 
 ### Course Management
+
 - **Course Catalog**: Browse and enroll in available courses
 - **Course Player**: Interactive learning interface with video support
 - **Progress Tracking**: Visual progress indicators and completion tracking
 
 ### Learning Modules
+
 - **HTML Fundamentals**: Comprehensive HTML learning path
 - **CSS Mastery**: Advanced styling techniques and responsive design
 - **JavaScript Essentials**: Interactive programming lessons
 
 ### Assessment Tools
+
 - **Quizzes**: Multiple-choice and interactive assessments
 - **Assignments**: Code submission and project-based tasks
 - **Grading System**: Automated and manual grading capabilities
@@ -140,6 +150,7 @@ A dedicated service layer has been implemented for admin-related API calls with 
 **Location**: `src/services/adminApi.js`
 
 **Benefits:**
+
 - Centralized API logic eliminates code duplication
 - Consistent error handling across components
 - Automatic token passing (no more config headers in components)
@@ -147,6 +158,7 @@ A dedicated service layer has been implemented for admin-related API calls with 
 - Easy to maintain and extend for other service layers
 
 **Refactored Components:**
+
 - ✅ `AdminDashboardScreen.jsx` - Now uses service layer functions instead of direct axios calls
 
 ### Input Validation with Zod
@@ -176,6 +188,7 @@ Strict input validation is implemented using Zod to ensure data integrity before
 **Integration**: All validation occurs **before** API calls in `src/hooks/useAssignments.js`
 
 **Integrated Functions:**
+
 - ✅ `submitAssignment()` - Validates submission URL and notes
 - ✅ `gradeAssignment()` - Validates score range and feedback length
 - ✅ `updateGrade()` - Validates grade updates
@@ -183,6 +196,7 @@ Strict input validation is implemented using Zod to ensure data integrity before
 - ✅ `updateAssignment()` - Validates all update fields
 
 **Benefits:**
+
 - Prevents invalid payloads from reaching the backend
 - Reduces server load from malformed requests
 - Provides user-friendly validation error messages
@@ -204,9 +218,9 @@ Copy `.env.example` to `.env` before running the project locally:
 cp .env.example .env
 ```
 
-Variable | Description | Default
----|---:|---
-`VITE_API_BASE_URL` | Base URL for the backend REST API | `http://localhost:5000/api`
+| Variable            |                       Description | Default                     |
+| ------------------- | --------------------------------: | --------------------------- |
+| `VITE_API_BASE_URL` | Base URL for the backend REST API | `http://localhost:5000/api` |
 
 ## Local Development
 
@@ -237,12 +251,12 @@ Open your browser at `http://localhost:5173` (Vite default) to view the app duri
 All unit and integration tests execute in complete offline isolation using [Mock Service Worker (MSW)](https://mswjs.io/). No live backend or network connectivity is required to run the test suite or local development mocks.
 
 Run tests offline:
+
 ```bash
 npm test
 # Or run with coverage enforcement
 npm run test:coverage
 ```
-
 
 ## Running with Docker
 

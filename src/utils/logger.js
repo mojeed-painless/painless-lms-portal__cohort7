@@ -4,7 +4,11 @@ let errorSink = null;
 const sentryDsn = import.meta.env?.VITE_SENTRY_DSN;
 if (sentryDsn) {
   errorSink = (message, context) => {
-    if (typeof window !== 'undefined' && window.Sentry && typeof window.Sentry.captureException === 'function') {
+    if (
+      typeof window !== 'undefined' &&
+      window.Sentry &&
+      typeof window.Sentry.captureException === 'function'
+    ) {
       try {
         window.Sentry.captureException(new Error(message), { extra: context });
       } catch (e) {
@@ -28,7 +32,9 @@ function createLogObject(level, message, context = {}) {
     message,
     context,
     environment:
-      (typeof process !== 'undefined' && process.env && (process.env.NODE_ENV || process.env.MODE)) ||
+      (typeof process !== 'undefined' &&
+        process.env &&
+        (process.env.NODE_ENV || process.env.MODE)) ||
       'development',
   };
 }
@@ -43,7 +49,9 @@ function formatLog(level, message, context = {}) {
     message,
     context: typeof context === 'object' && context !== null ? context : { detail: context },
     environment:
-      (typeof process !== 'undefined' && process.env && (process.env.NODE_ENV || process.env.MODE)) ||
+      (typeof process !== 'undefined' &&
+        process.env &&
+        (process.env.NODE_ENV || process.env.MODE)) ||
       'development',
   });
 }

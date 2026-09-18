@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  History,
-  NotepadText,
-  Award,
-  Send,
-  BadgeCheck,
-} from 'lucide-react';
+import { History, NotepadText, Award, Send, BadgeCheck } from 'lucide-react';
 
 const StudentAssignmentList = ({
   pending,
@@ -49,7 +43,9 @@ const StudentAssignmentList = ({
             </span>
             Pending Assignments
           </h3>
-          <span className="count-badge orange">{pending.length} {`assignment${pending.length <= 1 ? '' : 's'}`}</span>
+          <span className="count-badge orange">
+            {pending.length} {`assignment${pending.length <= 1 ? '' : 's'}`}
+          </span>
         </div>
         <div className="table-responsive">
           <table className="assignment__table">
@@ -78,21 +74,14 @@ const StudentAssignmentList = ({
                         aria-label="Submission URL"
                         className="link-input first-input"
                         value={assignmentLinks[item.id] || ''}
-                        onChange={(e) =>
-                          onLinkChange(item.id, e.target.value)
-                        }
+                        onChange={(e) => onLinkChange(item.id, e.target.value)}
                       />
                     </td>
                     <td className="assignment__action">
                       <button
                         className="submit-btn"
                         aria-label="Submit Assignment"
-                        onClick={() =>
-                          onSubmitAssignment(
-                            item.id,
-                            assignmentLinks[item.id]
-                          )
-                        }
+                        onClick={() => onSubmitAssignment(item.id, assignmentLinks[item.id])}
                         disabled={loading}
                       >
                         <span>
@@ -106,9 +95,7 @@ const StudentAssignmentList = ({
               </tbody>
             )}
           </table>
-          {pending.length === 0 && (
-            <p className="empty__assignment">No Pending Assignment</p>
-          )}
+          {pending.length === 0 && <p className="empty__assignment">No Pending Assignment</p>}
         </div>
       </section>
 
@@ -121,7 +108,9 @@ const StudentAssignmentList = ({
             </span>
             Submitted Assignments
           </h3>
-          <span className="count-badge blue">{submitted.length} {`assignment${submitted.length <= 1 ? '' : 's'}`}</span>
+          <span className="count-badge blue">
+            {submitted.length} {`assignment${submitted.length <= 1 ? '' : 's'}`}
+          </span>
         </div>
         <div className="table-responsive">
           <table className="assignment__table">
@@ -141,12 +130,8 @@ const StudentAssignmentList = ({
                   <tr key={item.id}>
                     <td>{index + 1}</td>
                     <td className="bold">{item.title}</td>
-                    <td>
-                      {new Date(item.dueDate).toLocaleDateString()}
-                    </td>
-                    <td>
-                      {new Date(item.submittedDate).toLocaleDateString()}
-                    </td>
+                    <td>{new Date(item.dueDate).toLocaleDateString()}</td>
+                    <td>{new Date(item.submittedDate).toLocaleDateString()}</td>
                     <td>
                       <input
                         type="text"
@@ -168,9 +153,7 @@ const StudentAssignmentList = ({
               </tbody>
             )}
           </table>
-          {submitted.length === 0 && (
-            <p className="empty__assignment">No Assignment Submitted</p>
-          )}
+          {submitted.length === 0 && <p className="empty__assignment">No Assignment Submitted</p>}
         </div>
       </section>
 
@@ -183,7 +166,9 @@ const StudentAssignmentList = ({
             </span>
             Graded Assignments
           </h3>
-          <span className="count-badge green">{graded.length} {`assignment${graded.length <= 1 ? '' : 's'}`}</span>
+          <span className="count-badge green">
+            {graded.length} {`assignment${graded.length <= 1 ? '' : 's'}`}
+          </span>
         </div>
         <div className="transcript__header-title">
           <div className="assignment__average">
@@ -209,12 +194,8 @@ const StudentAssignmentList = ({
                   <tr key={item.id}>
                     <td>{index + 1}</td>
                     <td className="bold">{item.title}</td>
-                    <td>
-                      {new Date(item.dueDate).toLocaleDateString()}
-                    </td>
-                    <td>
-                      {new Date(item.submittedDate).toLocaleDateString()}
-                    </td>
+                    <td>{new Date(item.dueDate).toLocaleDateString()}</td>
+                    <td>{new Date(item.submittedDate).toLocaleDateString()}</td>
                     <td>
                       <input
                         type="text"
@@ -236,9 +217,7 @@ const StudentAssignmentList = ({
               </tbody>
             )}
           </table>
-          {graded.length === 0 && (
-            <p className="empty__assignment">No Assignment Graded</p>
-          )}
+          {graded.length === 0 && <p className="empty__assignment">No Assignment Graded</p>}
         </div>
       </section>
     </>

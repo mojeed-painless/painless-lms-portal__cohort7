@@ -7,9 +7,7 @@ export function useAdminDashboard() {
   const { user } = useAuth();
   const activeUser =
     user ||
-    (typeof window !== 'undefined'
-      ? JSON.parse(localStorage.getItem('userInfo') || 'null')
-      : null);
+    (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo') || 'null') : null);
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

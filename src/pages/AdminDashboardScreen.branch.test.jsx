@@ -22,7 +22,9 @@ describe('AdminDashboardScreen branch coverage cases', () => {
 
   it('optimistically updates course access then reverts on API error', async () => {
     // admin user
-    vi.spyOn(AuthContext, 'useAuth').mockReturnValue({ user: { role: 'admin', _id: 'admin1', token: 't' } });
+    vi.spyOn(AuthContext, 'useAuth').mockReturnValue({
+      user: { role: 'admin', _id: 'admin1', token: 't' },
+    });
 
     // fetchPendingUsers returns empty
     vi.spyOn(AdminApi, 'fetchPendingUsers').mockResolvedValue([]);
@@ -60,6 +62,8 @@ describe('AdminDashboardScreen branch coverage cases', () => {
     fireEvent.click(grantButton);
 
     // After the API error, the button text should revert back to '✓ Grant' (still present)
-    await waitFor(() => expect(within(userRow).getAllByRole('button', { name: /Grant/i })[0]).toBeInTheDocument());
+    await waitFor(() =>
+      expect(within(userRow).getAllByRole('button', { name: /Grant/i })[0]).toBeInTheDocument()
+    );
   });
 });

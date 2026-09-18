@@ -18,9 +18,11 @@ describe('useAssignments gradeAssignment admin refresh behavior', () => {
     // second call: admin graded refresh -> fail
     fetchJson.mockImplementation((path) => {
       // match admin graded refresh first
-      if (String(path).includes('/assignments/admin/graded')) return Promise.reject(new Error('refresh failed'));
+      if (String(path).includes('/assignments/admin/graded'))
+        return Promise.reject(new Error('refresh failed'));
       // match submission grade endpoint precisely
-      if (String(path).match(/\/submissions\/.+\/grade$/)) return Promise.resolve({ success: true });
+      if (String(path).match(/\/submissions\/.+\/grade$/))
+        return Promise.resolve({ success: true });
       return Promise.resolve({});
     });
 
@@ -37,8 +39,10 @@ describe('useAssignments gradeAssignment admin refresh behavior', () => {
 
   it('refreshes allAssignments when admin refresh succeeds', async () => {
     fetchJson.mockImplementation((path) => {
-      if (String(path).includes('/assignments/admin/graded')) return Promise.resolve({ assignments: [{ id: 'g1' }] });
-      if (String(path).match(/\/submissions\/.+\/grade$/)) return Promise.resolve({ success: true });
+      if (String(path).includes('/assignments/admin/graded'))
+        return Promise.resolve({ assignments: [{ id: 'g1' }] });
+      if (String(path).match(/\/submissions\/.+\/grade$/))
+        return Promise.resolve({ success: true });
       return Promise.resolve({});
     });
 

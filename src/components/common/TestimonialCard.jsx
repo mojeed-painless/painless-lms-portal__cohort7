@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/styles/testimonial-card.css';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import profileImage from '../../assets/profile-image.jpg'
+import profileImage from '../../assets/profile-image.jpg';
 
 const TestimonialCard = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,18 +80,10 @@ const TestimonialCard = ({ testimonials }) => {
 
       {/* Navigation Buttons */}
       <div className="testimonial-nav">
-        <button
-          className="navs-btn prev-btn"
-          onClick={goToPrev}
-          aria-label="Previous testimonial"
-        >
+        <button className="navs-btn prev-btn" onClick={goToPrev} aria-label="Previous testimonial">
           <ChevronLeft size={24} />
         </button>
-        <button
-          className="navs-btn prev-btn"
-          onClick={goToNext}
-          aria-label="Previous testimonial"
-        >
+        <button className="navs-btn prev-btn" onClick={goToNext} aria-label="Previous testimonial">
           <ChevronRight size={24} />
         </button>
       </div>

@@ -23,7 +23,7 @@ describe('PrivateRoute', () => {
     vi.spyOn(AuthContext, 'useAuth').mockReturnValue({ isLoading: false, isAuthenticated: true });
 
     render(
-      <MemoryRouter initialEntries={["/private"]}>
+      <MemoryRouter initialEntries={['/private']}>
         <Routes>
           <Route path="/private" element={<PrivateRoute />}>
             <Route index element={<div>SECRET</div>} />
@@ -39,7 +39,7 @@ describe('PrivateRoute', () => {
     vi.spyOn(AuthContext, 'useAuth').mockReturnValue({ isLoading: false, isAuthenticated: false });
 
     render(
-      <MemoryRouter initialEntries={["/private"]}>
+      <MemoryRouter initialEntries={['/private']}>
         <Routes>
           <Route path="/private" element={<PrivateRoute />}>
             <Route index element={<div>SECRET</div>} />

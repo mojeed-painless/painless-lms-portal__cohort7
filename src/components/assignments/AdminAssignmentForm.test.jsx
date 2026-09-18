@@ -21,7 +21,9 @@ describe('AdminAssignmentForm', () => {
     const onSubmit = vi.fn();
     render(<AdminAssignmentForm onSubmit={onSubmit} onCancel={vi.fn()} />);
 
-    const submit = screen.getByRole('button', { name: /Save Assignment|Create Assignment|Save Changes|Add/i });
+    const submit = screen.getByRole('button', {
+      name: /Save Assignment|Create Assignment|Save Changes|Add/i,
+    });
     // Submit should be present; attempt to submit with empty title
     fireEvent.click(submit);
 
@@ -43,16 +45,22 @@ describe('AdminAssignmentForm', () => {
     fireEvent.change(dateInput, { target: { value: '2026-12-31' } });
     fireEvent.change(courseSelect, { target: { value: 'react' } });
 
-    const form = screen.queryByRole('form') || screen.getByRole('button', { name: /Save Assignment|Create Assignment|Save Changes|Add/i }).closest('form');
+    const form =
+      screen.queryByRole('form') ||
+      screen
+        .getByRole('button', { name: /Save Assignment|Create Assignment|Save Changes|Add/i })
+        .closest('form');
     expect(form).toBeTruthy();
     fireEvent.submit(form);
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
-    expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
-      title: 'New Assignment',
-      description: 'Some instructions',
-      dueDate: '2026-12-31',
-      courseType: 'react',
-    }));
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'New Assignment',
+        description: 'Some instructions',
+        dueDate: '2026-12-31',
+        courseType: 'react',
+      })
+    );
   });
 });

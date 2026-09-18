@@ -6,7 +6,7 @@ import { listTexts } from '../data.js';
 import pcalogo from '../assets/pcalogo.png';
 import profileImage from '../assets/profile-image.jpg';
 import LogoutButton from '../components/common/LogoutButton';
-import { TbLayoutSidebarRightCollapse, TbLayoutSidebarLeftCollapse } from "react-icons/tb";
+import { TbLayoutSidebarRightCollapse, TbLayoutSidebarLeftCollapse } from 'react-icons/tb';
 import '../assets/styles/layout.css';
 
 const MainLayout = () => {
@@ -17,43 +17,47 @@ const MainLayout = () => {
   const [selectedLink, setSelectedLink] = useState('Home');
 
   function handleClickedLink(activeLink) {
-    setSelectedLink(activeLink)
+    setSelectedLink(activeLink);
   }
 
   const smallAsideRef = useRef(null);
 
-    useEffect(() => {
-      const handleOutsideClick = (e) => {
-        const target = e.target;
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      const target = e.target;
 
-        if (isHiden && smallAsideRef.current && !smallAsideRef.current.contains(target)) {
-          setIsHiden(false);
-        }
-      };
+      if (isHiden && smallAsideRef.current && !smallAsideRef.current.contains(target)) {
+        setIsHiden(false);
+      }
+    };
 
-      document.addEventListener('mousedown', handleOutsideClick);
-      document.addEventListener('touchstart', handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('touchstart', handleOutsideClick);
 
-      return () => {
-        document.removeEventListener('mousedown', handleOutsideClick);
-        document.removeEventListener('touchstart', handleOutsideClick);
-      };
-    }, [isHiden]);
-
-
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
+  }, [isHiden]);
 
   return (
     <div className="container">
       <nav>
         <div className="nav__left">
           {/* Works for WINDOWS screen only  */}
-          <span className='collapse-btn large-collapse-btn' onClick={() => setIsCollapsed(prev => !prev)}>
-            { isCollapsed ? <TbLayoutSidebarRightCollapse /> : <TbLayoutSidebarLeftCollapse />}
+          <span
+            className="collapse-btn large-collapse-btn"
+            onClick={() => setIsCollapsed((prev) => !prev)}
+          >
+            {isCollapsed ? <TbLayoutSidebarRightCollapse /> : <TbLayoutSidebarLeftCollapse />}
           </span>
 
           {/* Works for MOBILE screen only */}
-          <span className='collapse-btn small-collapse-btn' onClick={() => setIsHiden(prev => !prev)}>
-            { isHiden ? <TbLayoutSidebarLeftCollapse /> : <TbLayoutSidebarRightCollapse />}
+          <span
+            className="collapse-btn small-collapse-btn"
+            onClick={() => setIsHiden((prev) => !prev)}
+          >
+            {isHiden ? <TbLayoutSidebarLeftCollapse /> : <TbLayoutSidebarRightCollapse />}
           </span>
 
           <div className="nav-logo">
@@ -62,7 +66,7 @@ const MainLayout = () => {
         </div>
 
         <div className="nav__right">
-          <div className="nav__username">{user.firstName || "User"}</div>
+          <div className="nav__username">{user.firstName || 'User'}</div>
           {/* <div className="nav__username">Mojeed</div> */}
           <div className="nav__user-image">
             <img src={profileImage} alt="user profile" />
@@ -71,48 +75,58 @@ const MainLayout = () => {
       </nav>
 
       <main>
-        <aside className={ isCollapsed ? 'collapsed-sidebar' : '' }>
-         {(listTexts.map(({ id, to, icon: Icon, text }) => (
-            <Link to={to} key={id} className={`sidebar__links ${selectedLink === text ? "active-sidebar__links" : ''}`} onClick={() => handleClickedLink(text)}>
-              <span><Icon /></span>
+        <aside className={isCollapsed ? 'collapsed-sidebar' : ''}>
+          {listTexts.map(({ id, to, icon: Icon, text }) => (
+            <Link
+              to={to}
+              key={id}
+              className={`sidebar__links ${selectedLink === text ? 'active-sidebar__links' : ''}`}
+              onClick={() => handleClickedLink(text)}
+            >
+              <span>
+                <Icon />
+              </span>
               {!isCollapsed && <span>{text}</span>}
             </Link>
-          )))}
-          <LogoutButton 
-            className="dashboard__logout-btn" 
-            isCollapsed={isCollapsed}
-          />
+          ))}
+          <LogoutButton className="dashboard__logout-btn" isCollapsed={isCollapsed} />
         </aside>
 
         {/* for MOBILE screen */}
 
-        <aside ref={smallAsideRef} className={ `small-screen__sidebar ${ isHiden ? 'show-sidebar' : '' } ` }>
-         <div className="sidebar-header">
-            <span className='collapse-btn' onClick={() => setIsHiden(prev => !prev)}>
-              { isHiden ? 
-                  <TbLayoutSidebarLeftCollapse /> : 
-                  <TbLayoutSidebarRightCollapse />}
+        <aside
+          ref={smallAsideRef}
+          className={`small-screen__sidebar ${isHiden ? 'show-sidebar' : ''} `}
+        >
+          <div className="sidebar-header">
+            <span className="collapse-btn" onClick={() => setIsHiden((prev) => !prev)}>
+              {isHiden ? <TbLayoutSidebarLeftCollapse /> : <TbLayoutSidebarRightCollapse />}
             </span>
             <div className="nav-logo">
               <img src={pcalogo} alt="academy logo" />
             </div>
-         </div>
+          </div>
 
-         <div className='sidebar-body'>
-            {(listTexts.map(item => (
-              <Link to={item.to} key={item.id} className="sidebar__links" onClick={() => setIsHiden(prev => !prev)}>
-                <span><item.icon /></span>
+          <div className="sidebar-body">
+            {listTexts.map((item) => (
+              <Link
+                to={item.to}
+                key={item.id}
+                className="sidebar__links"
+                onClick={() => setIsHiden((prev) => !prev)}
+              >
+                <span>
+                  <item.icon />
+                </span>
                 <span>{item.text}</span>
               </Link>
-            )))}
-            <LogoutButton className="dashboard__logout-btn"/>
+            ))}
+            <LogoutButton className="dashboard__logout-btn" />
           </div>
         </aside>
-        
+
         <Outlet />
       </main>
-      
-      
     </div>
   );
 };

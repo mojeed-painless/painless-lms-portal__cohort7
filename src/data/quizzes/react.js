@@ -42,13 +42,23 @@ export const reactQuizzes = [
       {
         id: 2,
         question: 'What does useRef do?',
-        options: ['Creates a mutable reference', 'Creates CSS classes', 'Fetches data', 'Updates props'],
+        options: [
+          'Creates a mutable reference',
+          'Creates CSS classes',
+          'Fetches data',
+          'Updates props',
+        ],
         correctAnswer: 0,
       },
       {
         id: 3,
         question: 'What is a common use case for useCallback?',
-        options: ['Styling', 'Preventing unnecessary re-renders', 'Setting localStorage', 'Reading files'],
+        options: [
+          'Styling',
+          'Preventing unnecessary re-renders',
+          'Setting localStorage',
+          'Reading files',
+        ],
         correctAnswer: 1,
       },
       {

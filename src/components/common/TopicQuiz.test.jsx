@@ -33,11 +33,7 @@ describe('TopicQuiz Component', () => {
     const onCompleteMock = vi.fn();
 
     render(
-      <TopicQuiz
-        questions={mockQuestions}
-        topic="React Basics"
-        onComplete={onCompleteMock}
-      />
+      <TopicQuiz questions={mockQuestions} topic="React Basics" onComplete={onCompleteMock} />
     );
 
     // Select correct option for Q1
@@ -73,9 +69,7 @@ describe('TopicQuiz Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /submit|next/i }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/error submitting quiz|failed/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/error submitting quiz|failed/i)).toBeInTheDocument();
     });
   });
 

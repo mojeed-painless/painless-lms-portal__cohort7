@@ -16,18 +16,14 @@ describe('Toast', () => {
 
   it('renders the message', () => {
     const onClose = vi.fn();
-    render(
-      <Toast message="Test message" onClose={onClose} />
-    );
+    render(<Toast message="Test message" onClose={onClose} />);
 
     expect(screen.getByText('Test message')).toBeInTheDocument();
   });
 
   it('applies success styling when type is success', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Success!" type="success" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Success!" type="success" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('bg-green-600');
@@ -36,9 +32,7 @@ describe('Toast', () => {
 
   it('applies error styling when type is error', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Error!" type="error" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Error!" type="error" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('bg-red-600');
@@ -47,9 +41,7 @@ describe('Toast', () => {
 
   it('applies info styling by default', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Info" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Info" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('bg-blue-600');
@@ -58,9 +50,7 @@ describe('Toast', () => {
 
   it('applies info styling when type is unknown', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Test" type="unknown" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Test" type="unknown" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('bg-blue-600');
@@ -68,9 +58,7 @@ describe('Toast', () => {
 
   it('calls onClose after default duration', () => {
     const onClose = vi.fn();
-    render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    render(<Toast message="Test" onClose={onClose} />);
 
     vi.advanceTimersByTime(3000);
 
@@ -79,9 +67,7 @@ describe('Toast', () => {
 
   it('calls onClose after custom duration', () => {
     const onClose = vi.fn();
-    render(
-      <Toast message="Test" onClose={onClose} duration={5000} />
-    );
+    render(<Toast message="Test" onClose={onClose} duration={5000} />);
 
     vi.advanceTimersByTime(4999);
     expect(onClose).not.toHaveBeenCalled();
@@ -92,9 +78,7 @@ describe('Toast', () => {
 
   it('calls onClose when close button is clicked', () => {
     const onClose = vi.fn();
-    render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    render(<Toast message="Test" onClose={onClose} />);
 
     const closeButton = screen.getByRole('button');
     fireEvent.click(closeButton);
@@ -106,9 +90,7 @@ describe('Toast', () => {
     const onClose = vi.fn();
     const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
 
-    const { unmount } = render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    const { unmount } = render(<Toast message="Test" onClose={onClose} />);
 
     unmount();
 
@@ -118,9 +100,7 @@ describe('Toast', () => {
 
   it('renders close button with × symbol', () => {
     const onClose = vi.fn();
-    render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    render(<Toast message="Test" onClose={onClose} />);
 
     const closeButton = screen.getByRole('button');
     expect(closeButton).toHaveTextContent('×');
@@ -128,9 +108,7 @@ describe('Toast', () => {
 
   it('has fixed positioning and z-50 class', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Test" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('fixed');
@@ -141,9 +119,7 @@ describe('Toast', () => {
 
   it('has transition class for animations', () => {
     const onClose = vi.fn();
-    const { container } = render(
-      <Toast message="Test" onClose={onClose} />
-    );
+    const { container } = render(<Toast message="Test" onClose={onClose} />);
 
     const toastDiv = container.querySelector('[role="alert"]');
     expect(toastDiv).toHaveClass('transition-all');

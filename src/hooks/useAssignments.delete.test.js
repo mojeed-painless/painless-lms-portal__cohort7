@@ -46,22 +46,22 @@ describe('useAssignments deleteAssignment', () => {
     expect(result.current.error).toBe('Cannot delete');
   });
 
-    it('uses status-based message when response has no JSON body', async () => {
-      global.fetch = vi.fn(() =>
-        Promise.resolve({
-          status: 500,
-          json: () => Promise.reject(new Error('no body')),
-        })
-      );
+  it('uses status-based message when response has no JSON body', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        status: 500,
+        json: () => Promise.reject(new Error('no body')),
+      })
+    );
 
-      const { result } = renderHook(() => useAssignments('token'));
+    const { result } = renderHook(() => useAssignments('token'));
 
-      let deleteResult;
-      await act(async () => {
-        deleteResult = await result.current.deleteAssignment('1');
-      });
-
-      expect(deleteResult).toBe(false);
-      expect(result.current.error).toBe('Delete failed with status 500');
+    let deleteResult;
+    await act(async () => {
+      deleteResult = await result.current.deleteAssignment('1');
     });
+
+    expect(deleteResult).toBe(false);
+    expect(result.current.error).toBe('Delete failed with status 500');
+  });
 });

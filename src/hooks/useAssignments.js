@@ -161,7 +161,8 @@ export function useAssignments(token) {
         if (msg.trim().startsWith('[')) {
           try {
             const parsed = JSON.parse(msg);
-            if (Array.isArray(parsed) && parsed.length) return String(parsed[0].message || parsed[0]);
+            if (Array.isArray(parsed) && parsed.length)
+              return String(parsed[0].message || parsed[0]);
           } catch (e) {
             // fallback to raw message
           }
@@ -232,7 +233,7 @@ export function useAssignments(token) {
       return true;
     } catch (err) {
       const message = extractZodMessage(err);
-      setError(message || (err.message || 'Failed to grade assignment'));
+      setError(message || err.message || 'Failed to grade assignment');
       logError('Assignment grading error', { error: message });
       return false;
     } finally {
@@ -300,7 +301,7 @@ export function useAssignments(token) {
         headers: { 'Content-Type': 'application/json', ...authHeaders },
       });
       if (res.status === 204) {
-        setAllAssignments(prev => prev.filter(a => a.id !== id && String(a.id) !== String(id)));
+        setAllAssignments((prev) => prev.filter((a) => a.id !== id && String(a.id) !== String(id)));
         return true;
       }
       const body = await res.json().catch(() => ({}));

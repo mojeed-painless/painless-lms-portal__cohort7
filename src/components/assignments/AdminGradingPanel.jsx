@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  NotepadText,
-  Award,
-  Save,
-  Edit,
-  BadgeCheck,
-} from 'lucide-react';
+import { NotepadText, Award, Save, Edit, BadgeCheck } from 'lucide-react';
 
 const AdminGradingPanel = ({
   submitted,
@@ -77,12 +71,8 @@ const AdminGradingPanel = ({
                     <td>{index + 1}</td>
                     <td className="bold">{item.title}</td>
                     <td className="bold">{item.studentName}</td>
-                    <td>
-                      {new Date(item.dueDate).toLocaleDateString()}
-                    </td>
-                    <td>
-                      {new Date(item.submittedDate).toLocaleDateString()}
-                    </td>
+                    <td>{new Date(item.dueDate).toLocaleDateString()}</td>
+                    <td>{new Date(item.submittedDate).toLocaleDateString()}</td>
                     <td>
                       <input
                         type="text"
@@ -97,9 +87,7 @@ const AdminGradingPanel = ({
                         placeholder="Enter score..."
                         className="score-input"
                         value={scores[item.id] || ''}
-                        onChange={(e) =>
-                          onScoreChange(item.id, e.target.value)
-                        }
+                        onChange={(e) => onScoreChange(item.id, e.target.value)}
                         min="0"
                         max="100"
                       />
@@ -125,9 +113,7 @@ const AdminGradingPanel = ({
               </tbody>
             )}
           </table>
-          {submitted.length === 0 && (
-            <p className="empty__assignment">No Assignment Submitted</p>
-          )}
+          {submitted.length === 0 && <p className="empty__assignment">No Assignment Submitted</p>}
         </div>
       </section>
 
@@ -163,12 +149,8 @@ const AdminGradingPanel = ({
                     <td>{index + 1}</td>
                     <td className="bold">{item.title}</td>
                     <td className="bold">{item.studentName}</td>
-                    <td>
-                      {new Date(item.dueDate).toLocaleDateString()}
-                    </td>
-                    <td>
-                      {new Date(item.submittedDate).toLocaleDateString()}
-                    </td>
+                    <td>{new Date(item.dueDate).toLocaleDateString()}</td>
+                    <td>{new Date(item.submittedDate).toLocaleDateString()}</td>
                     <td>
                       <input
                         type="text"
@@ -183,9 +165,7 @@ const AdminGradingPanel = ({
                           type="number"
                           className="score-input"
                           value={scores[item.id] || ''}
-                          onChange={(e) =>
-                            onScoreChange(item.id, e.target.value)
-                          }
+                          onChange={(e) => onScoreChange(item.id, e.target.value)}
                           min="0"
                           max="100"
                         />
@@ -218,9 +198,7 @@ const AdminGradingPanel = ({
                         <button
                           className="edit-btn"
                           aria-label="Edit score"
-                          onClick={() =>
-                            onEditScore(item.id, item.score)
-                          }
+                          onClick={() => onEditScore(item.id, item.score)}
                         >
                           <span>
                             <Edit size={18} />
@@ -234,9 +212,7 @@ const AdminGradingPanel = ({
               </tbody>
             )}
           </table>
-          {graded.length === 0 && (
-            <p className="empty__assignment">No Assignment Graded</p>
-          )}
+          {graded.length === 0 && <p className="empty__assignment">No Assignment Graded</p>}
         </div>
       </section>
     </>
