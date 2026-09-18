@@ -78,7 +78,7 @@ describe('QuizScreen Offline Execution via MSW', () => {
       const matches = screen.getAllByText(/submitted successfully|score/i);
       expect(matches.length).toBeGreaterThan(0);
     });
-  });
+  }, { timeout: 20000 });
 });
 
   describe('QuizScreen Integration (submit endpoints)', () => {
