@@ -29,10 +29,14 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
     const total = questions.length;
     const calculatedScore = score || 0;
 
-    const answers = Object.keys(selectedAnswers).map((qid) => ({
-      questionId: Number(qid),
-      selectedOption: selectedAnswers[qid],
-    }));
+    const answers = Object.keys(selectedAnswers).map((qid) => {
+      const question = questions.find(q => String(q.id) === String(qid));
+      return {
+        questionId: Number(qid),
+        selectedOption: Number(selectedAnswers[qid]),
+        correctAnswer: typeof question?.correctAnswer !== 'undefined' ? Number(question.correctAnswer) : 0,
+      };
+    });
 
     const payload = {
       topic: String(topic || 'quiz'),

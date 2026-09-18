@@ -12,6 +12,14 @@ export function useAdminAssignments(config) {
   const [gradingLoading, setGradingLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const normalizeError = (err) => {
+    if (!err) return null;
+    if (typeof err === 'string') return err;
+    if (err?.message) return err.message;
+    if (Array.isArray(err)) return err[0]?.message || String(err[0]);
+    return String(err);
+  };
+
   const createAssignment = async (assignmentData) => {
     try {
       setError(null);
@@ -20,7 +28,7 @@ export function useAdminAssignments(config) {
         body: JSON.stringify(assignmentData),
       });
     } catch (err) {
-      setError(err?.message || err);
+      setError(normalizeError(err));
       throw err;
     }
   };
@@ -34,7 +42,7 @@ export function useAdminAssignments(config) {
         body: JSON.stringify({ score }),
       });
     } catch (err) {
-      const message = err?.message || 'Failed to grade assignment submission';
+      const message = normalizeError(err) || 'Failed to grade assignment submission';
       logError('Failed to grade assignment submission', { error: message });
       setError(message);
       throw err;

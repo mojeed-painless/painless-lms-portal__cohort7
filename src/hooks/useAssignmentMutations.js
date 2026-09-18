@@ -9,13 +9,16 @@ export function useAssignmentMutations() {
   const submitAssignment = async (payload) => {
     setSubmitting(true);
     try {
-      const validated = assignmentSubmissionSchema.parse(payload);
-      return await fetchJson(`/assignments/${validated.assignmentId}/submit`, {
+      // Lightweight validation: ensure `assignmentId` provided.
+      if (!payload || !payload.assignmentId) {
+        throw new Error('Invalid payload');
+      }
+      return await fetchJson(`/assignments/${payload.assignmentId}/submit`, {
         method: 'POST',
-        body: JSON.stringify(validated),
+        body: JSON.stringify(payload),
       });
     } catch (err) {
-      logError('Assignment submission error', { error: err.message });
+      logError('Assignment submission error', { error: err.message || String(err) });
       throw err;
     } finally {
       setSubmitting(false);

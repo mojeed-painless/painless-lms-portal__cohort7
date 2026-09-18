@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export function useTopicQuizState(questions = []) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const selectedAnswersRef = useRef({});
 
   const selectOption = (questionId, optionIndex) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
+    // keep a synchronous ref copy so score calculation reads latest selections
+    selectedAnswersRef.current = { ...selectedAnswersRef.current, [questionId]: optionIndex };
   };
 
   const nextQuestion = () => {
@@ -21,8 +24,9 @@ export function useTopicQuizState(questions = []) {
 
   const calculateScore = () => {
     let calculated = 0;
+    const answers = selectedAnswersRef.current || selectedAnswers;
     questions.forEach((q) => {
-      if (selectedAnswers[q.id] === q.correctOption) {
+      if (answers[q.id] === q.correctOption) {
         calculated += 1;
       }
     });

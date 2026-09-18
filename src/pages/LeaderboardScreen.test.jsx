@@ -14,10 +14,10 @@ const mockGradesData = [
 ];
 
 const server = setupServer(
-  http.get('/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+  http.get('http://localhost:5000/api/quiz-attempts/leaderboard/daily/aggregate', () => {
     return HttpResponse.json(mockLeaderboardData);
   }),
-  http.get('/api/users/grades', () => {
+  http.get('http://localhost:5000/api/users/grades', () => {
     return HttpResponse.json(mockGradesData);
   })
 );

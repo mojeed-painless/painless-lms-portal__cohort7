@@ -4,7 +4,7 @@ import { assignmentSubmissionSchema } from '../schemas/assignment';
 
 export function useStudentAssignments() {
   const [assignments, setAssignments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchStudentAssignments = async () => {
@@ -26,9 +26,9 @@ export function useStudentAssignments() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const submitAssignment = async (payload) => {
+  const submitAssignment = async (assignmentId, payload) => {
     const validated = assignmentSubmissionSchema.parse(payload);
-    return await fetchJson(`/assignments/${validated.assignmentId}/submit`, {
+    return await fetchJson(`/assignments/${assignmentId}/submit`, {
       method: 'POST',
       body: JSON.stringify(validated),
     });
