@@ -8,7 +8,7 @@ import { AuthProvider } from '../context/AuthContext';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('QuizScreen Offline Execution via MSW', () => {
-  it('renders leaderboard and completes quiz attempt without live network calls', async () => {
+  it('renders leaderboard and completes quiz attempt without live network calls', { timeout: 20000 }, async () => {
     server.use(
       // Return an active session so the quiz UI becomes interactive
       http.get('*/api/quiz-attempts/session*', () => {
@@ -78,7 +78,7 @@ describe('QuizScreen Offline Execution via MSW', () => {
       const matches = screen.getAllByText(/submitted successfully|score/i);
       expect(matches.length).toBeGreaterThan(0);
     });
-  }, { timeout: 20000 });
+  });
 });
 
   describe('QuizScreen Integration (submit endpoints)', () => {
