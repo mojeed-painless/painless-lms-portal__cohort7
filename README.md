@@ -232,6 +232,18 @@ npm test
 
 Open your browser at `http://localhost:5173` (Vite default) to view the app during development.
 
+## Testing & Mocking
+
+All unit and integration tests execute in complete offline isolation using [Mock Service Worker (MSW)](https://mswjs.io/). No live backend or network connectivity is required to run the test suite or local development mocks.
+
+Run tests offline:
+```bash
+npm test
+# Or run with coverage enforcement
+npm run test:coverage
+```
+
+
 ## Running with Docker
 
 To run the application in a clean, isolated environment using Docker Compose:
