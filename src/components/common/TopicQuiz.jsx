@@ -1,27 +1,20 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import '../../assets/styles/topicQuiz.css';
-import { TopicQuizData } from '../../quizData';
-import { logError } from '../../utils/logger';
-import { TimerReset, MoveRight, MoveLeft, X, Check } from 'lucide-react';
+import { useTopicQuizAttempts } from '../../hooks/useTopicQuizAttempts';
 import useTopicQuizSubmission from '../../hooks/useTopicQuizSubmission';
 import { useTopicQuizState } from '../../hooks/useTopicQuizState';
 import TopicQuizView from './TopicQuizView';
-
 import { useAuth } from '../../context/AuthContext';
-import { quizAttemptSchema, quizAnswerSchema } from '../../schemas/quiz';
 
 function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   const { currentQuestion, selectedAnswers, score, isFinished, selectOption, nextQuestion } =
     useTopicQuizState(questions);
-
   const [submissionState, setSubmissionState] = useState({ status: 'idle', message: '' });
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
+  const { submitAttempt } = useTopicQuizSubmission();
 
-  const { submitAttempt: submitAttemptHook, submitAnswer: submitAnswerHook } =
-    useTopicQuizSubmission();
-
-  const submitAttempt = async () => {
+  const handleSubmit = async () => {
     const total = questions.length;
     const calculatedScore = score || 0;
 
@@ -35,17 +28,16 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       };
     });
 
-    const payload = {
-      topic: String(topic || 'quiz'),
-      score: Math.min(100, Math.round((calculatedScore / Math.max(total, 1)) * 100)),
-      total,
-      timeTaken: 0,
-      answers,
-    };
-
     try {
       setError('');
-      const data = await submitAttemptHook(payload);
+      const payload = {
+        topic: String(topic || 'quiz'),
+        score: Math.min(100, Math.round((calculatedScore / Math.max(total, 1)) * 100)),
+        total,
+        timeTaken: 0,
+        answers,
+      };
+      const data = await submitAttempt(payload);
       const passed = typeof data?.passed === 'boolean' ? data.passed : calculatedScore === total;
       const nextResult = {
         score: calculatedScore,
@@ -57,9 +49,7 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       if (onComplete) onComplete(nextResult);
       setSubmissionState({ status: 'success', message: passed ? 'Passed' : 'Completed' });
     } catch (err) {
-      const message = err?.message || 'Error submitting quiz';
-      logError('Quiz Attempt Validation Failure', { error: message });
-      setSubmissionState({ status: 'error', message });
+      setSubmissionState({ status: 'error', message: err?.message || 'Error submitting quiz' });
       setResult(null);
     }
   };
@@ -70,7 +60,7 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
       currentQuestion={currentQuestion}
       selectedAnswers={selectedAnswers}
       onSelect={selectOption}
-      onSubmit={submitAttempt}
+      onSubmit={handleSubmit}
       result={result}
       submissionState={submissionState}
       error={error}
@@ -78,531 +68,63 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   );
 }
 
-export default function TopicQuiz({
-  currentTopic,
-  topic,
-  questions: providedQuestions,
-  onSelect,
-  onComplete,
-}) {
-  const { user } = useAuth();
-  const { submitAnswer: submitAnswerHook } = useTopicQuizSubmission();
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-
-  const [activeQuestion, setActiveQuestion] = useState(1);
-  const [quizIsLive, setQuizIsLive] = useState(false);
-  const [showStartConfirm, setShowStartConfirm] = useState(false);
-  const [showFinishConfirm, setShowFinishConfirm] = useState(false);
-  const [answers, setAnswers] = useState({});
-  const [attempted, setAttempted] = useState(false);
-  const [showAttempted, setShowAttempted] = useState(false);
-  const [attemptedAnswers, setAttemptedAnswers] = useState({});
-  const [remainingSeconds, setRemainingSeconds] = useState(180);
-  const [error, setError] = useState('');
-  const timerRef = useRef(null);
-  const [showResult, setShowResult] = useState(false);
-  const [resultData, setResultData] = useState({ score: 0, total: 0, timeTaken: 0 });
-
+export default function TopicQuiz({ currentTopic, topic, questions: providedQuestions, onSelect, onComplete }) {
   const resolvedTopic = currentTopic || topic;
   const hasCustomQuestions = Array.isArray(providedQuestions) && providedQuestions.length > 0;
-
-  const postAnswer = async (answerData) => {
-    try {
-      await submitAnswerHook(answerData);
-    } catch (err) {
-      logError('Quiz Answer Validation Failure', { error: err?.message || String(err) });
-    }
-  };
-
-  const handleOptionSelect = async (questionId, selectedOption, questionText, correctAnswer) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: selectedOption }));
-
-    await postAnswer({
-      questionId: Number(questionId),
-      selectedOption: Number(selectedOption),
-      correctAnswer: Number(correctAnswer || 0),
-    });
-  };
-
-  const fetchAttemptData = useCallback(async () => {
-    try {
-      const attRes = await fetch(`${API_BASE}/api/quiz-attempts`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(user && user._id ? { 'x-user-id': user._id } : {}),
-        },
-      });
-      if (attRes.ok) {
-        const attData = await attRes.json();
-        const found = attData.find((a) => a.topic === currentTopic);
-        if (found) setAttempted(true);
-      }
-
-      const ansRes = await fetch(
-        `${API_BASE}/api/quiz-answers?topic=${encodeURIComponent(currentTopic)}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            ...(user && user._id ? { 'x-user-id': user._id } : {}),
-          },
-        }
-      );
-      if (ansRes.ok) {
-        const ansData = await ansRes.json();
-        const map = {};
-        ansData.forEach((a) => {
-          map[String(a.questionId)] = {
-            selectedOption: a.selectedOption,
-            correctAnswer: a.correctAnswer,
-          };
-        });
-        setAttemptedAnswers(map);
-      }
-    } catch (err) {
-      logError('Failed to fetch attempt data', { error: err.message });
-    }
-  }, [API_BASE, user, currentTopic]);
-
-  const handleStartConfirm = () => {
-    setShowStartConfirm(false);
-    if (attempted) return setShowAttempted(true);
-    setQuizIsLive(true);
-    setRemainingSeconds(180);
-
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setRemainingSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-          handleFinishConfirm();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const computeAndShowResult = async (questions) => {
-    const total = questions.length;
-    let score = 0;
-    questions.forEach((q) => {
-      const sel = answers[String(q.id)];
-      if (sel && q.correctAnswer && sel === q.correctAnswer) score += 1;
-    });
-    const timeTaken = 180 - (remainingSeconds || 0);
-    setResultData({ score, total, timeTaken });
-
-    const validationPayload = {
-      quizId: String(currentTopic || 'quiz'),
-      score: Math.min(100, Math.round((score / Math.max(total, 1)) * 100)),
-      answers: Object.entries(answers).map(([questionId, selectedValue]) => {
-        const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
-        const matchingQuestion = topicObj?.questions?.find(
-          (question) => String(question.id) === String(questionId)
-        );
-        const selectedOption =
-          matchingQuestion?.options?.findIndex((option) => {
-            const optionValue = typeof option === 'string' ? option : option.text;
-            return optionValue === selectedValue;
-          }) ?? 0;
-
-        return {
-          questionId: Number(questionId),
-          selectedOption,
-        };
-      }),
-    };
-
-    const validation = quizAttemptSchema.safeParse(validationPayload);
-    if (!validation.success) {
-      setError('Invalid submission payload format');
-      return;
-    }
-    setError('');
-
-    try {
-      const payload = { topic: currentTopic, score, total, timeTaken };
-      await fetch(`${API_BASE}/api/quiz-attempts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(user && user._id ? { 'x-user-id': user._id } : {}),
-        },
-        body: JSON.stringify(payload),
-      });
-      setAttempted(true);
-      const map = {};
-      Object.keys(answers).forEach((qid) => {
-        const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
-        const q = topicObj?.questions?.find((x) => String(x.id) === String(qid));
-        map[String(qid)] = {
-          selectedOption: answers[qid],
-          correctAnswer: q?.correctAnswer || null,
-        };
-      });
-      setAttemptedAnswers(map);
-    } catch (err) {
-      try {
-        const key = 'quiz_attempts';
-        const attempts = JSON.parse(localStorage.getItem(key) || '[]');
-        const attempt = {
-          topic: currentTopic,
-          date: new Date().toISOString(),
-          score,
-          total,
-          timeTaken,
-        };
-        attempts.unshift(attempt);
-        localStorage.setItem(key, JSON.stringify(attempts.slice(0, 100)));
-      } catch (e) {
-        logError('Failed to save quiz attempt', { error: e.message });
-      }
-      logError('Failed to save quiz attempt to backend', { error: err.message });
-    }
-    setShowResult(true);
-  };
-
-  const handleFinishConfirm = async () => {
-    setShowFinishConfirm(false);
-
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-
-    setQuizIsLive(false);
-
-    const topicObj = TopicQuizData.find((t) => t.topic === currentTopic);
-    if (topicObj) {
-      await computeAndShowResult(topicObj.questions);
-    } else {
-      setResultData({ score: 0, total: 0, timeTaken: 180 - (remainingSeconds || 0) });
-      setShowResult(true);
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!currentTopic) return;
-    fetchAttemptData();
-  }, [fetchAttemptData, currentTopic]);
+  const {
+    attempts,
+    timeLeft,
+    timerActive,
+    loading,
+    startTimer,
+  } = useTopicQuizAttempts(resolvedTopic || null);
 
   if (hasCustomQuestions) {
-    return (
-      <GenericTopicQuiz
-        questions={providedQuestions}
-        topic={resolvedTopic || 'Quiz'}
-        onComplete={onComplete}
-      />
-    );
+    return <GenericTopicQuiz questions={providedQuestions} topic={resolvedTopic} onComplete={onComplete} />;
   }
 
-  const formatTime = (secs) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${String(m).padStart(1, '0')} : ${String(s).padStart(2, '0')}`;
-  };
+  if (loading) return <div>Loading topic attempts...</div>;
 
   return (
-    <>
-      {TopicQuizData.map(
-        ({ topic, questions }) =>
-          topic === currentTopic && (
-            <div className="topic-quiz__box" key={topic}>
-              <div className="topic-quiz__header">
-                <span>
-                  Question {quizIsLive ? activeQuestion : 0} of {questions.length}
-                </span>
-                <span className="topic-quiz__timer">
-                  <TimerReset size={18} /> {formatTime(remainingSeconds)}
-                </span>
-                {!quizIsLive && (
-                  <button
-                    type="button"
-                    aria-label="Close quiz"
-                    onClick={onSelect}
-                    style={{
-                      cursor: 'pointer',
-                      background: 'transparent',
-                      border: 'none',
-                      padding: 0,
-                    }}
-                  >
-                    <X size={20} />
-                  </button>
-                )}
-              </div>
+    <div className="topic-quiz-wrapper">
+      <h2>{resolvedTopic}</h2>
+      <div className="timer-display">
+        Time Remaining: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+      </div>
+      {!timerActive && <button onClick={startTimer}>Start Quiz Timer</button>}
 
-              {!quizIsLive ? (
-                attempted ? (
-                  <>
-                    {!showAttempted && (
-                      <>
-                        <p
-                          style={{ marginBottom: '10px', padding: '0 0.6rem', textAlign: 'center' }}
-                        >
-                          You have already completed the quiz for <strong>{topic}</strong>.
-                        </p>
-                        <button
-                          className="take-quiz-btn"
-                          onClick={() => {
-                            setShowAttempted((prev) => {
-                              const next = !prev;
-                              if (next) setActiveQuestion(1);
-                              return next;
-                            });
-                          }}
-                          type="button"
-                          aria-label={showAttempted ? 'Hide my quiz' : 'Show my quiz'}
-                        >
-                          {showAttempted ? 'Hide my quiz' : 'Show my quiz'}
-                        </button>
-                      </>
-                    )}
+      <section className="attempts-history">
+        <h4>Previous Attempts</h4>
+        <ul>
+          {attempts.length ? (
+            attempts.map((att) => (
+              <li key={att.id || att._id || `${att.score}-${att.topic}`}>
+                Score: {att.score}%
+              </li>
+            ))
+          ) : (
+            <li>No attempts yet.</li>
+          )}
+        </ul>
+      </section>
 
-                    {showAttempted && (
-                      <>
-                        <div className="topic-quiz__questions">
-                          {(() => {
-                            const q =
-                              questions.find((tq) => String(tq.id) === String(activeQuestion)) ||
-                              questions[0];
-                            const { id: questionId, question, options, correctAnswer } = q;
-                            return (
-                              <div
-                                className={`topic-quiz__question ${questionId === activeQuestion ? 'active-question' : ''}`}
-                                key={questionId}
-                              >
-                                <h4>{question}</h4>
-                                <div className="topic-quiz__options">
-                                  {options.map(({ id: optionId, text }, index) => {
-                                    const optionLetter = String.fromCharCode(65 + index);
-                                    const record = attemptedAnswers[String(questionId)] || {};
-                                    const sel =
-                                      record.selectedOption || answers[String(questionId)];
-                                    const corr = record.correctAnswer || correctAnswer;
-                                    const isSelected = sel === optionLetter;
-                                    const isCorrect = corr === optionLetter;
-                                    const optionLabel = `${optionLetter}. ${text}`;
-                                    return (
-                                      <button
-                                        key={optionId}
-                                        type="button"
-                                        aria-label={optionLabel}
-                                        aria-pressed={isSelected}
-                                        className={`topic-quiz__option disabled ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${!isCorrect && isSelected ? 'incorrect' : ''}`}
-                                        disabled
-                                      >
-                                        <span
-                                          className={
-                                            isCorrect ? 'correct' : isSelected ? 'incorrect' : ''
-                                          }
-                                        >
-                                          {isCorrect ? (
-                                            <Check size={14} />
-                                          ) : isSelected ? (
-                                            <X size={14} />
-                                          ) : (
-                                            optionLetter
-                                          )}
-                                        </span>
-                                        {text}
-                                      </button>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-
-                        <div className="topic-quiz__nav">
-                          {activeQuestion > 1 ? (
-                            <button onClick={() => setActiveQuestion((prev) => prev - 1)}>
-                              <span>
-                                <MoveLeft size={16} />
-                              </span>{' '}
-                              Previous
-                            </button>
-                          ) : (
-                            <button className="topic-quiz__nav-disabled" disabled>
-                              <span>
-                                <MoveLeft size={16} />
-                              </span>{' '}
-                              Previous
-                            </button>
-                          )}
-
-                          {activeQuestion < questions.length ? (
-                            <button onClick={() => setActiveQuestion((prev) => prev + 1)}>
-                              Next{' '}
-                              <span>
-                                <MoveRight size={16} />
-                              </span>
-                            </button>
-                          ) : (
-                            <button className="topic-quiz__nav-disabled" disabled>
-                              Next{' '}
-                              <span>
-                                <MoveRight size={16} />
-                              </span>
-                            </button>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div style={{ padding: '28px', textAlign: 'center' }}>
-                    <p style={{ marginBottom: '12px' }}>
-                      Ready to start the quiz for <strong>{topic}</strong>?
-                    </p>
-                    <button className="take-quiz-btn" onClick={() => setShowStartConfirm(true)}>
-                      Take Quiz
-                    </button>
-                  </div>
-                )
-              ) : null}
-
-              {quizIsLive && (
-                <div className="topic-quiz__nav">
-                  {activeQuestion > 1 ? (
-                    <button onClick={() => setActiveQuestion((prev) => prev - 1)}>
-                      <span>
-                        <MoveLeft size={16} />
-                      </span>{' '}
-                      Previous
-                    </button>
-                  ) : (
-                    <button className="topic-quiz__nav-disabled" disabled>
-                      <span>
-                        <MoveLeft size={16} />
-                      </span>{' '}
-                      Previous
-                    </button>
-                  )}
-
-                  {activeQuestion < questions.length ? (
-                    <button onClick={() => setActiveQuestion((prev) => prev + 1)}>
-                      Next{' '}
-                      <span>
-                        <MoveRight size={16} />
-                      </span>
-                    </button>
-                  ) : (
-                    <button onClick={() => setShowFinishConfirm(true)}>Finish Quiz</button>
-                  )}
-                </div>
-              )}
-
-              {error && (
-                <p role="alert" style={{ marginTop: '8px' }}>
-                  {error}
-                </p>
-              )}
-
-              {showStartConfirm && (
-                <div className="modal-backdrop">
-                  <div className="modal-panel">
-                    <h3>Start Quiz</h3>
-                    <p>
-                      Are you sure you are ready to take the quiz? Once you start the timer will
-                      begin.
-                    </p>
-                    <div className="modal-actions">
-                      <button
-                        type="button"
-                        className="modal-btn confirm"
-                        onClick={handleStartConfirm}
-                      >
-                        Yes, Start
-                      </button>
-                      <button
-                        type="button"
-                        className="modal-btn"
-                        onClick={() => setShowStartConfirm(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {showFinishConfirm && (
-                <div className="modal-backdrop">
-                  <div className="modal-panel">
-                    <h3>Submit Quiz</h3>
-                    <p>
-                      Are you sure you want to submit the quiz? You won't be able to change answers
-                      after submitting.
-                    </p>
-                    <div className="modal-actions">
-                      <button
-                        type="button"
-                        className="modal-btn confirm"
-                        onClick={handleFinishConfirm}
-                      >
-                        Yes, Submit
-                      </button>
-                      <button
-                        type="button"
-                        className="modal-btn"
-                        onClick={() => setShowFinishConfirm(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {showResult && (
-                <div className="modal-backdrop">
-                  <div className="modal-panel">
-                    <h3>Congratulations</h3>
-                    <p>You just completed your quiz.</p>
-                    <div style={{ fontWeight: 700 }}>
-                      <p>
-                        Score: {resultData.score} / {resultData.total}
-                      </p>
-                      <p>Time taken: {formatTime(resultData.timeTaken)}</p>
-                    </div>
-                    <div className="modal-actions">
-                      <button
-                        type="button"
-                        className="modal-btn confirm"
-                        onClick={() => {
-                          setShowResult(false);
-                          if (onSelect) onSelect();
-                        }}
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )
+      {onSelect && (
+        <button type="button" onClick={onSelect} className="take-quiz-btn">
+          Close
+        </button>
       )}
-    </>
+    </div>
   );
 }
 
 export function AttemptedTopicQuiz() {
   const { user } = useAuth();
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const [attempts, setAttempts] = useState([]);
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   useEffect(() => {
     let mounted = true;
+
     const load = async () => {
       try {
         const res = await fetch(`${API_BASE}/api/quiz-attempts`, {
@@ -615,15 +137,11 @@ export function AttemptedTopicQuiz() {
         const data = await res.json();
         if (mounted) setAttempts(data);
       } catch (err) {
-        try {
-          const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
-          if (mounted) setAttempts(stored);
-        } catch (e) {
-          logError('Failed to load attempts', { error: e.message });
-        }
-        logError('Failed to load attempts from backend', { error: err.message });
+        const stored = JSON.parse(localStorage.getItem('quiz_attempts') || '[]');
+        if (mounted) setAttempts(stored);
       }
     };
+
     load();
     return () => {
       mounted = false;
@@ -635,38 +153,33 @@ export function AttemptedTopicQuiz() {
   const percentage = totalPossible ? Math.round((totalScore / totalPossible) * 100) : 0;
 
   return (
-    <>
+    <div className="attempted-topic-quiz__body">
       <div className="quiz__average">
         <p>Average Score:</p>
         <span>{percentage}%</span>
       </div>
-
-      <div className="attempted-topic-quiz__body">
-        <div className="attempted-topic-quiz__container">
-          <ol>
-            <li>
-              <p>Topic</p>
-              <span className="attempted-topic-quiz__score">Score</span>
+      <div className="attempted-topic-quiz__container">
+        <ol>
+          <li>
+            <p>Topic</p>
+            <span className="attempted-topic-quiz__score">Score</span>
+          </li>
+          {attempts.map((a, idx) => (
+            <li key={idx}>
+              <p>{a.topic}</p>
+              <span className="attempted-topic-quiz__score">
+                {a.score} / {a.total}
+              </span>
             </li>
-
-            {attempts.map((a, idx) => (
-              <li key={idx}>
-                <p>{a.topic}</p>
-                <span className="attempted-topic-quiz__score">
-                  {a.score} / {a.total}
-                </span>
-              </li>
-            ))}
-          </ol>
-
-          <div className="attempted-topic-quiz__total">
-            <p>Total</p>
-            <span className="attempted-topic-quiz__total-score">
-              {totalScore} / {totalPossible}
-            </span>
-          </div>
+          ))}
+        </ol>
+        <div className="attempted-topic-quiz__total">
+          <p>Total</p>
+          <span className="attempted-topic-quiz__total-score">
+            {totalScore} / {totalPossible}
+          </span>
         </div>
       </div>
-    </>
+    </div>
   );
 }
