@@ -33,15 +33,6 @@ export default function NoAccess() {
               Calm down! Study and perfect the available contents. Others will be releaes shortly
             </h2>
 
-            {/* <p>
-                                This content is reserved for paid members. Upgrade your 
-                                plan to unlock full access to all features.
-                            </p> */}
-
-            {/* <div className="premium-label">
-                                <span>🔒 Paid Content</span>
-                            </div> */}
-
             <div className="link-container">
               <span>
                 <FaHandPointLeft />
@@ -53,36 +44,6 @@ export default function NoAccess() {
           </div>
         </div>
 
-        {/* <div className="pricing-column">
-                        <div className="pricing-header">
-                            <span className="badge-sparkle">
-                                <span><Sparkles size={15}/></span> 
-                                Upgrade Now
-                            </span>
-                            <h1>Unlock Full Access</h1>
-                            <p>Get unlimited access to all paid features and take your experience to the next level.</p>
-                        </div>
-
-                        <div className="pricing-card">
-                            <div className="price-box">
-                                <span>Pay only: &#8358; 5,000</span>
-                            </div>
-
-                            <ul className="features-list">
-                                <li><span className="check">✓</span> Life time access to the Basic content</li>
-                                <li><span className="check">✓</span> Direct mentorship from the instructor</li>
-                                <li><span className="check">✓</span> Build projects you can showcase to clients</li>
-                                <li><span className="check">✓</span> Exclusive access to our private student community</li>
-                                <li><span className="check">✓</span> Regular updates and new content</li>
-                                <li><span className="check">✓</span> Certification</li>
-                            </ul>
-
-                            <button className="subscribe-btn">
-                                <span className="bolt">⚡</span> 
-                                Apply Now
-                            </button>
-                        </div>
-                    </div> */}
       </div>
     </div>
   );

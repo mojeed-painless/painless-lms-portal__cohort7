@@ -4,11 +4,6 @@ import { useProgress } from '../../context/ProgressContext';
 import CompletionButton from './CompletionButton';
 import '../../assets/styles/prev-next-btn.css';
 
-// const navInfo = [
-//     {id: 1, path: prevPath, icon: <FaArrowLeftLong />, text: 'previous'},
-//     {id: 2, path: nextPath, icon: <FaArrowRightLong />, text: 'next'},
-// ]
-
 export default function PrevNextBtn({ prevPath, nextPath }) {
   const { isLessonComplete } = useProgress();
   const location = useLocation();
@@ -19,12 +14,6 @@ export default function PrevNextBtn({ prevPath, nextPath }) {
   return (
     <section id="navigators">
       <div className="navigators">
-        {/* {navInfo.map((item) => (
-                        <Link to={item.path} className='navigator'>
-                            <i>{item.icon}</i>
-                            <span>{item.text}</span>
-                        </Link>
-                    ))} */}
         <Link to={prevPath} className="navigator">
           <i>
             <FaArrowLeftLong />
