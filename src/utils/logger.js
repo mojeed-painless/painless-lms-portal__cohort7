@@ -1,20 +1,31 @@
 let errorSink = null;
 
-// Initialize default sink if Sentry DSN is provided and Sentry is available on window
-const sentryDsn = import.meta.env?.VITE_SENTRY_DSN;
-if (sentryDsn) {
-  errorSink = (message, context) => {
-    if (
-      typeof window !== 'undefined' &&
-      window.Sentry &&
-      typeof window.Sentry.captureException === 'function'
-    ) {
-      try {
-        window.Sentry.captureException(new Error(message), { extra: context });
-      } catch (e) {
-        // ignore
-      }
+function isSentryConfigured() {
+  return Boolean(import.meta.env?.VITE_SENTRY_DSN);
+}
+
+function tryCaptureSentry(message, context = {}) {
+  if (
+    typeof window !== 'undefined' &&
+    window.Sentry &&
+    typeof window.Sentry.captureException === 'function'
+  ) {
+    try {
+      const errorObj = context?.error instanceof Error
+        ? context.error
+        : new Error(typeof message === 'string' ? message : JSON.stringify(message));
+      window.Sentry.captureException(errorObj, { extra: context });
+    } catch (e) {
+      // ignore
     }
+  }
+}
+
+// Initialize default sink if Sentry DSN is provided and Sentry is available on window
+// Uses window.Sentry which is injected by @sentry/react at app init, avoiding hard dependency at import time
+if (isSentryConfigured()) {
+  errorSink = (message, context) => {
+    tryCaptureSentry(message, context);
   };
 }
 
@@ -65,6 +76,9 @@ export function logError(message, context = {}) {
     } catch (err) {
       console.error('Failed to dispatch error to tracking sink', err);
     }
+  } else if (isSentryConfigured()) {
+    // Fallback to direct Sentry capture if no error sink is set but DSN is configured
+    tryCaptureSentry(message, context);
   }
 
   return formatted;
