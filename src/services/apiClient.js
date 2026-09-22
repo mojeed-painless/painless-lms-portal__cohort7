@@ -1,5 +1,6 @@
 const VITE_BASE = import.meta.env.VITE_API_BASE_URL;
-const IS_TEST = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
+// Use Vite-provided mode detection instead of `process` (browser-friendly)
+const IS_TEST = import.meta.env.MODE === 'test';
 
 const API_HOST_FOR_TEST = 'http://localhost:5000';
 

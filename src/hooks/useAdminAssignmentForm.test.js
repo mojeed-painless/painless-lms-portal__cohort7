@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { useAdminAssignments } from './useAdminAssignments';
+import { useAdminAssignmentForm } from './useAdminAssignments';
 
 describe('useAdminAssignmentForm (form-state) behavior', () => {
   it('open/close form and create path success', async () => {
@@ -8,7 +8,7 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result } = renderHook(() =>
-      useAdminAssignments({
+      useAdminAssignmentForm({
         createAssignment: createFn,
         updateAssignment: vi.fn(),
         deleteAssignment: vi.fn(),
@@ -44,7 +44,7 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result } = renderHook(() =>
-      useAdminAssignments({
+      useAdminAssignmentForm({
         createAssignment: vi.fn(),
         updateAssignment: updateFn,
         deleteAssignment: vi.fn(),
@@ -77,7 +77,7 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
 
     expect(updateFn).toHaveBeenCalled();
     expect(res).toBe(false);
-    expect(showToast).toHaveBeenCalledWith('Some error' || expect.any(String), 'error');
+    expect(showToast).toHaveBeenCalledWith('Some error', 'error');
   });
 
   it('handleDeleteAssignment shows success and error toasts appropriately', async () => {
@@ -86,7 +86,7 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     const showToast = vi.fn();
 
     const { result: r1 } = renderHook(() =>
-      useAdminAssignments({
+      useAdminAssignmentForm({
         createAssignment: vi.fn(),
         updateAssignment: vi.fn(),
         deleteAssignment: deleteSuccess,
@@ -102,7 +102,7 @@ describe('useAdminAssignmentForm (form-state) behavior', () => {
     expect(showToast).toHaveBeenCalledWith('Assignment deleted successfully!', 'success');
 
     const { result: r2 } = renderHook(() =>
-      useAdminAssignments({
+      useAdminAssignmentForm({
         createAssignment: vi.fn(),
         updateAssignment: vi.fn(),
         deleteAssignment: deleteFail,

@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAssignments } from '../hooks/useAssignments';
 import { useStudentAssignments } from '../hooks/useStudentAssignments';
 import { useAdminAssignmentsApi } from '../hooks/useAdminAssignmentsApi';
-import { useAdminAssignments } from '../hooks/useAdminAssignments';
+import { useAdminAssignmentForm } from '../hooks/useAdminAssignments';
 import { Plus, NotebookTabs, Edit, Trash2 } from 'lucide-react';
 import '../assets/styles/assignment.css';
 import AdminAssignmentForm from '../components/assignments/AdminAssignmentForm';
@@ -119,7 +119,7 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
     handleEditAssignment,
     handleAdminAssignmentSubmit,
     handleDeleteAssignment,
-  } = useAdminAssignments({
+  } = useAdminAssignmentForm({
     createAssignment,
     updateAssignment,
     deleteAssignment,
