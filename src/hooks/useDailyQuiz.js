@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { logError, logInfo } from '../utils/logger';
+import { fetchQuiz, fetchLeaderboard, submitQuizAnswer } from '../services/quizApi';
 
 export function useDailyQuiz(quizId) {
   const [quizData, setQuizData] = useState(null);
@@ -13,26 +14,13 @@ export function useDailyQuiz(quizId) {
     setLoading(true);
     setError(null);
     try {
-      const quizUrl = `/api/quizzes/${quizId}`;
-      const leaderboardUrl = '/api/quiz-attempts/leaderboard/daily/aggregate';
-
-      const [quizRes, leaderRes] = await Promise.all([
-        fetch(quizUrl).catch(() => ({ ok: false, status: 404, json: async () => ({}) })),
-        fetch(leaderboardUrl).catch(() => ({ ok: false, status: 404, json: async () => [] })),
+      const [quizJson, leaderJson] = await Promise.all([
+        fetchQuiz(quizId).catch(() => ({ id: quizId, title: 'Daily Quiz' })),
+        fetchLeaderboard().catch(() => []),
       ]);
 
-      if (quizRes.ok) {
-        const quizJson = await quizRes.json();
-        setQuizData(quizJson);
-      } else if (quizId) {
-        setQuizData({ id: quizId, title: 'Daily Quiz' });
-      }
-
-      if (leaderRes.ok) {
-        const leaderJson = await leaderRes.json();
-        setLeaderboard(Array.isArray(leaderJson) ? leaderJson : leaderJson?.top || []);
-      }
-
+      setQuizData(quizJson || { id: quizId, title: 'Daily Quiz' });
+      setLeaderboard(Array.isArray(leaderJson) ? leaderJson : leaderJson?.top || []);
       logInfo('Daily quiz and leaderboard loaded successfully', { quizId });
     } catch (err) {
       logError('Failed loading daily quiz state', { error: err.message, quizId });
@@ -51,20 +39,14 @@ export function useDailyQuiz(quizId) {
   const submitQuizAnswers = async (answers) => {
     setSubmitting(true);
     try {
-      const response = await fetch('/api/quiz-attempts/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quizId, answers }),
-      });
+      const data = await submitQuizAnswer(quizId, answers);
 
-      const data = await response.json();
-
-      if (response.status === 409) {
+      if (data && data.status === 409) {
         setSubmissionResult({ status: 'conflict', message: data.message || 'Already submitted today' });
         return { success: false, status: 409 };
       }
 
-      if (!response.ok) {
+      if (data && data.success === false) {
         throw new Error(data.message || 'Submission failed');
       }
 

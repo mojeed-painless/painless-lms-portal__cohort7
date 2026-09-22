@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { logError, logInfo } from '../utils/logger';
+import { fetchTopicAttempts } from '../services/quizApi';
 
 export function useTopicQuizAttempts(topicId) {
   const [attempts, setAttempts] = useState([]);
@@ -11,14 +12,17 @@ export function useTopicQuizAttempts(topicId) {
     async function fetchAttempts() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/topics/${topicId}/attempts`);
-        if (response.ok) {
-          const data = await response.json();
-          setAttempts(data);
-          logInfo('Topic quiz attempts loaded', { topicId, count: data.length });
-        }
+        const data = await fetchTopicAttempts(topicId);
+        const attemptsList = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.attempts)
+            ? data.attempts
+            : [];
+        setAttempts(attemptsList);
+        logInfo('Topic quiz attempts loaded', { topicId, count: attemptsList.length });
       } catch (err) {
         logError('Failed fetching topic quiz attempts', { topicId, error: err.message });
+        setAttempts([]);
       } finally {
         setLoading(false);
       }

@@ -9,6 +9,8 @@ import { statsData, learningPath, topics } from '../data.js';
 import '../assets/styles/dashboard.css';
 import profileImage from '../assets/profile-image.jpg';
 import { BookOpenCheck, LockKeyhole, ChevronRight } from 'lucide-react';
+import { fetchDashboardMetrics, fetchAssignments } from '../services/assignmentApi';
+import { fetchQuizAttempts } from '../services/quizApi';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 const API_URL = `${API_BASE}/api/users/admin/all`;
@@ -31,6 +33,8 @@ const DashboardScreen = () => {
     jsAccess: user?.jsAccess || false,
     reactAccess: user?.reactAccess || false,
   });
+  const [dashboardSummary, setDashboardSummary] = useState({ activeCourses: 0, completedQuizzes: 0 });
+  const [assignmentSummary, setAssignmentSummary] = useState([]);
 
   // Fetch assignments on component mount
   useEffect(() => {
@@ -45,14 +49,7 @@ const DashboardScreen = () => {
     let mounted = true;
     const load = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/quiz-attempts`, {
-          headers: {
-            'Content-Type': 'application/json',
-            ...(user && user._id ? { 'x-user-id': user._id } : {}),
-          },
-        });
-        if (!res.ok) throw new Error('Failed to fetch quiz attempts');
-        const data = await res.json();
+        const data = await fetchQuizAttempts(user?._id);
         if (mounted) setQuizAttempts(data);
       } catch (err) {
         try {
@@ -143,6 +140,32 @@ const DashboardScreen = () => {
 
   const totalLessons = topics.reduce((acc, topic) => acc + topic.subjects.length, 0) + 3; // +3 for the 3 core modules
 
+  // New effect for centralized data fetching
+  useEffect(() => {
+    let mounted = true;
+
+    const loadSummary = async () => {
+      try {
+        const [summary, assignments] = await Promise.all([
+          fetchDashboardMetrics().catch(() => ({ activeCourses: 0, completedQuizzes: 0 })),
+          fetchAssignments().catch(() => []),
+        ]);
+
+        if (mounted) {
+          setDashboardSummary(summary || { activeCourses: 0, completedQuizzes: 0 });
+          setAssignmentSummary(Array.isArray(assignments) ? assignments : []);
+        }
+      } catch (err) {
+        logError('Failed to load dashboard summary', { error: err.message });
+      }
+    };
+
+    loadSummary();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <section className="dashboard-content">
       <div className="content__greetings">
@@ -166,16 +189,14 @@ const DashboardScreen = () => {
           let displayDescription = description;
 
           if (title === 'Lessons Completed') {
-            const completed = getCompletedCount();
-            // const percentage = getCompletionPercentage(66);
+            const completed = Math.max(getCompletedCount(), dashboardSummary.completedQuizzes || 0);
             const percentage = getCompletionPercentage(totalLessons);
-            displayFigure = `${completed}/${totalLessons}`;
-            // displayFigure = `${completed}/66`;
+            displayFigure = `${Math.min(completed, totalLessons)}/${totalLessons}`;
             displayDescription = `${percentage}% completed`;
           }
 
           if (title === 'Assignments Done') {
-            const done = submitted.length + graded.length;
+            const done = Math.max(submitted.length + graded.length, assignmentSummary.length);
             const pendingCount = pending.length;
             displayFigure = `${done}`;
             displayDescription = `${pendingCount} pending assignment${pendingCount !== 1 ? 's' : ''}`;
