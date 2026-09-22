@@ -18,7 +18,8 @@ function GenericTopicQuiz({ questions, topic = 'Quiz', onComplete }) {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
-  const { submitAttempt: submitAttemptHook } = useTopicQuizSubmission();
+  const { submitAttempt: submitAttemptHook, submitAnswer: submitAnswerHook } =
+    useTopicQuizSubmission();
 
   const submitAttempt = async () => {
     const total = questions.length;
@@ -85,6 +86,7 @@ export default function TopicQuiz({
   onComplete,
 }) {
   const { user } = useAuth();
+  const { submitAnswer: submitAnswerHook } = useTopicQuizSubmission();
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   const [activeQuestion, setActiveQuestion] = useState(1);

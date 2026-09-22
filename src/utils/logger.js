@@ -31,11 +31,7 @@ function createLogObject(level, message, context = {}) {
     level,
     message,
     context,
-    environment:
-      (typeof process !== 'undefined' &&
-        process.env &&
-        (process.env.NODE_ENV || process.env.MODE)) ||
-      'development',
+    environment: import.meta.env.MODE || 'development',
   };
 }
 
@@ -48,11 +44,7 @@ function formatLog(level, message, context = {}) {
     level,
     message,
     context: typeof context === 'object' && context !== null ? context : { detail: context },
-    environment:
-      (typeof process !== 'undefined' &&
-        process.env &&
-        (process.env.NODE_ENV || process.env.MODE)) ||
-      'development',
+    environment: import.meta.env.MODE || 'development',
   });
 }
 

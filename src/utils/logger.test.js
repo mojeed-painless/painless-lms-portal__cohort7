@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { logError, setErrorSink } from './logger';
+import { logInfo, logError, setErrorSink } from './logger';
 
-describe('Logger Error Tracking Integration', () => {
-  let consoleSpy;
+describe('Logger integration and structured output', () => {
+  let consoleErrorSpy;
 
   beforeEach(() => {
-    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    consoleSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
     setErrorSink(null);
   });
 
@@ -30,42 +30,38 @@ describe('Logger Error Tracking Integration', () => {
       logError('Unhandled API Exception', { status: 500 });
     }).not.toThrow();
 
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
   });
-});
-import { describe, it, expect, vi } from 'vitest';
-import { logInfo, logError } from './logger';
 
-describe('Structured JSON Logger', () => {
   it('emits logInfo as valid structured JSON with required fields', () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     logInfo('User session started', { userId: 'usr_101' });
 
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
-    const loggedOutput = JSON.parse(consoleSpy.mock.calls[0][0]);
+    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    const loggedOutput = JSON.parse(consoleLogSpy.mock.calls[0][0]);
 
     expect(loggedOutput).toHaveProperty('timestamp');
     expect(loggedOutput.level).toBe('INFO');
     expect(loggedOutput.message).toBe('User session started');
     expect(loggedOutput.context).toEqual({ userId: 'usr_101' });
 
-    consoleSpy.mockRestore();
+    consoleLogSpy.mockRestore();
   });
 
   it('emits logError as valid structured JSON with error context', () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpyLocal = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     logError('Network request failed', { status: 500 });
 
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
-    const loggedOutput = JSON.parse(consoleSpy.mock.calls[0][0]);
+    expect(consoleErrorSpyLocal).toHaveBeenCalledTimes(1);
+    const loggedOutput = JSON.parse(consoleErrorSpyLocal.mock.calls[0][0]);
 
     expect(loggedOutput).toHaveProperty('timestamp');
     expect(loggedOutput.level).toBe('ERROR');
     expect(loggedOutput.message).toBe('Network request failed');
     expect(loggedOutput.context).toEqual({ status: 500 });
 
-    consoleSpy.mockRestore();
+    consoleErrorSpyLocal.mockRestore();
   });
 });

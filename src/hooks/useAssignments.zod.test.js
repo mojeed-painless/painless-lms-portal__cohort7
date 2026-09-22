@@ -43,7 +43,9 @@ describe('useAssignments extractZodMessage branches via submitAssignment', () =>
     await act(async () => {
       try {
         await result.current.submitAssignment('1', {});
-      } catch (e) {}
+      } catch (e) {
+        /* expected: thrown array error */
+      }
     });
 
     expect(result.current.error).toBe('Array error');
@@ -61,7 +63,9 @@ describe('useAssignments extractZodMessage branches via submitAssignment', () =>
     await act(async () => {
       try {
         await result.current.submitAssignment('1', {});
-      } catch (e) {}
+      } catch (e) {
+        /* expected: thrown Error with JSON array payload */
+      }
     });
 
     expect(result.current.error).toBe('JSON message');
@@ -77,7 +81,9 @@ describe('useAssignments extractZodMessage branches via submitAssignment', () =>
     await act(async () => {
       try {
         await result.current.submitAssignment('1', {});
-      } catch (e) {}
+      } catch (e) {
+        /* expected: plain Error fallback */
+      }
     });
 
     expect(result.current.error).toBe('Plain error');

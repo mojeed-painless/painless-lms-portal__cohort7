@@ -6,7 +6,9 @@ export function useAdminAssignments(config) {
   // Backwards-compatible overload: when called with a config object,
   // behave as the form-state hook (used by AssignmentScreen).
   if (config && typeof config === 'object') {
-    return useAdminAssignmentForm(config);
+    throw new Error(
+      'useAdminAssignments no longer accepts a config object. Please use useAdminAssignmentForm(config) instead.'
+    );
   }
 
   const [gradingLoading, setGradingLoading] = useState(false);
@@ -65,7 +67,7 @@ export function useAdminAssignmentForm({
   getCourseTypeFromId,
   showToast,
   error,
-}) {
+} = {}) {
   const [editingAssignmentId, setEditingAssignmentId] = useState(null);
   const [editingAssignment, setEditingAssignment] = useState({
     title: '',

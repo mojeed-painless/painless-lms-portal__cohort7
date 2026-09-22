@@ -23,7 +23,6 @@ export function useStudentAssignments() {
 
   useEffect(() => {
     fetchStudentAssignments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitAssignment = async (assignmentId, payload) => {

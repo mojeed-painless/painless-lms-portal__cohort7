@@ -115,7 +115,7 @@ export default function QuizScreen() {
   useEffect(() => {
     // In test environment, provide a deterministic offline leaderboard
     try {
-      if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+      if (import.meta.env.MODE === 'test') {
         setDailyTop([{ rank: 1, studentId: '1', name: 'Hanna', score: 98, total: 100 }]);
         setLeaderLoading(false);
         setMyDailyLoading(false);
