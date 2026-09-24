@@ -1,20 +1,20 @@
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { server } from '../mocks/server';
 import { fetchDashboardMetrics, fetchAssignments } from './assignmentApi';
 
-const server = setupServer(
-  http.get('*/api/dashboard/summary', () =>
-    HttpResponse.json({ activeCourses: 4, completedQuizzes: 12 })
-  ),
-  http.get('*/api/assignments', () =>
-    HttpResponse.json([{ id: 'asgn-1', title: 'CSS Grid Lab' }])
-  )
-);
+beforeEach(() => {
+  server.use(
+    http.get('*/api/dashboard/summary', () =>
+      HttpResponse.json({ activeCourses: 4, completedQuizzes: 12 })
+    ),
+    http.get('*/api/assignments', () =>
+      HttpResponse.json([{ id: 'asgn-1', title: 'CSS Grid Lab' }])
+    )
+  );
+});
 
-beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 describe('assignmentApi Service', () => {
   it('fetches dashboard summary metrics', async () => {

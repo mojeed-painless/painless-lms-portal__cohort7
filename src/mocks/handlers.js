@@ -19,6 +19,37 @@ export const handlers = [
     ]);
   }),
 
+  // Dashboard summary used by services tests and screens
+  http.get('*/api/dashboard/summary', () => {
+    return HttpResponse.json({ activeCourses: 4, completedQuizzes: 12 });
+  }),
+
+  // General leaderboard for hook and screen tests
+  http.get('*/api/users/grades', () => {
+    return HttpResponse.json([
+      { id: '1', studentId: '1', name: 'Alice', score: 95, grade: 'A' },
+      { id: '2', studentId: '2', name: 'Bob', score: 88, grade: 'B' },
+    ]);
+  }),
+
+  // Admin user list endpoints used by the admin dashboard
+  http.get('*/api/users/admin/pending', () => {
+    return HttpResponse.json({ users: [] });
+  }),
+
+  http.get('*/api/users/admin/all', () => {
+    return HttpResponse.json({ users: [] });
+  }),
+
+  http.put('*/api/users/admin/:userId', async ({ request, params }) => {
+    const body = await request.json();
+    return HttpResponse.json({ id: params.userId, ...body, updated: true });
+  }),
+
+  http.delete('*/api/users/admin/:userId', () => {
+    return HttpResponse.json({ message: 'User deleted', deleted: true });
+  }),
+
   // Mock Submit Assignment
   http.post('*/api/assignments/:id/submit', async ({ request, params }) => {
     const body = await request.json();
@@ -62,6 +93,20 @@ export const handlers = [
     });
   }),
 
+  // Topic-specific quiz attempt history and timer endpoints
+  http.get('*/api/topics/:topicId/attempts', ({ params }) => {
+    return HttpResponse.json({
+      attempts: [
+        { id: `${params.topicId}-a1`, score: 80, completedAt: '2024-01-01T12:00:00Z' },
+        { id: `${params.topicId}-a2`, score: 90, completedAt: '2024-01-02T12:00:00Z' },
+      ],
+    });
+  }),
+
+  http.get('*/api/topics/:topicId/timer', () => {
+    return HttpResponse.json({ timeRemaining: 300 });
+  }),
+
   // Mock Quiz Leaderboard
   http.get('*/api/quiz/leaderboard', () => {
     return HttpResponse.json([
@@ -88,7 +133,23 @@ export const handlers = [
     return HttpResponse.json({ session: { startAt: start, endAt: end } });
   }),
 
-  // (Admin handlers intentionally omitted here so tests can register specific
-  // responses via `server.use(...)`. This prevents global admin handlers from
-  // conflicting with test-scoped handlers.)
+  // Daily quiz data lookup used by the refactored hook
+  http.get('*/api/quizzes/:quizId', ({ params }) => {
+    return HttpResponse.json({ id: params.quizId, title: 'Daily React Quiz' });
+  }),
+
+  // Backwards-compatible quiz submission endpoint used by hook tests and legacy screen code
+  http.post('*/api/quizzes/submit', async ({ request }) => {
+    const body = await request.json();
+    return HttpResponse.json({
+      success: true,
+      score: body?.answers ? 100 : 0,
+      submissionId: 'sub_quiz_101',
+    });
+  }),
+
+  // Daily leaderboard aggregate used by the hook and analytics screens
+  http.get('*/api/quiz-attempts/leaderboard/daily/aggregate', () => {
+    return HttpResponse.json([{ name: 'Alice', score: 10 }]);
+  }),
 ];

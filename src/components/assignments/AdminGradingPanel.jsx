@@ -13,30 +13,6 @@ const AdminGradingPanel = ({
   onEditScore,
   onSaveEditedScore,
 }) => {
-  const appendTestMarker = (text = 'Score saved') => {
-    try {
-      const m = document.createElement('div');
-      m.textContent = text;
-      m.setAttribute('data-testid', 'admin-save-marker');
-      document.body.appendChild(m);
-    } catch (e) {
-      // ignore
-    }
-  };
-
-  React.useEffect(() => {
-    try {
-      const handler = (e) => {
-        const btn = e.target.closest && e.target.closest('.save-score-btn');
-        if (btn) appendTestMarker('Score saved');
-      };
-      document.addEventListener('click', handler);
-      return () => document.removeEventListener('click', handler);
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
   return (
     <>
       {/* 1. ADMIN - Submitted Assignments */}
@@ -96,10 +72,7 @@ const AdminGradingPanel = ({
                       <button
                         className="save-score-btn"
                         aria-label={loading ? 'Saving Save score' : 'Save score'}
-                        onClick={() => {
-                          appendTestMarker('Score saved');
-                          onSaveScore(item.id);
-                        }}
+                        onClick={() => onSaveScore(item.id)}
                         disabled={loading}
                       >
                         <span>
@@ -183,10 +156,7 @@ const AdminGradingPanel = ({
                         <button
                           className="save-score-btn"
                           aria-label={loading ? 'Saving Save score' : 'Save score'}
-                          onClick={() => {
-                            appendTestMarker('Score saved');
-                            onSaveEditedScore(item.id);
-                          }}
+                          onClick={() => onSaveEditedScore(item.id)}
                           disabled={loading}
                         >
                           <span>

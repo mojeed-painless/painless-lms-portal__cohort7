@@ -150,21 +150,7 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
   // Handle admin grading
   const handleSaveScore = async (assignmentId) => {
     const score = scores[assignmentId];
-    // Optimistically show success toast and inline admin message so tests observing UI find the message quickly.
-    showToast('Score saved', 'success');
     setAdminMessage('Score saved');
-    // Ensure the message is present in the global DOM for tests that query document body directly.
-    try {
-      // append a deterministic test marker inside the component container
-      const marker = document.createElement('div');
-      marker.className = 'test-inline-admin-message';
-      marker.textContent = 'Score saved';
-      marker.setAttribute('data-testid', 'admin-save-marker');
-      if (containerRef.current) containerRef.current.appendChild(marker);
-      else document.body.appendChild(marker);
-    } catch (e) {
-      // ignore - DOM may not be available in some environments
-    }
     const success = await gradeAssignment(assignmentId, score);
     if (success) {
       setScores((prev) => ({ ...prev, [assignmentId]: '' }));
@@ -183,17 +169,7 @@ const AssignmentScreen = ({ assignmentId, role: forcedRole }) => {
   // Handle saving edited grade
   const handleSaveEditedScore = async (assignmentId) => {
     const score = scores[assignmentId];
-    // Optimistic UI: show success toast and inline admin message immediately so tests that assert on UI messages pass reliably.
-    showToast('Score saved', 'success');
     setAdminMessage('Score saved');
-    try {
-      const marker = document.createElement('div');
-      marker.className = 'test-inline-admin-message';
-      marker.textContent = 'Score saved';
-      document.body.appendChild(marker);
-    } catch (e) {
-      // ignore
-    }
     const success = await updateGrade(assignmentId, score);
     if (success) {
       setEditingGradedId(null);
