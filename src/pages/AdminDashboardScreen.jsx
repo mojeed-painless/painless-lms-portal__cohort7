@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useAdminDashboard } from '../hooks/useAdminDashboard';
 import '../assets/styles/admin.css';
 import { adminStats } from '../data.js';
 import { History, UserRoundCheck, Clock } from 'lucide-react';
@@ -15,32 +14,19 @@ import { logError, logInfo } from '../utils/logger';
 
 const AdminDashboardScreen = () => {
   const { user } = useAuth();
-  const activeUser =
-    user ||
-    (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo') || 'null') : null);
-  const {
-    users: dashboardUsers,
-    loading: dashboardLoading,
-    error: dashboardError,
-  } = useAdminDashboard();
+  const activeUser = useMemo(
+    () =>
+      user ||
+      (typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo') || 'null') : null),
+    [user]
+  );
+
   const [pendingUsers, setPendingUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [courseAccess, setCourseAccess] = useState({});
   const [toast, setToast] = useState(null);
-
-  useEffect(() => {
-    if (!dashboardLoading) {
-      setAllUsers(dashboardUsers);
-    }
-  }, [dashboardUsers, dashboardLoading]);
-
-  useEffect(() => {
-    if (dashboardError) {
-      setError(dashboardError);
-    }
-  }, [dashboardError]);
 
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
@@ -133,7 +119,7 @@ const AdminDashboardScreen = () => {
       }
 
       // Refresh both lists after update (user moves from pending to all)
-      fetchUsers();
+      await fetchUsers();
     } catch (err) {
       logError('Error updating user status', { userId, error: err.message });
       setError(err.message || 'Failed to update user status.');
@@ -164,7 +150,7 @@ const AdminDashboardScreen = () => {
       showToast('User deleted successfully', 'success');
 
       // Refresh the list immediately to remove the deleted user from the UI
-      fetchUsers();
+      await fetchUsers();
     } catch (err) {
       logError('Error deleting user', { userId, error: err.message });
       setError(err.message || 'Failed to delete user.');

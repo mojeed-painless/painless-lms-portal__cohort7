@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { server } from '../mocks/server';
 import * as logger from '../utils/logger';
 import LeaderboardScreen from './LeaderboardScreen';
 
@@ -12,14 +12,14 @@ const mockLeaderboardData = [
 
 const mockGradesData = [{ courseId: 'react-101', grade: 'A' }];
 
-const server = setupServer();
+beforeEach(() => {
+  server.resetHandlers();
+});
 
-beforeAll(() => server.listen());
 afterEach(() => {
   server.resetHandlers();
   vi.restoreAllMocks();
 });
-afterAll(() => server.close());
 
 describe('LeaderboardScreen Integration', () => {
   it('renders leaderboard data correctly upon successful API fetch', async () => {

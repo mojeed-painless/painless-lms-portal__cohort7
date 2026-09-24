@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchJson } from '../services/apiClient';
 import { logError } from '../utils/logger';
 import {
@@ -17,7 +17,10 @@ export function useAssignments(token) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+  const authHeaders = useMemo(
+    () => (token ? { Authorization: `Bearer ${token}` } : {}),
+    [token]
+  );
 
   const fetchAssignments = useCallback(async () => {
     setLoading(true);
@@ -149,7 +152,28 @@ export function useAssignments(token) {
       if (!err) return null;
       // Zod v3: err.issues or err.errors
       const issues = err.issues || err.errors || null;
-      if (Array.isArray(issues) && issues.length) return String(issues[0].message || issues[0]);
+      if (Array.isArray(issues) && issues.length) {
+        const firstIssue = issues[0];
+        if (firstIssue && typeof firstIssue === 'object') {
+          const path = Array.isArray(firstIssue.path) ? firstIssue.path : [];
+          const message = String(firstIssue.message || firstIssue);
+
+          if (path.includes('submissionUrl')) {
+            const normalizedMessage = message.toLowerCase();
+            if (normalizedMessage.includes('url') || normalizedMessage.includes('invalid')) {
+              return 'Please provide a valid URL';
+            }
+            return 'Submission URL is required';
+          }
+
+          if (path.includes('courseType') || message.includes('Invalid enum value')) {
+            return 'Invalid course type';
+          }
+
+          return message;
+        }
+        return String(issues[0].message || issues[0]);
+      }
 
       // If an array was thrown directly
       if (Array.isArray(err) && err.length) return String(err[0].message || err[0]);

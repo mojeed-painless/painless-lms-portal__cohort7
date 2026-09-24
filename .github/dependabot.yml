@@ -1,6 +1,37 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    groups:
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-router-dom"
+      testing-tools:
+        patterns:
+          - "vitest"
+          - "msw"
+          - "jsdom"
+      linting-and-types:
+        patterns:
+          - "eslint*"
+          - "typescript"
+          - "@types/*"
+    labels:
+      - "dependencies"
+      - "chore"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "ci"
+      - "dependencies"
