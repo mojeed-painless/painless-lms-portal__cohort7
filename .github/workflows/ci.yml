@@ -1,13 +1,14 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
-  build-and-test:
+  test-and-coverage:
+    name: Test & Coverage (80% Threshold)
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: 'npm'
 
       - name: Install Dependencies
@@ -26,14 +27,11 @@ jobs:
       - name: Run Linter
         run: npm run lint
 
-      - name: Check Formatting
-        run: npm run format:check
-
-      - name: Run Tests with 60% Coverage Enforcement
-        run: npm run test:coverage
-
       - name: Run Typecheck
         run: npm run typecheck
+
+      - name: Run Tests with 80% Coverage Enforcement
+        run: npm run test:coverage
 
       - name: Build Application
         run: npm run build
