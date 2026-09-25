@@ -4,9 +4,10 @@ A modern, comprehensive Learning Management System (LMS) built with React and Vi
 
 ![Painless Logo](./src/assets/pcalogo.png)
 
-![React](https://img.shields.io/badge/React-19.2.0-blue.svg)
-![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF.svg)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.17-38B2AC.svg)
+![React](https://img.shields.io/badge/React-18.3.1-blue.svg)
+![Vite](https://img.shields.io/badge/Vite-8.3.0-646CFF.svg)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.17-38B2AC.svg)
+![Vitest](https://img.shields.io/badge/Vitest-2.1.9-70A51D.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 ## 🌟 Features
@@ -35,13 +36,13 @@ A modern, comprehensive Learning Management System (LMS) built with React and Vi
 
 ## 🛠️ Tech Stack
 
-- **Frontend Framework**: React 19.2.0 with Vite
-- **Styling**: Vanilla CSS and Tailwind CSS 4.1.17
-- **Routing**: React Router DOM 7.9.6
-- **HTTP Client**: Axios 1.13.2
-- **Code Highlighting**: Prism.js 1.30.0
-- **Icons**: React Icons 5.5.0
-- **Build Tool**: Vite 7.2.4
+- **Frontend Framework**: React `18.3.1` with `react-dom` `18.3.1`
+- **Build Tooling**: Vite `8.3.0`
+- **Styling**: Tailwind CSS `3.4.17`
+- **Routing**: React Router DOM `7.18.4`
+- **Schema Validation**: Zod `3.23.8`
+- **Testing**: Vitest `2.1.9` + `@testing-library/react`
+- **Observability**: `@sentry/react` `8.55.2`
 - **Deployment**: Vercel
 
 ## 🚀 Getting Started
