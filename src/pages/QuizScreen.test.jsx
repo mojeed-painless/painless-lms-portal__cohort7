@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/server';
 import QuizScreen from './QuizScreen';
@@ -173,5 +173,161 @@ describe('QuizScreen Integration (submit endpoints)', () => {
       const matches = screen.getAllByText(/already attempted today|you already attempted/i);
       expect(matches.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe('QuizScreen edge-case coverage', () => {
+  it('falls back to yesterday leaderboard data when today is empty', async () => {
+    vi.resetModules();
+    vi.stubEnv('MODE', 'development');
+    const { default: DevQuizScreen } = await import('./QuizScreen');
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const todayIso = today.toISOString().slice(0, 10);
+    const yesterdayIso = yesterday.toISOString().slice(0, 10);
+
+    const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation((input) => {
+      const url = String(input);
+
+      if (url.includes('/api/quiz-attempts/session')) {
+        const now = new Date();
+        const start = new Date(now.getTime() - 60 * 1000).toISOString();
+        const end = new Date(now.getTime() + 2 * 60 * 1000).toISOString();
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ session: { startAt: start, endAt: end } }),
+        });
+      }
+
+      if (url.includes('/api/quiz/leaderboard')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ top: [] }),
+        });
+      }
+
+      if (url.includes(`/api/quiz-attempts/leaderboard/daily?date=${todayIso}`)) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ top: [] }),
+        });
+      }
+
+      if (url.includes(`/api/quiz-attempts/leaderboard/daily?date=${yesterdayIso}`)) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({
+            top: [{ studentId: 'u1', name: 'Alex', score: 95, total: 100, timeTaken: 45 }],
+          }),
+        });
+      }
+
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({}),
+      });
+    });
+
+    try {
+      render(
+        <AuthProvider>
+          <MemoryRouter>
+            <DevQuizScreen />
+          </MemoryRouter>
+        </AuthProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Alex')).toBeInTheDocument();
+      });
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        expect.stringContaining('/api/quiz-attempts/leaderboard/daily?date='),
+        expect.objectContaining({ headers: {} })
+      );
+    } finally {
+      vi.unstubAllEnvs();
+      vi.restoreAllMocks();
+    }
+  });
+
+  it('shows the already-attempted message when a duplicate daily submission returns 409', async () => {
+    const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation((input) => {
+      const url = String(input);
+
+      if (url.includes('/api/quiz-attempts/session')) {
+        const now = new Date();
+        const start = new Date(now.getTime() - 60 * 1000).toISOString();
+        const end = new Date(now.getTime() + 2 * 60 * 1000).toISOString();
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ session: { startAt: start, endAt: end } }),
+        });
+      }
+
+      if (url.includes('/api/quiz/leaderboard')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ top: [] }),
+        });
+      }
+
+      if (url.includes('/api/quiz-attempts/leaderboard/daily')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ top: [] }),
+        });
+      }
+
+      if (url.includes('/api/quiz-attempts/submit')) {
+        return Promise.resolve({
+          ok: false,
+          status: 409,
+          json: () => Promise.resolve({ message: 'You have already submitted this quiz.', attempt: { score: 80, total: 100 } }),
+        });
+      }
+
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        json: () => Promise.resolve({}),
+      });
+    });
+
+    render(
+      <AuthProvider>
+        <MemoryRouter>
+          <QuizScreen />
+        </MemoryRouter>
+      </AuthProvider>
+    );
+
+    const startBtn = await screen.findByRole('button', { name: /start quiz/i });
+    fireEvent.click(startBtn);
+
+    let submitBtn = null;
+    for (let i = 0; i < 10; i++) {
+      try {
+        submitBtn = await screen.findByRole('button', { name: /finish|submit/i, timeout: 200 });
+        break;
+      } catch (e) {
+        const next = screen.queryByRole('button', { name: /next/i });
+        if (next) fireEvent.click(next);
+        else break;
+      }
+    }
+
+    if (!submitBtn) submitBtn = await screen.findByRole('button', { name: /submit/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/you already attempted today's quiz/i)).toBeInTheDocument();
+      expect(screen.getByText(/score: 80\/100/i)).toBeInTheDocument();
+    });
+
+    fetchSpy.mockRestore();
   });
 });
