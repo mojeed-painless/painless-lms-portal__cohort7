@@ -1,5 +1,6 @@
 import { fetchJson } from './apiClient';
 import { userListSchema, userSchema, updateCourseAccessSchema } from '../schemas/user';
+import { updateUserSchema, updateCourseAccessSchema as adminUpdateCourseAccessSchema } from '../schemas/admin';
 import { logError } from '../utils/logger';
 
 /**
@@ -44,10 +45,21 @@ export async function fetchAllUsers(token) {
 
 /**
  * Update a user's information (approval status, role, course access)
+ * Validates input with Zod before making the network request.
  */
 export async function updateUser(userId, updateData, token) {
   if (!token) throw new Error('Authorization token is required');
   if (!userId) throw new Error('User ID is required');
+
+  // Validate the payload shape and fields
+  const payload = { userId, ...updateData };
+  const parseResult = updateUserSchema.safeParse(payload);
+
+  if (!parseResult.success) {
+    const errorDetails = parseResult.error.errors.map((e) => e.message).join(', ');
+    logError('Admin updateUser validation failed', { userId, errors: errorDetails });
+    throw new Error(`Admin updateUser validation failed: ${errorDetails}`);
+  }
 
   try {
     // Use PUT to match existing tests which expect PUT
@@ -85,16 +97,19 @@ export async function deleteUser(userId, token) {
 
 /**
  * Update course access for a user
+ * Validates input with Zod before making the network request.
  */
 export async function updateCourseAccess(userId, courseAccessData, token) {
   if (!token) throw new Error('Authorization token is required');
   if (!userId) throw new Error('User ID is required');
 
   try {
+    // Validate using the legacy schema for backward compat with current tests
     const validated = updateCourseAccessSchema.parse({
       userId,
       accessList: Object.keys(courseAccessData).filter((k) => courseAccessData[k]),
     });
+    
     // Tests expect a PUT to /users/admin/:id - align with that
     const data = await fetchJson(`/users/admin/${validated.userId}`, {
       method: 'PUT',
