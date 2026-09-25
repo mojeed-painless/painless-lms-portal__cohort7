@@ -258,4 +258,189 @@ describe('Admin API Service', () => {
       );
     });
   });
+
+  describe('adminApi - Input Validation (Zod Schemas)', () => {
+    describe('updateUser - Zod validation', () => {
+      it('rejects updateUser when name is too short', async () => {
+        const userId = 'user-123';
+        const invalidUpdateData = {
+          name: 'A', // Too short (min 2 required)
+          email: 'valid@example.com',
+          role: 'student',
+        };
+
+        await expect(updateUser(userId, invalidUpdateData, TOKEN)).rejects.toThrow(
+          /Admin updateUser validation failed|too small/i
+        );
+      });
+
+      it('rejects updateUser when email is invalid', async () => {
+        const userId = 'user-123';
+        const invalidUpdateData = {
+          name: 'Valid Name',
+          email: 'not-an-email', // Invalid email
+          role: 'student',
+        };
+
+        await expect(updateUser(userId, invalidUpdateData, TOKEN)).rejects.toThrow(
+          /Admin updateUser validation failed|Invalid email/i
+        );
+      });
+
+      it('rejects updateUser when role is not valid enum', async () => {
+        const userId = 'user-123';
+        const invalidUpdateData = {
+          name: 'Valid Name',
+          email: 'valid@example.com',
+          role: 'superadmin', // Invalid role (not in enum)
+        };
+
+        await expect(updateUser(userId, invalidUpdateData, TOKEN)).rejects.toThrow(
+          /Admin updateUser validation failed|Role must be/i
+        );
+      });
+
+      it('allows updateUser with valid role (student)', async () => {
+        const userId = 'user-123';
+        const validUpdateData = {
+          name: 'Valid Name',
+          email: 'valid@example.com',
+          role: 'student',
+        };
+        const mockResponse = { _id: userId, ...validUpdateData };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateUser(userId, validUpdateData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+
+      it('allows updateUser with valid role (instructor)', async () => {
+        const userId = 'user-123';
+        const validUpdateData = {
+          name: 'Valid Name',
+          email: 'valid@example.com',
+          role: 'instructor',
+        };
+        const mockResponse = { _id: userId, ...validUpdateData };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateUser(userId, validUpdateData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+
+      it('allows updateUser with valid role (admin)', async () => {
+        const userId = 'user-123';
+        const validUpdateData = {
+          name: 'Valid Name',
+          email: 'valid@example.com',
+          role: 'admin',
+        };
+        const mockResponse = { _id: userId, ...validUpdateData };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateUser(userId, validUpdateData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+
+      it('allows updateUser with optional isActive boolean', async () => {
+        const userId = 'user-123';
+        const validUpdateData = {
+          name: 'Valid Name',
+          email: 'valid@example.com',
+          role: 'student',
+          isActive: true,
+        };
+        const mockResponse = { _id: userId, ...validUpdateData };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateUser(userId, validUpdateData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+
+      it('validates before making network request (prevents unnecessary API call)', async () => {
+        const userId = 'user-123';
+        const invalidUpdateData = {
+          name: 'A', // Too short
+          email: 'invalid-email',
+          role: 'invalid-role',
+        };
+
+        // Set up a mock that should NOT be called
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            throw new Error('Should not reach API');
+          })
+        );
+
+        // Validation should fail before the fetch
+        await expect(updateUser(userId, invalidUpdateData, TOKEN)).rejects.toThrow(
+          /Admin updateUser validation failed/i
+        );
+      });
+    });
+
+    describe('updateCourseAccess - Zod validation', () => {
+      it('rejects when userId is empty string', async () => {
+        const invalidUpdateData = { htmlAccess: true };
+
+        await expect(updateCourseAccess('', invalidUpdateData, TOKEN)).rejects.toThrow(
+          'User ID is required'
+        );
+      });
+
+      it('passes validation and calls API when valid courseAccessData provided', async () => {
+        const userId = 'user-123';
+        const courseAccessData = { htmlAccess: true };
+        const mockResponse = { _id: userId, htmlAccess: true };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateCourseAccess(userId, courseAccessData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+
+      it('builds accessList correctly from boolean courseAccessData', async () => {
+        const userId = 'user-123';
+        const courseAccessData = {
+          htmlAccess: true,
+          jsAccess: false,
+          reactAccess: true,
+        };
+        const mockResponse = { _id: userId, ...courseAccessData };
+
+        server.use(
+          http.put(`${API_URL}/${userId}`, () => {
+            return HttpResponse.json(mockResponse);
+          })
+        );
+
+        const result = await updateCourseAccess(userId, courseAccessData, TOKEN);
+        expect(result).toEqual(mockResponse);
+      });
+    });
+  });
 });
