@@ -31,3 +31,28 @@ Co-authored-by: Alex Developer <alex@example.com>"
 ## 4. Release Tagging
 
 Releases follow Semantic Versioning (vX.Y.Z). Only maintainers may tag releases on main.
+
+## Commit Style & Testing Guidelines
+
+All commits submitted to this repository must follow the [Conventional Commits specification](https://www.conventionalcommits.org/). This rule is strictly enforced on local commits via `commitlint` and Husky `commit-msg` hooks.
+
+### Approved Commit Prefixes
+
+* **`feat:`** A new user-facing or technical feature
+* **`fix:`** A bug fix or error resolution
+* **`test:`** Adding or refactoring unit/integration tests
+* **`refactor:`** Code changes that neither fix a bug nor add a feature
+* **`chore:`** Maintenance tasks, dependency updates, build tooling updates
+* **`docs:`** Documentation updates (`README.md`, `CONTRIBUTING.md`)
+* **`ci:`** Modifications to CI workflow configurations (`.github/workflows/`)
+
+### Mandatory Test Pairing Rule
+
+When fixing bugs or refactoring logic inside `src/pages/` or `src/hooks/`:
+1. **Land the fix and its corresponding unit test (`*.test.jsx` / `*.test.js`) in the EXACT same commit.**
+2. Do NOT separate implementation changes and tests into detached follow-up commits.
+
+#### Example Commit Format:
+```bash
+git commit -m "fix(hooks): resolve race condition in useAssignments and pair with regression test"
+```

@@ -1,8 +1,8 @@
+import * as Sentry from '@sentry/react';
+
 let errorSink = null;
 
-function isSentryConfigured() {
-  return Boolean(import.meta.env?.VITE_SENTRY_DSN);
-}
+const isSentryConfigured = () => Boolean(import.meta.env.VITE_SENTRY_DSN);
 
 function tryCaptureSentry(message, context = {}) {
   if (
@@ -21,8 +21,6 @@ function tryCaptureSentry(message, context = {}) {
   }
 }
 
-// Initialize default sink if Sentry DSN is provided and Sentry is available on window
-// Uses window.Sentry which is injected by @sentry/react at app init, avoiding hard dependency at import time
 if (isSentryConfigured()) {
   errorSink = (message, context) => {
     tryCaptureSentry(message, context);
@@ -36,39 +34,45 @@ export function setErrorSink(customSink) {
   errorSink = customSink;
 }
 
-function createLogObject(level, message, context = {}) {
-  return {
-    timestamp: new Date().toISOString(),
-    level,
-    message,
-    context,
-    environment: import.meta.env.MODE || 'development',
-  };
-}
-
 /**
- * Formats log parameters into a structured JSON payload
+ * Formats log payload into a standardized JSON structure.
  */
-function formatLog(level, message, context = {}) {
+export function formatLogPayload(level, message, context = {}) {
   return JSON.stringify({
     timestamp: new Date().toISOString(),
     level,
-    message,
-    context: typeof context === 'object' && context !== null ? context : { detail: context },
-    environment: import.meta.env.MODE || 'development',
+    message: typeof message === 'string' ? message : String(message),
+    context,
   });
 }
 
 export function logInfo(message, context = {}) {
-  const formatted = formatLog('INFO', message, context);
-  console.log(formatted);
-  return formatted;
+  const payload = formatLogPayload('INFO', message, context);
+
+  console.log(payload);
+  if (process.env.NODE_ENV !== 'test') {
+    console.info(payload);
+  }
+
+  if (isSentryConfigured()) {
+    Sentry.addBreadcrumb({
+      category: 'logger',
+      message: typeof message === 'string' ? message : JSON.stringify(message),
+      level: 'info',
+      data: context,
+    });
+  }
+
+  return payload;
 }
 
 export function logError(message, context = {}) {
-  const payload = createLogObject('ERROR', message, context);
-  const formatted = JSON.stringify(payload);
-  console.error(formatted);
+  const payload = formatLogPayload('ERROR', message, context);
+  const errorObj = context?.error instanceof Error
+    ? context.error
+    : new Error(typeof message === 'string' ? message : JSON.stringify(message));
+
+  console.error(payload);
 
   if (typeof errorSink === 'function') {
     try {
@@ -77,9 +81,23 @@ export function logError(message, context = {}) {
       console.error('Failed to dispatch error to tracking sink', err);
     }
   } else if (isSentryConfigured()) {
-    // Fallback to direct Sentry capture if no error sink is set but DSN is configured
     tryCaptureSentry(message, context);
   }
 
-  return formatted;
+  if (isSentryConfigured()) {
+    Sentry.addBreadcrumb({
+      category: 'logger',
+      message: typeof message === 'string' ? message : JSON.stringify(message),
+      level: 'error',
+      data: context,
+    });
+
+    Sentry.withScope((scope) => {
+      scope.setExtra('context', context);
+      scope.setTag('logger', 'painless-lms-client');
+      Sentry.captureException(errorObj);
+    });
+  }
+
+  return payload;
 }
