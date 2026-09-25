@@ -1,99 +1,70 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { logInfo, logError, setErrorSink } from './logger';
+import * as Sentry from '@sentry/react';
+import { logInfo, logError } from './logger';
 
-describe('Logger integration and structured output', () => {
-  let consoleErrorSpy;
-  let consoleLogSpy;
+vi.mock('@sentry/react', () => ({
+  captureException: vi.fn(),
+  addBreadcrumb: vi.fn(),
+  withScope: vi.fn((cb) => cb({ setExtra: vi.fn(), setTag: vi.fn() })),
+}));
+
+describe('logger - Structured JSON Output & Sentry Breadcrumbs', () => {
+  const originalEnv = import.meta.env.VITE_SENTRY_DSN;
 
   beforeEach(() => {
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     vi.clearAllMocks();
-    vi.unstubAllEnvs();
-    setErrorSink(null);
-    delete window.Sentry;
+    vi.spyOn(console, 'info').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    consoleErrorSpy.mockRestore();
-    consoleLogSpy.mockRestore();
-    vi.unstubAllEnvs();
-    setErrorSink(null);
-    delete window.Sentry;
+    import.meta.env.VITE_SENTRY_DSN = originalEnv;
+    console.info.mockRestore();
+    console.error.mockRestore();
   });
 
-  it('calls registered error sink when logError is invoked', () => {
-    const mockSink = vi.fn();
-    setErrorSink(mockSink);
+  it('formats logInfo into a valid JSON object with timestamp, level, message, and context', () => {
+    const rawPayload = logInfo('User session started', { userId: 'usr-101' });
+    const parsed = JSON.parse(rawPayload);
 
-    logError('Database connection lost', { retries: 3 });
-
-    expect(mockSink).toHaveBeenCalledTimes(1);
-    expect(mockSink).toHaveBeenCalledWith('Database connection lost', { retries: 3 });
+    expect(parsed).toHaveProperty('timestamp');
+    expect(parsed.level).toBe('INFO');
+    expect(parsed.message).toBe('User session started');
+    expect(parsed.context).toEqual({ userId: 'usr-101' });
+    expect(isNaN(Date.parse(parsed.timestamp))).toBe(false);
   });
 
-  it('safely no-ops and logs to console when no error sink is configured', () => {
-    setErrorSink(null);
+  it('formats logError into a valid JSON object with ERROR level', () => {
+    const testError = new Error('Database connection timeout');
+    const rawPayload = logError('Failed to fetch dashboard metrics', { error: testError, screen: 'AdminDashboard' });
+    const parsed = JSON.parse(rawPayload);
 
-    expect(() => {
-      logError('Unhandled API Exception', { status: 500 });
-    }).not.toThrow();
-
-    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+    expect(parsed.level).toBe('ERROR');
+    expect(parsed.message).toBe('Failed to fetch dashboard metrics');
+    expect(parsed.context.screen).toBe('AdminDashboard');
   });
 
-  it('forwards error to window.Sentry when VITE_SENTRY_DSN is configured', () => {
-    vi.stubEnv('VITE_SENTRY_DSN', 'https://mock@sentry.io/123456');
+  it('sends Sentry breadcrumb and captures exception when VITE_SENTRY_DSN is set', () => {
+    import.meta.env.VITE_SENTRY_DSN = 'https://mock@sentry.io/654321';
 
-    const mockCaptureException = vi.fn();
-    window.Sentry = {
-      captureException: mockCaptureException,
-    };
+    const testError = new Error('Auth token expired');
+    logError('Unauthorized request', { error: testError });
 
-    const testError = new Error('DB error');
-    logError('Failed to load user profile', { error: testError, userId: 'usr-99' });
-
-    expect(mockCaptureException).toHaveBeenCalledTimes(1);
-    expect(mockCaptureException).toHaveBeenCalledWith(
-      expect.any(Error),
-      expect.objectContaining({
-        extra: expect.objectContaining({ userId: 'usr-99' }),
-      })
-    );
+    expect(Sentry.addBreadcrumb).toHaveBeenCalledWith({
+      category: 'logger',
+      message: 'Unauthorized request',
+      level: 'error',
+      data: { error: testError },
+    });
+    expect(Sentry.captureException).toHaveBeenCalledWith(testError);
   });
 
-  it('skips window.Sentry when VITE_SENTRY_DSN is unset or window.Sentry is unavailable', () => {
-    delete window.Sentry;
-    vi.unstubAllEnvs();
+  it('skips Sentry breadcrumbs when VITE_SENTRY_DSN is unset', () => {
+    delete import.meta.env.VITE_SENTRY_DSN;
 
-    expect(() => {
-      logError('Transient network failure', { code: 500 });
-    }).not.toThrow();
+    logInfo('Local dev info', { debug: true });
 
-    expect(consoleErrorSpy).toHaveBeenCalled();
-  });
-
-  it('emits logInfo as valid structured JSON with required fields', () => {
-    logInfo('User session started', { userId: 'usr_101' });
-
-    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-    const loggedOutput = JSON.parse(consoleLogSpy.mock.calls[0][0]);
-
-    expect(loggedOutput).toHaveProperty('timestamp');
-    expect(loggedOutput.level).toBe('INFO');
-    expect(loggedOutput.message).toBe('User session started');
-    expect(loggedOutput.context).toEqual({ userId: 'usr_101' });
-  });
-
-  it('emits logError as valid structured JSON with error context', () => {
-    logError('Network request failed', { status: 500 });
-
-    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
-    const loggedOutput = JSON.parse(consoleErrorSpy.mock.calls[0][0]);
-
-    expect(loggedOutput).toHaveProperty('timestamp');
-    expect(loggedOutput.level).toBe('ERROR');
-    expect(loggedOutput.message).toBe('Network request failed');
-    expect(loggedOutput.context).toEqual({ status: 500 });
+    expect(Sentry.addBreadcrumb).not.toHaveBeenCalled();
+    expect(Sentry.captureException).not.toHaveBeenCalled();
   });
 });
