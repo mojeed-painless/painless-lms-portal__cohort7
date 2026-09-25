@@ -1,6 +1,38 @@
 import * as Sentry from '@sentry/react';
 
+let errorSink = null;
+
 const isSentryConfigured = () => Boolean(import.meta.env.VITE_SENTRY_DSN);
+
+function tryCaptureSentry(message, context = {}) {
+  if (
+    typeof window !== 'undefined' &&
+    window.Sentry &&
+    typeof window.Sentry.captureException === 'function'
+  ) {
+    try {
+      const errorObj = context?.error instanceof Error
+        ? context.error
+        : new Error(typeof message === 'string' ? message : JSON.stringify(message));
+      window.Sentry.captureException(errorObj, { extra: context });
+    } catch (e) {
+      // ignore
+    }
+  }
+}
+
+if (isSentryConfigured()) {
+  errorSink = (message, context) => {
+    tryCaptureSentry(message, context);
+  };
+}
+
+/**
+ * Allows overriding or registering a custom error sink (used in testing & custom setup)
+ */
+export function setErrorSink(customSink) {
+  errorSink = customSink;
+}
 
 /**
  * Formats log payload into a standardized JSON structure.
@@ -17,6 +49,7 @@ export function formatLogPayload(level, message, context = {}) {
 export function logInfo(message, context = {}) {
   const payload = formatLogPayload('INFO', message, context);
 
+  console.log(payload);
   if (process.env.NODE_ENV !== 'test') {
     console.info(payload);
   }
@@ -39,8 +72,16 @@ export function logError(message, context = {}) {
     ? context.error
     : new Error(typeof message === 'string' ? message : JSON.stringify(message));
 
-  if (process.env.NODE_ENV !== 'test') {
-    console.error(payload);
+  console.error(payload);
+
+  if (typeof errorSink === 'function') {
+    try {
+      errorSink(message, context);
+    } catch (err) {
+      console.error('Failed to dispatch error to tracking sink', err);
+    }
+  } else if (isSentryConfigured()) {
+    tryCaptureSentry(message, context);
   }
 
   if (isSentryConfigured()) {
